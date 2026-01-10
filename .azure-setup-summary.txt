@@ -1,0 +1,99 @@
+================================================================================
+AZURE DEPLOYMENT SETUP - COMPLETED
+================================================================================
+
+? Service Principal Created: camilo-personal-assistant-github
+? Role Assignment: Contributor on resource group 'camilo-personal-assistant-rg'
+? Federated Credentials: Configured for GitHub Actions OIDC
+
+================================================================================
+GITHUB SECRETS - ADD THESE TO YOUR REPOSITORY
+================================================================================
+
+Go to: https://github.com/juancamilor/AIPersonalAssistant/settings/secrets/actions
+
+Add the following 3 secrets:
+
+1. AZURE_CLIENT_ID
+   Value: ff332010-9a33-4885-a287-e26a7274d510
+
+2. AZURE_TENANT_ID
+   Value: f4e3374a-d9eb-4b94-92e6-8f1d851e7b6e
+
+3. AZURE_SUBSCRIPTION_ID
+   Value: b6baf6a3-39aa-45ce-9363-83e84a634034
+
+================================================================================
+HOW TO ADD SECRETS
+================================================================================
+
+1. Go to your repository on GitHub
+2. Click "Settings" tab
+3. Click "Secrets and variables" ? "Actions" in the left sidebar
+4. Click "New repository secret" button
+5. Add each secret one by one:
+   - Name: AZURE_CLIENT_ID
+   - Secret: ff332010-9a33-4885-a287-e26a7274d510
+   - Click "Add secret"
+   
+   Repeat for AZURE_TENANT_ID and AZURE_SUBSCRIPTION_ID
+
+================================================================================
+DEPLOYMENT DETAILS
+================================================================================
+
+Resource Group: camilo-personal-assistant-rg
+Location: eastus
+Subscription: Visual Studio Enterprise Subscription (b6baf6a3-39aa-45ce-9363-83e84a634034)
+
+Federated Credentials Configured:
+- Main branch deployments: ?
+- Pull request deployments: ?
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. ? Add the 3 GitHub secrets (see above)
+
+2. ? Push your changes to GitHub:
+   git add .
+   git commit -m "Add Azure deployment configuration"
+   git push origin main
+
+3. ? Monitor deployment:
+   - Go to: https://github.com/juancamilor/AIPersonalAssistant/actions
+   - Watch the "CI Pipeline" workflow run
+   - It will build, test, deploy infrastructure, and deploy the app
+
+4. ? Access your deployed app at:
+   https://camilo-personal-assistant-production.azurewebsites.net
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+If deployment fails:
+1. Verify all 3 GitHub secrets are correctly set
+2. Check GitHub Actions logs for detailed error messages
+3. Verify you're pushing to the 'main' branch
+4. See DEPLOYMENT.md for detailed troubleshooting steps
+
+To view Azure resources:
+- Portal: https://portal.azure.com
+- Navigate to: camilo-personal-assistant-rg resource group
+
+To view application logs:
+az webapp log tail --resource-group camilo-personal-assistant-rg --name camilo-personal-assistant-production
+
+================================================================================
+SECURITY NOTE
+================================================================================
+
+? Using OIDC (OpenID Connect) authentication - no passwords or keys stored!
+? Service principal scoped to only your resource group
+? Federated credentials restrict access to your specific GitHub repository
+
+================================================================================
+
+For complete documentation, see: DEPLOYMENT.md
