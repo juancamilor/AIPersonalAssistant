@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Exchange - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/rate-exchange.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Rate Exchange</h1>
+        <button id="backBtn">Back to Tools</button>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <h2>Currency Converter</h2>
+            <form id="exchangeForm">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fromCurrency">From Currency</label>
+                    <select id="fromCurrency" name="fromCurrency" required>
+                        <option value="">Select currency...</option>
+                        <option value="US">United States (USD)</option>
+                        <option value="CAD">Canada (CAD)</option>
+                        <option value="MX">Mexico (MXN)</option>
+                        <option value="CO">Colombia (COP)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>To Currency (Select one or more)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="toCurrency" value="US">
+                            <span>United States (USD)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="toCurrency" value="CAD">
+                            <span>Canada (CAD)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="toCurrency" value="MX">
+                            <span>Mexico (MXN)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="toCurrency" value="CO">
+                            <span>Colombia (COP)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">Calculate Exchange Rates</button>
+            </form>
+        </div>
+
+        <div id="resultsSection" class="results-card" style="display: none;">
+            <h2>Conversion Results</h2>
+            <div id="resultsContent"></div>
+        </div>
+
+        <div id="errorSection" class="error-card" style="display: none;">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="/js/rate-exchange.js"></script>
+</body>
+</html>
