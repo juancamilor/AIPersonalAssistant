@@ -60,47 +60,12 @@ jobs:
         path: ./publish
         retention-days: 1
 
-  deploy-infrastructure:
-    runs-on: ubuntu-latest
-    needs: build
-    environment: 
-      name: production
-      url: ${{ steps.deploy.outputs.webAppUrl }}
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        
-    - name: Deploy Bicep template
-      id: deploy
-      uses: azure/arm-deploy@v2
-      with:
-        scope: resourcegroup
-        resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
-        template: ./infrastructure/main.bicep
-        parameters: ./infrastructure/parameters.json
-        failOnStdErr: false
-
-    - name: Save Web App name
-      run: echo "WEB_APP_NAME=${{ steps.deploy.outputs.webAppName }}" >> $GITHUB_ENV
-
-    outputs:
-      webAppName: ${{ steps.deploy.outputs.webAppName }}
-      webAppUrl: ${{ steps.deploy.outputs.webAppUrl }}
-
   deploy-app:
     runs-on: ubuntu-latest
-    needs: deploy-infrastructure
+    needs: build
     environment:
       name: production
-      url: ${{ needs.deploy-infrastructure.outputs.webAppUrl }}
+      url: https://camilo-personal-assistant.azurewebsites.net
     
     steps:
     - name: Download artifact
@@ -119,10 +84,10 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: ${{ needs.deploy-infrastructure.outputs.webAppName }}
+        app-name: camilo-personal-assistant
         package: ./publish
         
     - name: Display deployment URL
       run: |
-        echo "?? Application deployed successfully!"
-        echo "?? URL: ${{ needs.deploy-infrastructure.outputs.webAppUrl }}"
+        echo "✅ Application deployed successfully!"
+        echo "🌐 URL: https://camilo-personal-assistant.azurewebsites.net"
