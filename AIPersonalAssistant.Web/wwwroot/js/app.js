@@ -1,13 +1,39 @@
-if (!sessionStorage.getItem('isLoggedIn')) {
-    window.location.href = '/login.html';
-}
+const checkAuth = async () => {
+    try {
+        const response = await fetch('/api/auth/user', {
+            credentials: 'include'
+        });
+        
+        if (!response.ok) {
+            window.location.href = '/login.html';
+            return null;
+        }
+        
+        const user = await response.json();
+        document.getElementById('userEmail').textContent = user.email;
+        return user;
+    } catch (error) {
+        console.error('Auth check failed:', error);
+        window.location.href = '/login.html';
+        return null;
+    }
+};
 
 const loadTools = async () => {
     try {
-        const response = await fetch('/api/tools');
-        const tools = await response.json();
+        const response = await fetch('/api/tools', {
+            credentials: 'include'
+        });
         
-        console.log('Loaded tools:', tools); // Debug log
+        if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
+            throw new Error('Failed to load tools');
+        }
+        
+        const tools = await response.json();
         
         const toolsList = document.getElementById('toolsList');
         toolsList.innerHTML = tools.map(tool => `<div class="tool-card" data-tool-id="${tool.id}" data-tool-name="${tool.name}">
@@ -16,12 +42,8 @@ const loadTools = async () => {
             <div class="tool-description">${tool.description}</div>
         </div>`).join('');
         
-        // Add click handlers to tool cards
         const cards = document.querySelectorAll('.tool-card');
-        console.log('Found tool cards:', cards.length); // Debug log
-        
         cards.forEach(card => {
-            console.log('Adding listener to card:', card.dataset.toolName); // Debug log
             card.addEventListener('click', handleToolClick);
         });
     } catch (error) {
@@ -34,18 +56,17 @@ const handleToolClick = (event) => {
     const card = event.currentTarget;
     const toolName = card.dataset.toolName;
     
-    console.log('Tool clicked:', toolName); // Debug log
-    
-    // Navigate based on tool name
     if (toolName === 'Rate Exchange') {
         window.location.href = '/rate-exchange.html';
     }
-    // Add more navigation cases here for other tools as they are implemented
 };
 
 document.getElementById('logoutBtn').addEventListener('click', () => {
-    sessionStorage.clear();
-    window.location.href = '/login.html';
+    window.location.href = '/api/auth/logout';
 });
 
-loadTools();
+(async () => {
+    await checkAuth();
+    await loadTools();
+})();
+

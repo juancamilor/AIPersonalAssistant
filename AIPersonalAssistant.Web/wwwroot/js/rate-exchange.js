@@ -1,15 +1,6 @@
-// Check if user is logged in
-if (!sessionStorage.getItem('isLoggedIn')) {
-    window.location.href = '/login.html';
-}
-
-// Set today's date as default
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('date').value = today;
-
 // Back button handler
 document.getElementById('backBtn').addEventListener('click', () => {
-    window.location.href = '/index.html';
+    window.location.href = '/tools.html';
 });
 
 // Form submission handler
@@ -48,6 +39,7 @@ document.getElementById('exchangeForm').addEventListener('submit', async (e) => 
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 date: date,
                 fromCurrency: fromCurrency,
@@ -56,6 +48,10 @@ document.getElementById('exchangeForm').addEventListener('submit', async (e) => 
         });
         
         if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
             const error = await response.json();
             showError(error.error || 'Failed to get exchange rates');
             return;
@@ -68,6 +64,10 @@ document.getElementById('exchangeForm').addEventListener('submit', async (e) => 
         showError('An error occurred while fetching exchange rates. Please try again.');
     }
 });
+
+// Set today's date as default
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('date').value = today;
 
 function displayResults(data) {
     const resultsContent = document.getElementById('resultsContent');
