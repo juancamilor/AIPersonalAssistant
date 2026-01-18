@@ -10,10 +10,16 @@ A modern web application for personal productivity with Microsoft Account authen
 - Protected API endpoints with role-based authorization
 
 ### Tools
-- **Rate Exchange**: Currency converter with real-time exchange rates
+- **Rate Exchange**: Currency converter with **real-time exchange rates from multiple sources**
+  - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
+  - **Smart averaging**: Calculates average rate from all successful API sources
+  - **Transparent pricing**: Expandable details showing individual rates from each source
+  - **Color-coded status**: Green checkmarks for successful fetches, red X for failures
   - Support for USD, CAD, MXN, and COP
   - Historical date selection
   - Multi-currency conversion
+  - 10-minute caching to optimize API usage
+  - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
 
 ### Coming Soon
 - Code Generator
@@ -27,6 +33,8 @@ A modern web application for personal productivity with Microsoft Account authen
 - **Backend**: ASP.NET Core 10 (.NET 10)
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3
 - **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
+- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI (for real-time rates)
+- **Caching**: In-memory caching (IMemoryCache) for API rate optimization
 - **Hosting**: Azure App Service
 - **Infrastructure**: Azure Bicep templates
 - **CI/CD**: GitHub Actions
@@ -71,9 +79,20 @@ A modern web application for personal productivity with Microsoft Account authen
 3. **Configure User Secrets** (if not using script)
    ```bash
    cd AIPersonalAssistant.Web
+   
+   # Azure AD credentials
    dotnet user-secrets set "AzureAd:ClientId" "YOUR_CLIENT_ID"
    dotnet user-secrets set "AzureAd:ClientSecret" "YOUR_CLIENT_SECRET"
+   
+   # Exchange Rate API keys (get from EXCHANGE_RATE_SETUP.md)
+   dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "YOUR_EXCHANGERATE_API_KEY"
+   dotnet user-secrets set "ExchangeRateAPIs:OpenExchangeRates:ApiKey" "YOUR_OPENEXCHANGERATES_API_KEY"
+   dotnet user-secrets set "ExchangeRateAPIs:CurrencyApi:ApiKey" "YOUR_CURRENCYAPI_KEY"
    ```
+   
+   **Security Note:** User secrets are stored outside the project directory in:
+   - Windows: `%APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json`
+   - macOS/Linux: `~/.microsoft/usersecrets/<user_secrets_id>/secrets.json`
 
 4. **Run the application**
    
@@ -103,19 +122,25 @@ AIPersonalAssistant/
 │   ├── Controllers/                  # API controllers
 │   │   ├── AuthController.cs         # Authentication endpoints (login, logout, user info)
 │   │   ├── ToolsController.cs        # Tools listing API
-│   │   └── RateExchangeController.cs # Currency conversion API
+│   │   └── RateExchangeController.cs # Currency conversion API with multi-source integration
+│   ├── Services/                     # Business logic services
+│   │   ├── IExchangeRateService.cs   # Exchange rate service interface
+│   │   └── ExchangeRateService.cs    # Multi-API exchange rate implementation
+│   ├── Models/                       # Data models
+│   │   └── ExchangeRateModels.cs     # Exchange rate DTOs and response models
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
-│   │   │   └── style.css             # Global styles + Microsoft auth button
+│   │   │   ├── style.css             # Global styles + Microsoft auth button
+│   │   │   └── rate-exchange.css     # Currency converter styles with expandable details
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking & tools loading
 │   │   │   ├── login.js              # OAuth redirect handler
-│   │   │   └── rate-exchange.js      # Currency converter logic
+│   │   │   └── rate-exchange.js      # Currency converter with source breakdown UI
 │   │   ├── login.html                # Login page with Microsoft sign-in
 │   │   ├── tools.html                # Protected tools dashboard
 │   │   └── rate-exchange.html        # Protected currency converter tool
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
-│   ├── appsettings.json              # App configuration (no secrets)
+│   ├── appsettings.json              # App configuration (includes API key placeholders)
 │   └── appsettings.Development.json  # Development-specific settings
 ├── AIPersonalAssistant.Tests/        # xUnit test project
 ├── infrastructure/                    # Azure infrastructure as code
@@ -124,6 +149,7 @@ AIPersonalAssistant/
 ├── .github/workflows/
 │   └── deploy.yml                    # CI/CD pipeline (build, test, deploy)
 ├── setup-azure-ad.ps1                # Automated Azure AD app registration
+├── EXCHANGE_RATE_SETUP.md            # Exchange rate API setup instructions
 └── README.md
 ```
 
@@ -149,9 +175,10 @@ AIPersonalAssistant/
    - Each tool has: id, name, description, icon, route, category, color
 
 3. **RateExchangeController.cs** (Protected with `[Authorize]`)
-   - `GET /api/rate-exchange` - Returns supported currencies
-   - `POST /api/rate-exchange/convert` - Converts amounts between currencies
-   - Uses mock exchange rate data (ready for API integration)
+   - `POST /api/rateexchange/convert` - Converts currencies using real-time rates
+   - Integrates with ExchangeRateService for multi-source data
+   - Returns aggregated rates with individual source breakdown
+   - Includes error handling for API failures
 
 ### Frontend (Vanilla JavaScript)
 
@@ -169,9 +196,12 @@ AIPersonalAssistant/
 
 **rate-exchange.html + rate-exchange.js**
 - Protected tool requiring authentication
-- Fetches supported currencies from API
-- Handles form submission for currency conversion
-- Displays converted amounts with proper formatting
+- Real-time currency conversion with multi-source data
+- Expandable details showing individual API source rates
+- Color-coded status indicators (✓ success / ✗ failed)
+- Smart averaging from successful sources
+- 10-minute caching for performance
+- Handles form submission and API errors
 - Includes 401 error handling (redirects to login)
 
 ### Authentication Flow
@@ -205,8 +235,13 @@ AIPersonalAssistant/
 - HTTPS enforced in production
 - Secure cookie-based session management
 - API endpoints protected with `[Authorize]` attribute
+- **API keys stored securely:**
+  - **Local Development**: User Secrets (not committed to Git)
+  - **Production**: Azure App Service Configuration (Environment Variables)
+  - Never hardcoded in source code
 - Client secrets stored in Azure Key Vault (production)
 - User secrets for local development (not committed)
+- Sensitive configuration files excluded via .gitignore
 
 ## 🚢 Deployment
 
@@ -248,13 +283,28 @@ dotnet test
     "ClientSecret": "YOUR_CLIENT_SECRET",
     "CallbackPath": "/signin-microsoft",
     "SignedOutCallbackPath": "/signout-callback-microsoft"
+  },
+  "ExchangeRateAPIs": {
+    "ExchangeRateApi": {
+      "ApiKey": "YOUR_EXCHANGERATE_API_KEY"
+    },
+    "OpenExchangeRates": {
+      "ApiKey": "YOUR_OPENEXCHANGERATES_API_KEY"
+    },
+    "CurrencyApi": {
+      "ApiKey": "YOUR_CURRENCYAPI_KEY"
+    }
   }
 }
 ```
 
 **Production** (Azure App Service Configuration):
 - Store `ClientSecret` in Azure Key Vault
+- Store API keys in Azure App Service Configuration
 - Reference via App Settings in Azure Portal
+
+**Exchange Rate API Keys:**
+See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for detailed instructions on obtaining free API keys.
 
 ## 🤝 Contributing
 

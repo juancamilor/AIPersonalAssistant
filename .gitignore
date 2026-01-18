@@ -103,8 +103,13 @@ DocProject/Help/html
 # Click-Once directory
 publish/
 
-# Publish Web Output
-*.[Pp]ublish.xml
+# User secrets and sensitive configuration
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+*.secrets.json
+
+# Azure publish profile
 *.azurePubxml
 *.pubxml
 *.publishproj

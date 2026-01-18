@@ -180,9 +180,73 @@ az webapp deploy \
 
 ### Environment Variables
 
-The following environment variables are automatically configured:
+The following environment variables must be configured in Azure App Service:
+
+**Authentication (Azure AD):**
+- `AzureAd__ClientId`: Your Azure AD App Client ID
+- `AzureAd__ClientSecret`: Your Azure AD App Client Secret (use Key Vault reference)
+- `AzureAd__TenantId`: common (for personal Microsoft accounts)
+- `AzureAd__Instance`: https://login.microsoftonline.com/
+
+**Exchange Rate APIs:**
+- `ExchangeRateAPIs__ExchangeRateApi__ApiKey`: ExchangeRate-API.com key
+- `ExchangeRateAPIs__OpenExchangeRates__ApiKey`: Open Exchange Rates App ID
+- `ExchangeRateAPIs__CurrencyApi__ApiKey`: CurrencyAPI.com key
+
+**System:**
 - `ASPNETCORE_ENVIRONMENT`: Production
 - `WEBSITE_RUN_FROM_PACKAGE`: 1 (for deployment optimization)
+
+### Configuring Secrets in Azure
+
+**Option 1: App Service Configuration (Simple)**
+```bash
+az webapp config appsettings set \
+  --resource-group camilo-personal-assistant-rg \
+  --name camilo-personal-assistant-production \
+  --settings \
+    "AzureAd__ClientId=YOUR_CLIENT_ID" \
+    "AzureAd__ClientSecret=YOUR_CLIENT_SECRET" \
+    "ExchangeRateAPIs__ExchangeRateApi__ApiKey=YOUR_KEY_HERE" \
+    "ExchangeRateAPIs__OpenExchangeRates__ApiKey=YOUR_KEY_HERE" \
+    "ExchangeRateAPIs__CurrencyApi__ApiKey=YOUR_KEY_HERE"
+```
+
+**Option 2: Azure Key Vault (Recommended for Production)**
+```bash
+# Create Key Vault
+az keyvault create \
+  --name camilo-assistant-kv \
+  --resource-group camilo-personal-assistant-rg \
+  --location eastus
+
+# Store secrets
+az keyvault secret set --vault-name camilo-assistant-kv --name "AzureAd--ClientSecret" --value "YOUR_SECRET"
+az keyvault secret set --vault-name camilo-assistant-kv --name "ExchangeRateApi-Key" --value "YOUR_KEY"
+
+# Enable managed identity for App Service
+az webapp identity assign \
+  --resource-group camilo-personal-assistant-rg \
+  --name camilo-personal-assistant-production
+
+# Grant access to Key Vault
+PRINCIPAL_ID=$(az webapp identity show \
+  --resource-group camilo-personal-assistant-rg \
+  --name camilo-personal-assistant-production \
+  --query principalId -o tsv)
+
+az keyvault set-policy \
+  --name camilo-assistant-kv \
+  --object-id $PRINCIPAL_ID \
+  --secret-permissions get list
+
+# Reference in App Settings
+az webapp config appsettings set \
+  --resource-group camilo-personal-assistant-rg \
+  --name camilo-personal-assistant-production \
+  --settings \
+    "AzureAd__ClientSecret=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/AzureAd--ClientSecret/)"
+```
 
 ## Monitoring and Logs
 
@@ -283,6 +347,29 @@ Update `appServicePlanSku` in `infrastructure/parameters.json`:
 4. Set up Azure Key Vault for secrets
 5. Configure virtual network integration
 6. Enable DDoS protection
+
+## Security Best Practices
+
+✅ **Implemented:**
+- OIDC authentication (no stored credentials)
+- HTTPS only
+- TLS 1.2+ minimum
+- FTPS disabled
+- Environment protection rules
+- **User Secrets for local development** (not committed to Git)
+- **Environment Variables for production** (Azure App Service Configuration)
+- **Sensitive files excluded from Git** (.gitignore configured)
+
+⚠️ **Additional recommendations:**
+1. **Use Azure Key Vault for secrets** (especially Client Secrets and API keys)
+2. Enable Application Insights for monitoring
+3. Configure custom domain with SSL certificate
+4. Enable Azure AD authentication for the app
+5. Configure virtual network integration
+6. Enable DDoS protection
+7. **Rotate API keys regularly**
+8. **Use managed identities** where possible
+9. **Enable audit logging** for Key Vault access
 
 ## URLs
 

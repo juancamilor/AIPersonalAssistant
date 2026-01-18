@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AIPersonalAssistant.Web.Services;
+using AIPersonalAssistant.Web.Models;
 
 namespace AIPersonalAssistant.Web.Controllers;
 
@@ -8,8 +10,15 @@ namespace AIPersonalAssistant.Web.Controllers;
 [Authorize]
 public class RateExchangeController : ControllerBase
 {
+    private readonly IExchangeRateService _exchangeRateService;
+
+    public RateExchangeController(IExchangeRateService exchangeRateService)
+    {
+        _exchangeRateService = exchangeRateService;
+    }
+
     [HttpPost("convert")]
-    public IActionResult ConvertCurrency([FromBody] ConversionRequest request)
+    public async Task<IActionResult> ConvertCurrency([FromBody] ConversionRequest request)
     {
         if (request == null || string.IsNullOrEmpty(request.FromCurrency) || request.ToCurrencies == null || !request.ToCurrencies.Any())
         {
@@ -21,74 +30,26 @@ public class RateExchangeController : ControllerBase
             return BadRequest(new { error = "Cannot convert a currency to itself." });
         }
 
-        var rates = GetExchangeRates(request.Date, request.FromCurrency);
-        var results = new List<ConversionResult>();
-
-        foreach (var toCurrency in request.ToCurrencies)
+        try
         {
-            if (rates.TryGetValue(toCurrency, out var rate))
+            var conversions = await _exchangeRateService.GetExchangeRatesAsync(
+                request.FromCurrency, 
+                request.ToCurrencies, 
+                request.Date);
+
+            var response = new ExchangeRateResponse
             {
-                results.Add(new ConversionResult
-                {
-                    FromCurrency = request.FromCurrency,
-                    ToCurrency = toCurrency,
-                    Rate = rate,
-                    Date = request.Date
-                });
-            }
+                Date = request.Date.ToString("yyyy-MM-dd"),
+                FromCurrency = request.FromCurrency,
+                Conversions = conversions
+            };
+
+            return Ok(response);
         }
-
-        return Ok(new
+        catch (Exception)
         {
-            date = request.Date.ToString("yyyy-MM-dd"),
-            fromCurrency = request.FromCurrency,
-            conversions = results
-        });
-    }
-
-    private Dictionary<string, decimal> GetExchangeRates(DateTime date, string fromCurrency)
-    {
-        // Mock exchange rates - In production, this would call a real exchange rate API
-        var baseRates = new Dictionary<string, Dictionary<string, decimal>>
-        {
-            ["US"] = new Dictionary<string, decimal>
-            {
-                ["CAD"] = 1.35m,
-                ["MX"] = 17.25m,
-                ["CO"] = 4250.50m
-            },
-            ["CAD"] = new Dictionary<string, decimal>
-            {
-                ["US"] = 0.74m,
-                ["MX"] = 12.78m,
-                ["CO"] = 3148.15m
-            },
-            ["MX"] = new Dictionary<string, decimal>
-            {
-                ["US"] = 0.058m,
-                ["CAD"] = 0.078m,
-                ["CO"] = 246.38m
-            },
-            ["CO"] = new Dictionary<string, decimal>
-            {
-                ["US"] = 0.00024m,
-                ["CAD"] = 0.00032m,
-                ["MX"] = 0.0041m
-            }
-        };
-
-        // Add slight variation based on date for realism
-        var dayOffset = (date.DayOfYear % 10) / 100m;
-
-        if (baseRates.TryGetValue(fromCurrency, out var rates))
-        {
-            return rates.ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value + (kvp.Value * dayOffset)
-            );
+            return StatusCode(500, new { error = "Failed to fetch exchange rates. Please try again later." });
         }
-
-        return new Dictionary<string, decimal>();
     }
 }
 
@@ -99,10 +60,3 @@ public class ConversionRequest
     public List<string> ToCurrencies { get; set; } = new();
 }
 
-public class ConversionResult
-{
-    public string FromCurrency { get; set; } = string.Empty;
-    public string ToCurrency { get; set; } = string.Empty;
-    public decimal Rate { get; set; }
-    public DateTime Date { get; set; }
-}

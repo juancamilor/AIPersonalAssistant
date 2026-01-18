@@ -191,6 +191,92 @@ select:focus {
     border-bottom: none;
 }
 
+.details-btn {
+    padding: 0.5rem 1rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.details-btn:hover {
+    background: #5568d3;
+}
+
+.details-row {
+    background: #f9f9f9;
+}
+
+.details-content {
+    padding: 1rem;
+}
+
+.details-content h4 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.source-list {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.source-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 5px;
+    border-left: 4px solid #ddd;
+}
+
+.source-item.success {
+    border-left-color: #51cf66;
+}
+
+.source-item.failed {
+    border-left-color: #ff6b6b;
+}
+
+.source-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.source-rate {
+    color: #555;
+    margin: 0 1rem;
+}
+
+.source-status {
+    font-size: 1.2rem;
+}
+
+.source-item.success .source-status {
+    color: #51cf66;
+}
+
+.source-item.failed .source-status {
+    color: #ff6b6b;
+}
+
+.calculation-method {
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.example {
+    color: #666;
+    font-style: italic;
+}
+
 .error-card {
     background: #fff3f3;
     border: 2px solid #ff6b6b;

@@ -82,21 +82,59 @@ function displayResults(data) {
             <thead>
                 <tr>
                     <th>To Currency</th>
-                    <th>Exchange Rate</th>
-                    <th>Example (1 ${getCurrencyCode(data.fromCurrency)})</th>
+                    <th>Average Rate</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
     `;
     
-    data.conversions.forEach(conversion => {
+    data.conversions.forEach((conversion, index) => {
         const toCurrencyName = getCurrencyName(conversion.toCurrency);
         const toCurrencyCode = getCurrencyCode(conversion.toCurrency);
+        const fromCurrencyCode = getCurrencyCode(data.fromCurrency);
+        
         html += `
             <tr>
                 <td>${toCurrencyName}</td>
-                <td>${conversion.rate.toFixed(4)}</td>
-                <td>1 ${getCurrencyCode(data.fromCurrency)} = ${conversion.rate.toFixed(4)} ${toCurrencyCode}</td>
+                <td><strong>${conversion.averageRate.toFixed(4)}</strong> ${toCurrencyCode}</td>
+                <td>
+                    <button class="details-btn" onclick="toggleDetails(${index})">
+                        <span id="details-arrow-${index}">▼</span> View Details
+                    </button>
+                </td>
+            </tr>
+            <tr id="details-${index}" class="details-row" style="display: none;">
+                <td colspan="3">
+                    <div class="details-content">
+                        <h4>Source Breakdown:</h4>
+                        <ul class="source-list">
+    `;
+        
+        conversion.sources.forEach(source => {
+            const statusIcon = source.success ? '✓' : '✗';
+            const statusClass = source.success ? 'success' : 'failed';
+            const rateText = source.success ? `${source.rate.toFixed(4)} ${toCurrencyCode}` : source.errorMessage || 'Failed';
+            
+            html += `
+                <li class="source-item ${statusClass}">
+                    <span class="source-name">${source.source}</span>
+                    <span class="source-rate">${rateText}</span>
+                    <span class="source-status">${statusIcon}</span>
+                </li>
+            `;
+        });
+        
+        html += `
+                        </ul>
+                        <p class="calculation-method">
+                            <strong>${conversion.calculationMethod}</strong>
+                        </p>
+                        <p class="example">
+                            Example: 1 ${fromCurrencyCode} = ${conversion.averageRate.toFixed(4)} ${toCurrencyCode}
+                        </p>
+                    </div>
+                </td>
             </tr>
         `;
     });
@@ -108,6 +146,19 @@ function displayResults(data) {
     
     resultsContent.innerHTML = html;
     document.getElementById('resultsSection').style.display = 'block';
+}
+
+function toggleDetails(index) {
+    const detailsRow = document.getElementById(`details-${index}`);
+    const arrow = document.getElementById(`details-arrow-${index}`);
+    
+    if (detailsRow.style.display === 'none') {
+        detailsRow.style.display = 'table-row';
+        arrow.textContent = '▲';
+    } else {
+        detailsRow.style.display = 'none';
+        arrow.textContent = '▼';
+    }
 }
 
 function showError(message) {

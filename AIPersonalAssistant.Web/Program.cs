@@ -8,6 +8,10 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateService, AIPersonalAssistant.Web.Services.ExchangeRateService>();
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
