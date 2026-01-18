@@ -101,23 +101,103 @@ A modern web application for personal productivity with Microsoft Account authen
 AIPersonalAssistant/
 ├── AIPersonalAssistant.Web/          # Main web application
 │   ├── Controllers/                  # API controllers
-│   │   ├── AuthController.cs         # Authentication endpoints
-│   │   ├── ToolsController.cs        # Tools listing
-│   │   └── RateExchangeController.cs # Currency conversion
+│   │   ├── AuthController.cs         # Authentication endpoints (login, logout, user info)
+│   │   ├── ToolsController.cs        # Tools listing API
+│   │   └── RateExchangeController.cs # Currency conversion API
 │   ├── wwwroot/                      # Static files
-│   │   ├── css/                      # Stylesheets
-│   │   ├── js/                       # JavaScript files
-│   │   ├── login.html                # Login page
-│   │   ├── tools.html                # Tools dashboard
-│   │   └── rate-exchange.html        # Currency converter
-│   ├── Program.cs                    # App configuration
-│   └── appsettings.json              # Configuration
-├── AIPersonalAssistant.Tests/        # Unit tests
-├── infrastructure/                    # Azure Bicep templates
-├── .github/workflows/                # CI/CD pipelines
-├── setup-azure-ad.ps1                # Azure AD setup script
+│   │   ├── css/
+│   │   │   └── style.css             # Global styles + Microsoft auth button
+│   │   ├── js/
+│   │   │   ├── app.js                # Authentication checking & tools loading
+│   │   │   ├── login.js              # OAuth redirect handler
+│   │   │   └── rate-exchange.js      # Currency converter logic
+│   │   ├── login.html                # Login page with Microsoft sign-in
+│   │   ├── tools.html                # Protected tools dashboard
+│   │   └── rate-exchange.html        # Protected currency converter tool
+│   ├── Program.cs                    # ASP.NET Core startup & auth configuration
+│   ├── appsettings.json              # App configuration (no secrets)
+│   └── appsettings.Development.json  # Development-specific settings
+├── AIPersonalAssistant.Tests/        # xUnit test project
+├── infrastructure/                    # Azure infrastructure as code
+│   ├── main.bicep                    # App Service & Plan definitions
+│   └── parameters.json               # Bicep deployment parameters
+├── .github/workflows/
+│   └── deploy.yml                    # CI/CD pipeline (build, test, deploy)
+├── setup-azure-ad.ps1                # Automated Azure AD app registration
 └── README.md
 ```
+
+## 🏗️ Architecture Overview
+
+### Backend (ASP.NET Core)
+
+**Program.cs**
+- Configures Microsoft Identity authentication with OpenID Connect
+- Registers authentication and authorization services
+- Applies middleware for HTTPS redirection, static files, auth, and routing
+- Uses cookie-based authentication for web apps
+
+**Controllers**
+
+1. **AuthController.cs**
+   - `GET /api/auth/login` - Initiates OAuth challenge, redirects to Microsoft login
+   - `POST /api/auth/logout` - Signs out user and redirects to login page
+   - `GET /api/auth/user` - Returns authenticated user info (email, name)
+
+2. **ToolsController.cs** (Protected with `[Authorize]`)
+   - `GET /api/tools` - Returns list of available tools with metadata
+   - Each tool has: id, name, description, icon, route, category, color
+
+3. **RateExchangeController.cs** (Protected with `[Authorize]`)
+   - `GET /api/rate-exchange` - Returns supported currencies
+   - `POST /api/rate-exchange/convert` - Converts amounts between currencies
+   - Uses mock exchange rate data (ready for API integration)
+
+### Frontend (Vanilla JavaScript)
+
+**login.html + login.js**
+- Displays Microsoft sign-in button with brand styling
+- Redirects to `/api/auth/login` on button click
+- OAuth flow handles the rest automatically
+
+**tools.html + app.js**
+- Checks authentication status via `/api/auth/user` on page load
+- Redirects to login if not authenticated
+- Fetches and displays available tools dynamically
+- Shows user email in header
+- Logout button calls `/api/auth/logout`
+
+**rate-exchange.html + rate-exchange.js**
+- Protected tool requiring authentication
+- Fetches supported currencies from API
+- Handles form submission for currency conversion
+- Displays converted amounts with proper formatting
+- Includes 401 error handling (redirects to login)
+
+### Authentication Flow
+
+1. User visits `/login.html`
+2. Clicks "Sign in with Microsoft"
+3. Redirected to `/api/auth/login` → Microsoft login page
+4. User authenticates with Microsoft account (Outlook.com, Hotmail, etc.)
+5. Microsoft redirects to `/signin-microsoft` with auth code
+6. ASP.NET Core exchanges code for tokens, creates auth cookie
+7. User redirected to `/tools.html`
+8. Subsequent API calls include auth cookie automatically
+9. `[Authorize]` attribute validates cookie on protected endpoints
+
+### Deployment Architecture
+
+**Azure Resources:**
+- App Service Plan (B1 Linux)
+- App Service (camilo-personal-assistant)
+- Configuration stored in App Service settings (not in code)
+
+**CI/CD Pipeline:**
+1. **Build Job**: Restore, build, test, publish, upload artifact
+2. **Deploy Job**: Download artifact, authenticate to Azure, deploy via ZIP
+
+**Infrastructure:** Managed via Bicep templates in `infrastructure/` folder
 
 ## 🔒 Security
 
