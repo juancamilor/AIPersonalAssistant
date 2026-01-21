@@ -120,8 +120,18 @@ jobs:
       with:
         app-name: ${{ needs.deploy-infrastructure.outputs.webAppName }}
         package: ./publish
+    
+    - name: Configure API Keys in Azure App Service
+      run: |
+        az webapp config appsettings set \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --name ${{ needs.deploy-infrastructure.outputs.webAppName }} \
+          --settings \
+            "ExchangeRateAPIs__ExchangeRateApi__ApiKey=${{ secrets.EXCHANGERATE_API_KEY }}" \
+            "ExchangeRateAPIs__OpenExchangeRates__ApiKey=${{ secrets.OPENEXCHANGERATES_API_KEY }}" \
+            "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}"
         
     - name: Display deployment URL
       run: |
-        echo "?? Application deployed successfully!"
-        echo "?? URL: ${{ needs.deploy-infrastructure.outputs.webAppUrl }}"
+        echo "✅ Application deployed successfully!"
+        echo "🌐 URL: ${{ needs.deploy-infrastructure.outputs.webAppUrl }}"
