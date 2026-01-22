@@ -123,6 +123,14 @@ public class ExchangeRateService : IExchangeRateService
             Success = false
         };
 
+        // Free plan only supports USD as base currency
+        if (fromCurrency != "USD")
+        {
+            sourceRate.ErrorMessage = "Currency not supported";
+            _logger.LogInformation("OpenExchangeRates: Free plan only supports USD as base currency. Skipping for {FromCurrency}", fromCurrency);
+            return sourceRate;
+        }
+
         try
         {
             var apiKey = _configuration["ExchangeRateAPIs:OpenExchangeRates:ApiKey"];

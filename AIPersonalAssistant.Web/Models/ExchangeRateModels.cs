@@ -22,5 +22,6 @@ public class ExchangeRateResponse
 {
     public string Date { get; set; } = string.Empty;
     public string FromCurrency { get; set; } = string.Empty;
+    public decimal Amount { get; set; } = 1;
     public List<AggregatedRate> Conversions { get; set; } = new();
 }

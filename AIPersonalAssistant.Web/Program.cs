@@ -1,12 +1,30 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authorization;
+using AIPersonalAssistant.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddAuthorization();
+var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("EmailAllowList", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new EmailAllowListRequirement(allowedEmails));
+    });
+    
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .AddRequirements(new EmailAllowListRequirement(allowedEmails))
+        .Build();
+});
+
+builder.Services.AddSingleton<IAuthorizationHandler, EmailAllowListHandler>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
@@ -28,6 +46,14 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == 403)
+    {
+        context.HttpContext.Response.Redirect("/access-denied.html");
+    }
+});
 
 app.MapControllers();
 

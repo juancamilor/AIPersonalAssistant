@@ -41,6 +41,7 @@ public class RateExchangeController : ControllerBase
             {
                 Date = request.Date.ToString("yyyy-MM-dd"),
                 FromCurrency = request.FromCurrency,
+                Amount = request.Amount,
                 Conversions = conversions
             };
 
@@ -57,6 +58,7 @@ public class ConversionRequest
 {
     public DateTime Date { get; set; }
     public string FromCurrency { get; set; } = string.Empty;
+    public decimal Amount { get; set; } = 1;
     public List<string> ToCurrencies { get; set; } = new();
 }
 

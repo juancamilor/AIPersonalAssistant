@@ -65,6 +65,17 @@ h2 {
     margin-bottom: 1.5rem;
 }
 
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group-flex {
+    flex: 1;
+    margin-bottom: 0;
+}
+
 label {
     display: block;
     color: #555;
@@ -73,6 +84,7 @@ label {
 }
 
 input[type="date"],
+input[type="number"],
 select {
     width: 100%;
     padding: 0.75rem;
@@ -83,6 +95,7 @@ select {
 }
 
 input[type="date"]:focus,
+input[type="number"]:focus,
 select:focus {
     outline: none;
     border-color: #667eea;
@@ -226,9 +239,6 @@ select:focus {
 }
 
 .source-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
     background: white;
@@ -244,6 +254,13 @@ select:focus {
     border-left-color: #ff6b6b;
 }
 
+.source-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
 .source-name {
     font-weight: 600;
     color: #333;
@@ -251,7 +268,14 @@ select:focus {
 
 .source-rate {
     color: #555;
-    margin: 0 1rem;
+    font-size: 0.95rem;
+}
+
+.source-converted {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
 }
 
 .source-status {

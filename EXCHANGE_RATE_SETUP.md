@@ -1,10 +1,18 @@
 # Exchange Rate Feature - API Setup Instructions
 
 ## Overview
-The Exchange Rate tool now fetches real-time rates from **3 external APIs** and displays:
-- Individual rates from each source
+The Exchange Rate tool fetches real-time rates from **3 external APIs** and displays:
+- Individual rates from each source with converted amounts
 - Calculated average rate
 - Success/failure status for each API
+- Amount conversion (default: 1, supports any positive decimal value)
+- Formatted numbers with commas and proper decimals
+
+## Important Notes
+
+- **OpenExchangeRates** free plan only supports USD as base currency
+- For non-USD conversions (CAD, MXN, COP), OpenExchangeRates will show "Currency not supported"
+- Average is calculated from successful sources only (typically 2 APIs for non-USD)
 
 ## Required API Keys
 

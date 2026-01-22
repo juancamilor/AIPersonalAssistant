@@ -4,15 +4,18 @@ A modern web application for personal productivity with Microsoft Account authen
 
 ## 🌟 Features
 
-### Authentication
+### Authentication & Security
 - **Microsoft Account Integration**: Secure OAuth 2.0 authentication using Azure AD
+- **Email Allow List**: Restrict access to authorized users only
 - Supports personal Microsoft accounts (Outlook.com, Hotmail, Live)
-- Protected API endpoints with role-based authorization
+- Protected API endpoints with authorization checks
+- Friendly access denied page for unauthorized users
 
 ### Tools
 - **Rate Exchange**: Currency converter with **real-time exchange rates from multiple sources**
   - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
   - **Smart averaging**: Calculates average rate from all successful API sources
+  - **Amount conversion**: Convert any amount (default: 1, supports decimals)
   - **Transparent pricing**: Expandable details showing individual rates from each source
   - **Color-coded status**: Green checkmarks for successful fetches, red X for failures
   - Support for USD, CAD, MXN, and COP
@@ -122,7 +125,11 @@ AIPersonalAssistant/
 │   ├── Controllers/                  # API controllers
 │   │   ├── AuthController.cs         # Authentication endpoints (login, logout, user info)
 │   │   ├── ToolsController.cs        # Tools listing API
-│   │   └── RateExchangeController.cs # Currency conversion API with multi-source integration
+│   │   ├── RateExchangeController.cs # Currency conversion API with multi-source integration
+│   │   └── AccessDeniedController.cs # Access denied endpoint
+│   ├── Authorization/                # Authorization logic
+│   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
+│   │   └── EmailAllowListHandler.cs      # Authorization handler
 │   ├── Services/                     # Business logic services
 │   │   ├── IExchangeRateService.cs   # Exchange rate service interface
 │   │   └── ExchangeRateService.cs    # Multi-API exchange rate implementation
@@ -138,7 +145,8 @@ AIPersonalAssistant/
 │   │   │   └── rate-exchange.js      # Currency converter with source breakdown UI
 │   │   ├── login.html                # Login page with Microsoft sign-in
 │   │   ├── tools.html                # Protected tools dashboard
-│   │   └── rate-exchange.html        # Protected currency converter tool
+│   │   ├── rate-exchange.html        # Protected currency converter tool
+│   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
 │   ├── appsettings.json              # App configuration (includes API key placeholders)
 │   └── appsettings.Development.json  # Development-specific settings
@@ -159,9 +167,10 @@ AIPersonalAssistant/
 
 **Program.cs**
 - Configures Microsoft Identity authentication with OpenID Connect
+- Implements email allow list authorization
 - Registers authentication and authorization services
 - Applies middleware for HTTPS redirection, static files, auth, and routing
-- Uses cookie-based authentication for web apps
+- Uses cookie-based authentication with custom authorization policies
 
 **Controllers**
 
@@ -176,9 +185,13 @@ AIPersonalAssistant/
 
 3. **RateExchangeController.cs** (Protected with `[Authorize]`)
    - `POST /api/rateexchange/convert` - Converts currencies using real-time rates
+   - Accepts amount parameter for flexible conversions (default: 1)
    - Integrates with ExchangeRateService for multi-source data
    - Returns aggregated rates with individual source breakdown
    - Includes error handling for API failures
+
+4. **AccessDeniedController.cs**
+   - `GET /api/accessdenied` - Returns user info for unauthorized access page
 
 ### Frontend (Vanilla JavaScript)
 
@@ -195,14 +208,23 @@ AIPersonalAssistant/
 - Logout button calls `/api/auth/logout`
 
 **rate-exchange.html + rate-exchange.js**
-- Protected tool requiring authentication
+- Protected tool requiring authentication and email authorization
+- Amount input field for flexible currency conversions (default: 1)
 - Real-time currency conversion with multi-source data
-- Expandable details showing individual API source rates
+- Displays converted amounts in main table
+- Expandable details showing individual API source rates with conversions
 - Color-coded status indicators (✓ success / ✗ failed)
 - Smart averaging from successful sources
 - 10-minute caching for performance
+- Number formatting with commas and decimals
 - Handles form submission and API errors
-- Includes 401 error handling (redirects to login)
+- Includes 401/403 error handling (redirects appropriately)
+
+**access-denied.html**
+- Friendly access denied page for unauthorized users
+- Shows user's email address
+- Provides contact information for access requests
+- Sign out button to try different account
 
 ### Authentication Flow
 
@@ -212,9 +234,11 @@ AIPersonalAssistant/
 4. User authenticates with Microsoft account (Outlook.com, Hotmail, etc.)
 5. Microsoft redirects to `/signin-microsoft` with auth code
 6. ASP.NET Core exchanges code for tokens, creates auth cookie
-7. User redirected to `/tools.html`
-8. Subsequent API calls include auth cookie automatically
-9. `[Authorize]` attribute validates cookie on protected endpoints
+7. **Email allow list check:** User's email validated against authorized list
+8. If authorized → User redirected to `/tools.html`
+9. If not authorized → User sees access denied page
+10. Subsequent API calls include auth cookie and pass authorization checks
+11. `[Authorize]` attribute and email allow list policy protect all endpoints
 
 ### Deployment Architecture
 
@@ -232,16 +256,19 @@ AIPersonalAssistant/
 ## 🔒 Security
 
 - OAuth 2.0 with OpenID Connect for authentication
+- **Email Allow List**: Restricts application access to authorized users only
+- Case-insensitive email matching for user convenience
 - HTTPS enforced in production
 - Secure cookie-based session management
-- API endpoints protected with `[Authorize]` attribute
+- API endpoints protected with `[Authorize]` attribute and custom authorization policies
+- Friendly access denied page for unauthorized users
 - **API keys stored securely:**
   - **Local Development**: User Secrets (not committed to Git)
-  - **Production**: Azure App Service Configuration (Environment Variables)
+  - **Production**: Azure App Service Configuration or GitHub Secrets
   - Never hardcoded in source code
 - Client secrets stored in Azure Key Vault (production)
-- User secrets for local development (not committed)
 - Sensitive configuration files excluded via .gitignore
+- See [SECURITY.md](SECURITY.md) for detailed security guidelines
 
 ## 🚢 Deployment
 
@@ -250,15 +277,13 @@ AIPersonalAssistant/
 The application uses GitHub Actions for CI/CD.
 
 **Automatic Deployment:**
-- Push to `main` branch triggers CI build and tests
-- Manual deployment workflow available in GitHub Actions
+- Push to `main` branch triggers CI build, tests, and deployment
+- Automatically configures API keys from GitHub Secrets
+- No manual configuration needed post-deployment
 
-**Manual Deployment:**
-```bash
-# From GitHub Actions tab
-# Select "Deploy to Azure" workflow
-# Click "Run workflow"
-```
+**Setup Requirements:**
+- Add API keys as GitHub Secrets (one-time setup)
+- See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for instructions
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
@@ -294,17 +319,25 @@ dotnet test
     "CurrencyApi": {
       "ApiKey": "YOUR_CURRENCYAPI_KEY"
     }
+  },
+  "Authorization": {
+    "AllowedEmails": [
+      "your_email@example.com"
+    ]
   }
 }
 ```
 
 **Production** (Azure App Service Configuration):
 - Store `ClientSecret` in Azure Key Vault
-- Store API keys in Azure App Service Configuration
-- Reference via App Settings in Azure Portal
+- Store API keys via GitHub Secrets (auto-configured during deployment)
+- Configure allowed emails in `appsettings.json` or App Service Configuration
 
 **Exchange Rate API Keys:**
 See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for detailed instructions on obtaining free API keys.
+
+**Email Allow List:**
+Add authorized user emails in `appsettings.json` under `Authorization:AllowedEmails` array. Emails are matched case-insensitively.
 
 ## 🤝 Contributing
 
