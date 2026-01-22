@@ -65,7 +65,7 @@ jobs:
     needs: build
     environment:
       name: production
-      url: https://camilo-personal-assistant.azurewebsites.net
+      url: https://camilo-personal-assistant-production.azurewebsites.net
     
     steps:
     - name: Download artifact
@@ -84,10 +84,10 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: camilo-personal-assistant
+        app-name: camilo-personal-assistant-production
         package: ./publish
         
     - name: Display deployment URL
       run: |
         echo "✅ Application deployed successfully!"
-        echo "🌐 URL: https://camilo-personal-assistant.azurewebsites.net"
+        echo "🌐 URL: https://camilo-personal-assistant-production.azurewebsites.net"
