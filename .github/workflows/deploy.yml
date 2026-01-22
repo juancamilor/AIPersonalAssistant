@@ -86,6 +86,19 @@ jobs:
       with:
         app-name: camilo-personal-assistant-production
         package: ./publish
+    
+    - name: Configure Application Settings
+      run: |
+        az webapp config appsettings set \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --name camilo-personal-assistant-production \
+          --settings \
+            "AzureAd__ClientId=${{ secrets.AZUREAD_CLIENT_ID }}" \
+            "AzureAd__ClientSecret=${{ secrets.AZUREAD_CLIENT_SECRET }}" \
+            "AzureAd__TenantId=${{ secrets.AZUREAD_TENANT_ID }}" \
+            "ExchangeRateAPIs__ExchangeRateApi__ApiKey=${{ secrets.EXCHANGERATE_API_KEY }}" \
+            "ExchangeRateAPIs__OpenExchangeRates__ApiKey=${{ secrets.OPENEXCHANGERATES_API_KEY }}" \
+            "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}"
         
     - name: Display deployment URL
       run: |

@@ -124,15 +124,18 @@ The CI pipeline (`.github/workflows/ci.yml`) automatically deploys when:
 1. **Build & Test**: Compile code and run unit tests
 2. **Deploy Infrastructure**: Deploy/update Azure resources using Bicep
 3. **Deploy Application**: Deploy the .NET application to Azure
+4. **Configure Settings**: Automatically configure all Azure AD and Exchange Rate API secrets
 
 ### Manual Deployment
 
-You can trigger deployment manually using the standalone workflow:
+You can trigger deployment manually using the standalone workflow (`.github/workflows/deploy.yml`):
 
-1. Go to **Actions** ? **Deploy to Azure**
+1. Go to **Actions** → **Deploy to Azure**
 2. Click **Run workflow**
 3. Select the environment (production/staging)
 4. Click **Run workflow**
+
+**Note:** Both ci.yml and deploy.yml workflows automatically configure application settings from GitHub Secrets during deployment.
 
 ### Local Manual Deployment
 
@@ -217,11 +220,15 @@ The CI/CD pipeline configures these settings in Azure App Service:
 **✅ Recommended Approach: GitHub Actions (Current Implementation)**
 
 All secrets are managed through GitHub and automatically deployed:
-1. Add secrets to GitHub repository (one-time setup)
-2. GitHub Actions workflow automatically configures Azure App Service on every deployment
-3. No manual Azure CLI commands needed
+1. Add secrets to GitHub repository (one-time setup) - See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md)
+2. Both `ci.yml` and `deploy.yml` workflows automatically configure Azure App Service on every deployment
+3. Settings are applied after application deployment in both workflows
+4. No manual Azure CLI commands needed
 
-See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for complete setup instructions.
+**Configured automatically by workflows:**
+- Azure AD authentication settings (3 secrets)
+- Exchange Rate API keys (3 secrets)
+- All settings sync from GitHub Secrets to Azure App Service Configuration
 
 **⚠️ Manual Configuration (Not Recommended)**
 

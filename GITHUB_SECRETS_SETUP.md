@@ -57,22 +57,25 @@ Secret: aa7c35d6-dc69-477f-9b83-51236f06b2fe
 ## What Happens After Adding Secrets?
 
 Once you add the secrets:
-1. ✅ Every deployment will automatically configure Azure AD authentication + API keys in Azure
-2. ✅ No manual steps needed after deployment
-3. ✅ Keys are encrypted and secure in GitHub
-4. ✅ Only GitHub Actions can access them
+1. ✅ Both ci.yml and deploy.yml workflows automatically configure all settings in Azure App Service
+2. ✅ Settings are synced after every deployment (automatic configuration step)
+3. ✅ No manual steps needed after deployment
+4. ✅ Keys are encrypted and secure in GitHub
+5. ✅ Only GitHub Actions can access them
 
 ## Testing
 
 After adding the secrets:
-1. Push any change to `main` branch (or manually trigger workflow)
+1. Push any change to `main` branch (or manually trigger deploy.yml workflow)
 2. GitHub Actions will:
-   - ✅ Build and test the app
-   - ✅ Deploy infrastructure
-   - ✅ Deploy application
-   - ✅ **Automatically configure Azure AD authentication + API keys in Azure**
+   - ✅ Build and test the app (ci.yml only)
+   - ✅ Deploy infrastructure (ci.yml only)
+   - ✅ Deploy application (both workflows)
+   - ✅ **Automatically configure Azure AD authentication + API keys in Azure** (both workflows)
 3. Visit your Azure app and test the Exchange Rate tool
 4. Click "View Details" - you should see all 3 sources with green checkmarks ✓
+
+**Note:** Both `ci.yml` (push to main) and `deploy.yml` (manual trigger) will configure settings automatically.
 
 ## Updating API Keys
 
