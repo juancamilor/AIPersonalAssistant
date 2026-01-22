@@ -121,12 +121,15 @@ jobs:
         app-name: ${{ needs.deploy-infrastructure.outputs.webAppName }}
         package: ./publish
     
-    - name: Configure API Keys in Azure App Service
+    - name: Configure Application Settings in Azure App Service
       run: |
         az webapp config appsettings set \
           --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
           --name ${{ needs.deploy-infrastructure.outputs.webAppName }} \
           --settings \
+            "AzureAd__ClientId=${{ secrets.AZUREAD_CLIENT_ID }}" \
+            "AzureAd__ClientSecret=${{ secrets.AZUREAD_CLIENT_SECRET }}" \
+            "AzureAd__TenantId=${{ secrets.AZUREAD_TENANT_ID }}" \
             "ExchangeRateAPIs__ExchangeRateApi__ApiKey=${{ secrets.EXCHANGERATE_API_KEY }}" \
             "ExchangeRateAPIs__OpenExchangeRates__ApiKey=${{ secrets.OPENEXCHANGERATES_API_KEY }}" \
             "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}"

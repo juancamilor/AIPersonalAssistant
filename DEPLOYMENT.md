@@ -75,17 +75,30 @@ az ad app federated-credential create \
 
 ### 3. Configure GitHub Secrets
 
-Add the following secrets to your GitHub repository (Settings ? Secrets and variables ? Actions):
+Add the following secrets to your GitHub repository (Settings → Secrets and variables → Actions):
 
+#### Deployment Secrets (CI/CD)
 | Secret Name | Description | Example |
 |------------|-------------|---------|
 | `AZURE_CLIENT_ID` | Service Principal Client ID | `12345678-1234-1234-1234-123456789012` |
 | `AZURE_TENANT_ID` | Azure AD Tenant ID | `87654321-4321-4321-4321-210987654321` |
 | `AZURE_SUBSCRIPTION_ID` | Azure Subscription ID | `abcdef12-ab12-ab12-ab12-abcdef123456` |
 
+#### Application Runtime Secrets
+| Secret Name | Description |
+|------------|-------------|
+| `AZUREAD_CLIENT_ID` | Azure AD App Client ID for user authentication |
+| `AZUREAD_CLIENT_SECRET` | Azure AD App Client Secret |
+| `AZUREAD_TENANT_ID` | Tenant ID (use "common" for personal Microsoft accounts) |
+| `EXCHANGERATE_API_KEY` | ExchangeRate-API.com API key |
+| `OPENEXCHANGERATES_API_KEY` | Open Exchange Rates API key |
+| `CURRENCYAPI_KEY` | CurrencyAPI.com API key |
+
+See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for detailed instructions and actual values.
+
 To add secrets:
 1. Go to your GitHub repository
-2. Click **Settings** ? **Secrets and variables** ? **Actions**
+2. Click **Settings** → **Secrets and variables** → **Actions**
 3. Click **New repository secret**
 4. Add each secret with its corresponding value
 
@@ -180,26 +193,40 @@ az webapp deploy \
 
 ### Environment Variables
 
-The following environment variables must be configured in Azure App Service:
+**All environment variables are automatically configured by GitHub Actions during deployment.**
+
+The CI/CD pipeline configures these settings in Azure App Service:
 
 **Authentication (Azure AD):**
-- `AzureAd__ClientId`: Your Azure AD App Client ID
-- `AzureAd__ClientSecret`: Your Azure AD App Client Secret (use Key Vault reference)
-- `AzureAd__TenantId`: common (for personal Microsoft accounts)
-- `AzureAd__Instance`: https://login.microsoftonline.com/
+- `AzureAd__ClientId`: Azure AD App Client ID (from GitHub secret: AZUREAD_CLIENT_ID)
+- `AzureAd__ClientSecret`: Azure AD App Client Secret (from GitHub secret: AZUREAD_CLIENT_SECRET)
+- `AzureAd__TenantId`: "common" for personal Microsoft accounts (from GitHub secret: AZUREAD_TENANT_ID)
+- `AzureAd__Instance`: https://login.microsoftonline.com/ (hardcoded in appsettings.json)
 
 **Exchange Rate APIs:**
-- `ExchangeRateAPIs__ExchangeRateApi__ApiKey`: ExchangeRate-API.com key
-- `ExchangeRateAPIs__OpenExchangeRates__ApiKey`: Open Exchange Rates App ID
-- `ExchangeRateAPIs__CurrencyApi__ApiKey`: CurrencyAPI.com key
+- `ExchangeRateAPIs__ExchangeRateApi__ApiKey`: ExchangeRate-API.com key (from GitHub secret: EXCHANGERATE_API_KEY)
+- `ExchangeRateAPIs__OpenExchangeRates__ApiKey`: Open Exchange Rates App ID (from GitHub secret: OPENEXCHANGERATES_API_KEY)
+- `ExchangeRateAPIs__CurrencyApi__ApiKey`: CurrencyAPI.com key (from GitHub secret: CURRENCYAPI_KEY)
 
 **System:**
 - `ASPNETCORE_ENVIRONMENT`: Production
 - `WEBSITE_RUN_FROM_PACKAGE`: 1 (for deployment optimization)
 
-### Configuring Secrets in Azure
+### Configuration Management
 
-**Option 1: App Service Configuration (Simple)**
+**✅ Recommended Approach: GitHub Actions (Current Implementation)**
+
+All secrets are managed through GitHub and automatically deployed:
+1. Add secrets to GitHub repository (one-time setup)
+2. GitHub Actions workflow automatically configures Azure App Service on every deployment
+3. No manual Azure CLI commands needed
+
+See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for complete setup instructions.
+
+**⚠️ Manual Configuration (Not Recommended)**
+
+If you need to manually update settings (e.g., for troubleshooting):
+
 ```bash
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
@@ -207,12 +234,18 @@ az webapp config appsettings set \
   --settings \
     "AzureAd__ClientId=YOUR_CLIENT_ID" \
     "AzureAd__ClientSecret=YOUR_CLIENT_SECRET" \
+    "AzureAd__TenantId=common" \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=YOUR_KEY_HERE" \
     "ExchangeRateAPIs__OpenExchangeRates__ApiKey=YOUR_KEY_HERE" \
     "ExchangeRateAPIs__CurrencyApi__ApiKey=YOUR_KEY_HERE"
 ```
 
-**Option 2: Azure Key Vault (Recommended for Production)**
+Note: Manual changes will be overwritten on next GitHub Actions deployment.
+
+### Azure Key Vault (Optional Enhancement)
+
+For additional security, you can migrate to Azure Key Vault:
+
 ```bash
 # Create Key Vault
 az keyvault create \

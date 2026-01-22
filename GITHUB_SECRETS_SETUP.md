@@ -1,12 +1,20 @@
 # GitHub Secrets Setup for CI/CD
 
 ## Overview
-The CI/CD pipeline automatically configures API keys in Azure App Service during deployment. You need to add these secrets to GitHub **one time only**.
+The CI/CD pipeline automatically configures all application settings (Azure AD authentication + API keys) in Azure App Service during deployment. You need to add these secrets to GitHub **one time only**.
 
 ## Required GitHub Secrets
 
-Add these 3 secrets to your GitHub repository:
+Add these 6 secrets to your GitHub repository:
 
+### Azure AD Authentication (Runtime)
+| Secret Name | Value | Purpose |
+|------------|-------|---------|
+| `AZUREAD_CLIENT_ID` | `aa7c35d6-dc69-477f-9b83-51236f06b2fe` | Azure AD App for user authentication |
+| `AZUREAD_CLIENT_SECRET` | `SYB8Q~***SECRET***` | Azure AD App secret (see Azure Portal) |
+| `AZUREAD_TENANT_ID` | `common` | For personal Microsoft accounts |
+
+### Exchange Rate APIs
 | Secret Name | Value | Purpose |
 |------------|-------|---------|
 | `EXCHANGERATE_API_KEY` | `acd35787f895deee3418db8c` | ExchangeRate-API.com |
@@ -28,10 +36,10 @@ For each secret in the table above:
 
 1. Click the **"New repository secret"** button (green button, top right)
 2. Fill in the form:
-   - **Name:** Copy the exact name from the "Secret Name" column (e.g., `EXCHANGERATE_API_KEY`)
+   - **Name:** Copy the exact name from the "Secret Name" column (e.g., `AZUREAD_CLIENT_ID`)
    - **Secret:** Copy the value from the "Value" column
 3. Click **"Add secret"**
-4. Repeat for all 3 secrets
+4. Repeat for all 6 secrets
 
 ### Visual Guide
 
@@ -41,15 +49,15 @@ Settings → Secrets and variables → Actions → New repository secret
 
 **Example:**
 ```
-Name: EXCHANGERATE_API_KEY
-Secret: acd35787f895deee3418db8c
+Name: AZUREAD_CLIENT_ID
+Secret: aa7c35d6-dc69-477f-9b83-51236f06b2fe
 [Add secret]
 ```
 
 ## What Happens After Adding Secrets?
 
 Once you add the secrets:
-1. ✅ Every deployment will automatically configure API keys in Azure
+1. ✅ Every deployment will automatically configure Azure AD authentication + API keys in Azure
 2. ✅ No manual steps needed after deployment
 3. ✅ Keys are encrypted and secure in GitHub
 4. ✅ Only GitHub Actions can access them
@@ -62,7 +70,7 @@ After adding the secrets:
    - ✅ Build and test the app
    - ✅ Deploy infrastructure
    - ✅ Deploy application
-   - ✅ **Automatically configure API keys in Azure**
+   - ✅ **Automatically configure Azure AD authentication + API keys in Azure**
 3. Visit your Azure app and test the Exchange Rate tool
 4. Click "View Details" - you should see all 3 sources with green checkmarks ✓
 
@@ -86,11 +94,11 @@ If you need to rotate/update API keys:
 ## Already Configured Secrets
 
 Your repository should already have these Azure secrets configured:
-- `AZURE_CLIENT_ID`
-- `AZURE_TENANT_ID`
-- `AZURE_SUBSCRIPTION_ID`
+- `AZURE_CLIENT_ID` - Service principal for GitHub Actions deployment
+- `AZURE_TENANT_ID` - Your Azure tenant ID
+- `AZURE_SUBSCRIPTION_ID` - Your Azure subscription ID
 
-You're just adding the 3 new API key secrets.
+You're adding the 6 new secrets listed above (3 for Azure AD authentication + 3 for API keys).
 
 ## Need Help?
 
