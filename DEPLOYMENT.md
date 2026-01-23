@@ -237,7 +237,7 @@ If you need to manually update settings (e.g., for troubleshooting):
 ```bash
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --settings \
     "AzureAd__ClientId=YOUR_CLIENT_ID" \
     "AzureAd__ClientSecret=YOUR_CLIENT_SECRET" \
@@ -267,12 +267,12 @@ az keyvault secret set --vault-name camilo-assistant-kv --name "ExchangeRateApi-
 # Enable managed identity for App Service
 az webapp identity assign \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production
+  --name camilo-personal-assistant
 
 # Grant access to Key Vault
 PRINCIPAL_ID=$(az webapp identity show \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --query principalId -o tsv)
 
 az keyvault set-policy \
@@ -283,7 +283,7 @@ az keyvault set-policy \
 # Reference in App Settings
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --settings \
     "AzureAd__ClientSecret=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/AzureAd--ClientSecret/)"
 ```
@@ -296,12 +296,12 @@ az webapp config appsettings set \
 # Stream logs
 az webapp log tail \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production
+  --name camilo-personal-assistant
 
 # Download logs
 az webapp log download \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --log-file logs.zip
 ```
 
@@ -336,7 +336,7 @@ az webapp log download \
 ```bash
 az webapp log tail \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production
+  --name camilo-personal-assistant
 ```
 
 **Common issues:**
@@ -414,7 +414,7 @@ Update `appServicePlanSku` in `infrastructure/parameters.json`:
 ## URLs
 
 After deployment, your application will be available at:
-- **Production**: `https://camilo-personal-assistant-production.azurewebsites.net`
+- **Production**: `https://camilo-personal-assistant.azurewebsites.net`
 
 To use a custom domain, configure it in Azure Portal ? Web App ? Custom domains.
 

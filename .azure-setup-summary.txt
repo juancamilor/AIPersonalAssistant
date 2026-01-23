@@ -67,7 +67,7 @@ NEXT STEPS
    - It will build, test, deploy infrastructure, and deploy the app
 
 4. ? Access your deployed app at:
-   https://camilo-personal-assistant-production.azurewebsites.net
+   https://camilo-personal-assistant.azurewebsites.net
 
 ================================================================================
 TROUBLESHOOTING
@@ -84,7 +84,7 @@ To view Azure resources:
 - Navigate to: camilo-personal-assistant-rg resource group
 
 To view application logs:
-az webapp log tail --resource-group camilo-personal-assistant-rg --name camilo-personal-assistant-production
+az webapp log tail --resource-group camilo-personal-assistant-rg --name camilo-personal-assistant
 
 ================================================================================
 SECURITY NOTE

@@ -85,7 +85,7 @@ Via Azure CLI:
 ```bash
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=your-key" \
     "ExchangeRateAPIs__OpenExchangeRates__ApiKey=your-key" \
@@ -124,14 +124,14 @@ az keyvault secret set \
 ```bash
 az webapp identity assign \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production
+  --name camilo-personal-assistant
 ```
 
 4. **Grant Access:**
 ```bash
 PRINCIPAL_ID=$(az webapp identity show \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --query principalId -o tsv)
 
 az keyvault set-policy \
@@ -144,7 +144,7 @@ az keyvault set-policy \
 ```bash
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/ExchangeRateApi-Key/)" \
     "ExchangeRateAPIs__OpenExchangeRates__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/OpenExchangeRates-Key/)" \
@@ -177,7 +177,7 @@ Production:
 ```bash
 az webapp config appsettings set \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production \
+  --name camilo-personal-assistant \
   --settings "ExchangeRateAPIs__ExchangeRateApi__ApiKey=new-key"
 ```
 
@@ -185,7 +185,7 @@ az webapp config appsettings set \
 ```bash
 az webapp restart \
   --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant-production
+  --name camilo-personal-assistant
 ```
 
 ## Monitoring & Auditing

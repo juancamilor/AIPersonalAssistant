@@ -65,7 +65,7 @@ jobs:
     needs: build
     environment:
       name: production
-      url: https://camilo-personal-assistant-production.azurewebsites.net
+      url: https://camilo-personal-assistant.azurewebsites.net
     
     steps:
     - name: Download artifact
@@ -84,14 +84,14 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: camilo-personal-assistant-production
+        app-name: camilo-personal-assistant
         package: ./publish
     
     - name: Configure Application Settings
       run: |
         az webapp config appsettings set \
           --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-          --name camilo-personal-assistant-production \
+          --name camilo-personal-assistant \
           --settings \
             "AzureAd__ClientId=${{ secrets.AZUREAD_CLIENT_ID }}" \
             "AzureAd__ClientSecret=${{ secrets.AZUREAD_CLIENT_SECRET }}" \
@@ -103,4 +103,4 @@ jobs:
     - name: Display deployment URL
       run: |
         echo "✅ Application deployed successfully!"
-        echo "🌐 URL: https://camilo-personal-assistant-production.azurewebsites.net"
+        echo "🌐 URL: https://camilo-personal-assistant.azurewebsites.net"
