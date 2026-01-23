@@ -11,7 +11,7 @@ A modern web application for personal productivity with Microsoft Account authen
 - Protected API endpoints with authorization checks
 - Friendly access denied page for unauthorized users
 
-### Tools
+### Current Tool
 - **Rate Exchange**: Currency converter with **real-time exchange rates from multiple sources**
   - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
   - **Smart averaging**: Calculates average rate from all successful API sources
@@ -23,13 +23,6 @@ A modern web application for personal productivity with Microsoft Account authen
   - Multi-currency conversion
   - 10-minute caching to optimize API usage
   - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
-
-### Coming Soon
-- Code Generator
-- Task Manager
-- Note Keeper
-- Calculator
-- Timer/Stopwatch
 
 ## 🛠️ Technology Stack
 
@@ -181,7 +174,8 @@ AIPersonalAssistant/
 
 2. **ToolsController.cs** (Protected with `[Authorize]`)
    - `GET /api/tools` - Returns list of available tools with metadata
-   - Each tool has: id, name, description, icon, route, category, color
+   - Currently returns only Rate Exchange tool
+   - Each tool has: id, name, description, icon
 
 3. **RateExchangeController.cs** (Protected with `[Authorize]`)
    - `POST /api/rateexchange/convert` - Converts currencies using real-time rates

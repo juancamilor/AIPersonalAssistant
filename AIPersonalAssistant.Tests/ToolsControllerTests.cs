@@ -29,7 +29,7 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_ReturnsFiveTools()
+    public void GetTools_ReturnsOneTool()
     {
         // Act
         var result = _controller.GetTools() as OkObjectResult;
@@ -37,7 +37,7 @@ public class ToolsControllerTests
 
         // Assert
         Assert.NotNull(tools);
-        Assert.Equal(6, tools.Length);
+        Assert.Equal(1, tools.Length);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_FirstToolIsCodeGenerator()
+    public void GetTools_FirstToolIsRateExchange()
     {
         // Act
         var result = _controller.GetTools() as OkObjectResult;
@@ -71,27 +71,12 @@ public class ToolsControllerTests
         var firstTool = tools.GetValue(0);
         Assert.NotNull(firstTool);
         Assert.Equal(1, GetPropertyValue(firstTool, "Id"));
-        Assert.Equal("Code Generator", GetPropertyValue(firstTool, "Name"));
-        Assert.Equal("Generate code snippets and templates", GetPropertyValue(firstTool, "Description"));
-        Assert.Equal("🔧", GetPropertyValue(firstTool, "Icon"));
+        Assert.Equal("Rate Exchange", GetPropertyValue(firstTool, "Name"));
+        Assert.Equal("Convert currencies with live exchange rates", GetPropertyValue(firstTool, "Description"));
+        Assert.Equal("💱", GetPropertyValue(firstTool, "Icon"));
     }
 
-    [Fact]
-    public void GetTools_LastToolIsTimer()
-    {
-        // Act
-        var result = _controller.GetTools() as OkObjectResult;
-        var tools = result?.Value as Array;
 
-        // Assert
-        Assert.NotNull(tools);
-        var lastTool = tools.GetValue(4);
-        Assert.NotNull(lastTool);
-        Assert.Equal(5, GetPropertyValue(lastTool, "Id"));
-        Assert.Equal("Timer", GetPropertyValue(lastTool, "Name"));
-        Assert.Equal("Set timers and track time", GetPropertyValue(lastTool, "Description"));
-        Assert.Equal("⏱️", GetPropertyValue(lastTool, "Icon"));
-    }
 
     [Fact]
     public void GetTools_AllToolsHaveUniqueIds()
