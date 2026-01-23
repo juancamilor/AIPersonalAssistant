@@ -147,8 +147,9 @@ AIPersonalAssistant/
 ├── infrastructure/                    # Azure infrastructure as code
 │   ├── main.bicep                    # App Service & Plan definitions
 │   └── parameters.json               # Bicep deployment parameters
-├── .github/workflows/
-│   └── deploy.yml                    # CI/CD pipeline (build, test, deploy)
+├── .github/
+│   └── workflows/
+│       └── deploy.yml                # CI/CD pipeline (build, test, deploy)
 ├── setup-azure-ad.ps1                # Automated Azure AD app registration
 ├── EXCHANGE_RATE_SETUP.md            # Exchange rate API setup instructions
 └── README.md
