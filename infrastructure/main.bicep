@@ -14,7 +14,7 @@ param dotnetVersion string = '10.0'
 param environment string = 'production'
 
 var appServicePlanName = '${appName}-plan'
-var webAppName = appName
+var webAppName = '${appName}-${environment}'
 
 // App Service Plan
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
