@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - AI Personal Assistant</title>
+    <title>AI Tools - Personal Assistant</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .error-message {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+        .login-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Welcome Back</h1>
-        <p>Sign in with your Microsoft account to continue</p>
+        <h1>AI Tools - Personal Assistant</h1>
+        <p>A convenient set of tools to assist you</p>
+        <p class="login-info">Sign in with your Microsoft account. Contact the administrator to request access.</p>
+        <div id="errorMessage" class="error-message"></div>
         <button id="microsoftLoginBtn" class="microsoft-login-btn">
             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="10" height="10" fill="#F25022"/>
@@ -21,6 +40,16 @@
         </button>
     </div>
     <script src="/js/login.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const message = urlParams.get('message');
+        if (error || message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message || 'An authentication error occurred. Please try again.';
+            errorDiv.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
 

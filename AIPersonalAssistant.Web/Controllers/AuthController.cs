@@ -10,6 +10,7 @@ namespace AIPersonalAssistant.Web.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpGet("login")]
+    [AllowAnonymous]
     public IActionResult Login(string returnUrl = "/tools.html")
     {
         var redirectUrl = Url.Content($"~{returnUrl}");
@@ -19,13 +20,10 @@ public class AuthController : ControllerBase
 
     [HttpGet("logout")]
     [Authorize]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        var callbackUrl = Url.Content("~/index.html");
-        return SignOut(
-            new AuthenticationProperties { RedirectUri = callbackUrl },
-            OpenIdConnectDefaults.AuthenticationScheme,
-            "Cookies");
+        await HttpContext.SignOutAsync("Cookies");
+        return Redirect("~/login.html");
     }
 
     [HttpGet("user")]

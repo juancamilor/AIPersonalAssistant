@@ -49,9 +49,14 @@ app.UseAuthorization();
 
 app.UseStatusCodePages(async context =>
 {
-    if (context.HttpContext.Response.StatusCode == 403)
+    var statusCode = context.HttpContext.Response.StatusCode;
+    if (statusCode == 403)
     {
         context.HttpContext.Response.Redirect("/access-denied.html");
+    }
+    else if (statusCode == 401)
+    {
+        context.HttpContext.Response.Redirect("/login.html?error=unauthorized&message=Please%20sign%20in%20to%20continue");
     }
 });
 
