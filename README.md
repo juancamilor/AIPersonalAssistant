@@ -84,6 +84,9 @@ A modern web application for personal productivity with Microsoft Account authen
    dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "YOUR_EXCHANGERATE_API_KEY"
    dotnet user-secrets set "ExchangeRateAPIs:OpenExchangeRates:ApiKey" "YOUR_OPENEXCHANGERATES_API_KEY"
    dotnet user-secrets set "ExchangeRateAPIs:CurrencyApi:ApiKey" "YOUR_CURRENCYAPI_KEY"
+   
+   # Stock Tools API key (get from STOCK_TOOLS_SETUP.md)
+   dotnet user-secrets set "StockAPI:AlphaVantage:ApiKey" "YOUR_ALPHAVANTAGE_API_KEY"
    ```
    
    **Security Note:** User secrets are stored outside the project directory in:

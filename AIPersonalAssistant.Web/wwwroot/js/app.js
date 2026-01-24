@@ -58,6 +58,8 @@ const handleToolClick = (event) => {
     
     if (toolName === 'Rate Exchange') {
         window.location.href = '/rate-exchange.html';
+    } else if (toolName === 'Stock Tools') {
+        window.location.href = '/stock-tools.html';
     }
 };
 

@@ -41,6 +41,9 @@ dotnet user-secrets set "AzureAd:ClientSecret" "your-client-secret"
 dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "your-key"
 dotnet user-secrets set "ExchangeRateAPIs:OpenExchangeRates:ApiKey" "your-key"
 dotnet user-secrets set "ExchangeRateAPIs:CurrencyApi:ApiKey" "your-key"
+
+# Stock Tools API
+dotnet user-secrets set "StockAPI:AlphaVantage:ApiKey" "your-key"
 ```
 
 **List Secrets:**

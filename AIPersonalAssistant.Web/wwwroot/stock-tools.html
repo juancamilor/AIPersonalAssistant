@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Tools - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stock-tools.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Stock Tools</h1>
+        <button id="backBtn">Back to Tools</button>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <h2>Stock Performance Analyzer</h2>
+            <form id="stockForm">
+                <div class="form-group">
+                    <label for="stockSymbol">Select Stock</label>
+                    <select id="stockSymbol" name="stockSymbol" required>
+                        <option value="">Select a stock...</option>
+                        <option value="MSFT">Microsoft Corporation (MSFT)</option>
+                        <option value="META">Meta Platforms, Inc. (META)</option>
+                        <option value="GOOGL">Alphabet Inc. (GOOGL)</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group form-group-flex">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" name="startDate" required>
+                    </div>
+
+                    <div class="form-group form-group-flex">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate" name="endDate" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="analyze-btn">Analyze Stock Performance</button>
+            </form>
+        </div>
+
+        <div id="loadingSection" class="loading-card" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading stock data...</p>
+        </div>
+
+        <div id="resultsSection" class="results-card" style="display: none;">
+            <h2 id="chartTitle">Stock Performance</h2>
+            <div class="chart-container">
+                <canvas id="stockChart"></canvas>
+            </div>
+            <div id="stockSummary" class="stock-summary"></div>
+        </div>
+
+        <div id="errorSection" class="error-card" style="display: none;">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <script src="/js/stock-tools.js"></script>
+</body>
+</html>
