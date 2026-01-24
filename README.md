@@ -11,7 +11,7 @@ A modern web application for personal productivity with Microsoft Account authen
 - Protected API endpoints with authorization checks
 - Friendly access denied page for unauthorized users
 
-### Current Tool
+### Current Tools
 - **Rate Exchange**: Currency converter with **real-time exchange rates from multiple sources**
   - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
   - **Smart averaging**: Calculates average rate from all successful API sources
@@ -24,12 +24,21 @@ A modern web application for personal productivity with Microsoft Account authen
   - 10-minute caching to optimize API usage
   - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
 
+- **Stock Tools**: Stock performance analyzer with **interactive charts**
+  - **Alpha Vantage API**: Historical daily stock data
+  - **Three stocks**: Microsoft (MSFT), Meta (META), Google (GOOGL)
+  - **Date range selection**: Analyze custom time periods (up to ~100 trading days)
+  - **Interactive Chart.js visualization**: Line chart showing closing prices
+  - **Performance metrics**: Start/End price, High, Low, Change, Change %
+  - 1-hour caching to optimize API usage
+  - See [STOCK_TOOLS_SETUP.md](STOCK_TOOLS_SETUP.md) for API key setup instructions
+
 ## 🛠️ Technology Stack
 
 - **Backend**: ASP.NET Core 10 (.NET 10)
-- **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3
+- **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js
 - **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
-- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI (for real-time rates)
+- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Alpha Vantage
 - **Caching**: In-memory caching (IMemoryCache) for API rate optimization
 - **Hosting**: Azure App Service
 - **Infrastructure**: Azure Bicep templates
@@ -122,26 +131,33 @@ AIPersonalAssistant/
 │   │   ├── AuthController.cs         # Authentication endpoints (login, logout, user info)
 │   │   ├── ToolsController.cs        # Tools listing API
 │   │   ├── RateExchangeController.cs # Currency conversion API with multi-source integration
+│   │   ├── StockController.cs        # Stock data API with Alpha Vantage integration
 │   │   └── AccessDeniedController.cs # Access denied endpoint
 │   ├── Authorization/                # Authorization logic
 │   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
 │   │   └── EmailAllowListHandler.cs      # Authorization handler
 │   ├── Services/                     # Business logic services
 │   │   ├── IExchangeRateService.cs   # Exchange rate service interface
-│   │   └── ExchangeRateService.cs    # Multi-API exchange rate implementation
+│   │   ├── ExchangeRateService.cs    # Multi-API exchange rate implementation
+│   │   ├── IStockService.cs          # Stock service interface
+│   │   └── StockService.cs           # Alpha Vantage stock data implementation
 │   ├── Models/                       # Data models
-│   │   └── ExchangeRateModels.cs     # Exchange rate DTOs and response models
+│   │   ├── ExchangeRateModels.cs     # Exchange rate DTOs and response models
+│   │   └── StockModels.cs            # Stock data DTOs and response models
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
-│   │   │   └── rate-exchange.css     # Currency converter styles with expandable details
+│   │   │   ├── rate-exchange.css     # Currency converter styles with expandable details
+│   │   │   └── stock-tools.css       # Stock tools page styles
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking & tools loading
 │   │   │   ├── login.js              # OAuth redirect handler
-│   │   │   └── rate-exchange.js      # Currency converter with source breakdown UI
+│   │   │   ├── rate-exchange.js      # Currency converter with source breakdown UI
+│   │   │   └── stock-tools.js        # Stock analyzer with Chart.js visualization
 │   │   ├── login.html                # Login page with Microsoft sign-in
 │   │   ├── tools.html                # Protected tools dashboard
 │   │   ├── rate-exchange.html        # Protected currency converter tool
+│   │   ├── stock-tools.html          # Protected stock analyzer tool
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
 │   ├── appsettings.json              # App configuration (includes API key placeholders)
@@ -155,6 +171,7 @@ AIPersonalAssistant/
 │       └── deploy.yml                # CI/CD pipeline (build, test, deploy)
 ├── setup-azure-ad.ps1                # Automated Azure AD app registration
 ├── EXCHANGE_RATE_SETUP.md            # Exchange rate API setup instructions
+├── STOCK_TOOLS_SETUP.md              # Stock tools API setup instructions
 └── README.md
 ```
 

@@ -94,3 +94,11 @@
 * If the backup is not successful, say so.
 * Compare the files at the end of the backup to make sure all files are in there.
 * Do not restore backups on your own. Do it only when asked.
+
+## Documentation Updates
+
+* When pushing changes to GitHub, always update the documentation (README.md and related docs) to reflect the changes made.
+* Update the Features section in README.md when adding new tools or features.
+* Update the Project Structure section when adding new files or folders.
+* Ensure API documentation is updated when adding new endpoints.
+* Update setup documentation (e.g., STOCK_TOOLS_SETUP.md, EXCHANGE_RATE_SETUP.md) when adding new integrations.

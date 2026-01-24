@@ -29,7 +29,7 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_ReturnsOneTool()
+    public void GetTools_ReturnsTwoTools()
     {
         // Act
         var result = _controller.GetTools() as OkObjectResult;
@@ -37,7 +37,7 @@ public class ToolsControllerTests
 
         // Assert
         Assert.NotNull(tools);
-        Assert.Equal(1, tools.Length);
+        Assert.Equal(2, tools.Length);
     }
 
     [Fact]
