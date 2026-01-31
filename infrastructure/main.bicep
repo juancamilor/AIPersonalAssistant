@@ -15,7 +15,7 @@ param environment string = 'production'
 
 var appServicePlanName = '${appName}-plan'
 var webAppName = appName
-var storageAccountName = replace('${appName}storage', '-', '')
+var storageAccountName = take(replace(toLower('${appName}store'), '-', ''), 24)
 
 // Storage Account for Travel Map pins
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
