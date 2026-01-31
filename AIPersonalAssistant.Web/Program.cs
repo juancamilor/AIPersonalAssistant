@@ -30,6 +30,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateService, AIPersonalAssistant.Web.Services.ExchangeRateService>();
 builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IStockService, AIPersonalAssistant.Web.Services.StockService>();
+builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelService, AIPersonalAssistant.Web.Services.TravelService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
