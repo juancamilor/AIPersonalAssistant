@@ -19,13 +19,17 @@
             <h2>Stock Performance Analyzer</h2>
             <form id="stockForm">
                 <div class="form-group">
-                    <label for="stockSymbol">Select Stock</label>
-                    <select id="stockSymbol" name="stockSymbol" required>
-                        <option value="">Select a stock...</option>
-                        <option value="MSFT">Microsoft Corporation (MSFT)</option>
-                        <option value="META">Meta Platforms, Inc. (META)</option>
-                        <option value="GOOGL">Alphabet Inc. (GOOGL)</option>
-                    </select>
+                    <label>Select Stocks to Compare</label>
+                    <div class="stock-selector">
+                        <select id="stockSymbol">
+                            <option value="">Add a stock...</option>
+                            <option value="MSFT">Microsoft Corporation (MSFT)</option>
+                            <option value="META">Meta Platforms, Inc. (META)</option>
+                            <option value="GOOGL">Alphabet Inc. (GOOGL)</option>
+                        </select>
+                        <button type="button" id="addStockBtn" class="add-stock-btn">Add</button>
+                    </div>
+                    <div id="selectedStocks" class="selected-stocks"></div>
                 </div>
 
                 <div class="form-row">
@@ -50,10 +54,11 @@
         </div>
 
         <div id="resultsSection" class="results-card" style="display: none;">
-            <h2 id="chartTitle">Stock Performance</h2>
+            <h2 id="chartTitle">Stock Performance Comparison</h2>
             <div class="chart-container">
                 <canvas id="stockChart"></canvas>
             </div>
+            <div id="stockLegend" class="stock-legend"></div>
             <div id="stockSummary" class="stock-summary"></div>
         </div>
 
