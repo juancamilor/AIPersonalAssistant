@@ -24,14 +24,23 @@ A modern web application for personal productivity with Microsoft Account authen
   - 10-minute caching to optimize API usage
   - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
 
-- **Stock Tools**: Stock performance analyzer with **interactive charts**
+- **Stock Tools**: Stock performance analyzer with **multi-stock comparison**
   - **Alpha Vantage API**: Historical daily stock data
-  - **Three stocks**: Microsoft (MSFT), Meta (META), Google (GOOGL)
+  - **Multi-stock comparison**: Compare multiple stocks with overlapping charts
+  - **Three stocks available**: Microsoft (MSFT), Meta (META), Google (GOOGL)
   - **Date range selection**: Analyze custom time periods (up to ~100 trading days)
-  - **Interactive Chart.js visualization**: Line chart showing closing prices
-  - **Performance metrics**: Start/End price, High, Low, Change, Change %
+  - **Interactive Chart.js visualization**: Overlaid line charts with color-coded stocks
+  - **Performance metrics per stock**: Start/End price, High, Low, Change %
   - 1-hour caching to optimize API usage
   - See [STOCK_TOOLS_SETUP.md](STOCK_TOOLS_SETUP.md) for API key setup instructions
+
+- **Travel Map**: Interactive world map to **track visited places**
+  - **Leaflet.js map**: Interactive world map with zoom and pan
+  - **Pin management**: Add, view, edit, and delete location pins
+  - **Pin details**: Store place name, date visited, and notes for each location
+  - **Click to add**: Click anywhere on the map to add a new pin
+  - **Per-user storage**: Each user's pins stored in separate JSON files
+  - **Persistent data**: Pins saved across sessions
 
 ## 🛠️ Technology Stack
 
@@ -132,6 +141,7 @@ AIPersonalAssistant/
 │   │   ├── ToolsController.cs        # Tools listing API
 │   │   ├── RateExchangeController.cs # Currency conversion API with multi-source integration
 │   │   ├── StockController.cs        # Stock data API with Alpha Vantage integration
+│   │   ├── TravelController.cs       # Travel map pins CRUD API
 │   │   └── AccessDeniedController.cs # Access denied endpoint
 │   ├── Authorization/                # Authorization logic
 │   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
@@ -140,24 +150,30 @@ AIPersonalAssistant/
 │   │   ├── IExchangeRateService.cs   # Exchange rate service interface
 │   │   ├── ExchangeRateService.cs    # Multi-API exchange rate implementation
 │   │   ├── IStockService.cs          # Stock service interface
-│   │   └── StockService.cs           # Alpha Vantage stock data implementation
+│   │   ├── StockService.cs           # Alpha Vantage stock data implementation
+│   │   ├── ITravelService.cs         # Travel map service interface
+│   │   └── TravelService.cs          # Travel pins JSON file storage implementation
 │   ├── Models/                       # Data models
 │   │   ├── ExchangeRateModels.cs     # Exchange rate DTOs and response models
-│   │   └── StockModels.cs            # Stock data DTOs and response models
+│   │   ├── StockModels.cs            # Stock data DTOs and response models
+│   │   └── TravelModels.cs           # Travel pin DTOs and request models
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
 │   │   │   ├── rate-exchange.css     # Currency converter styles with expandable details
-│   │   │   └── stock-tools.css       # Stock tools page styles
+│   │   │   ├── stock-tools.css       # Stock tools page styles (multi-stock comparison)
+│   │   │   └── travel-map.css        # Travel map styles (Leaflet map, modals)
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking & tools loading
 │   │   │   ├── login.js              # OAuth redirect handler
 │   │   │   ├── rate-exchange.js      # Currency converter with source breakdown UI
-│   │   │   └── stock-tools.js        # Stock analyzer with Chart.js visualization
+│   │   │   ├── stock-tools.js        # Stock analyzer with multi-stock Chart.js visualization
+│   │   │   └── travel-map.js         # Travel map with Leaflet.js and pin CRUD
 │   │   ├── login.html                # Login page with Microsoft sign-in
 │   │   ├── tools.html                # Protected tools dashboard
 │   │   ├── rate-exchange.html        # Protected currency converter tool
-│   │   ├── stock-tools.html          # Protected stock analyzer tool
+│   │   ├── stock-tools.html          # Protected stock analyzer tool (multi-stock)
+│   │   ├── travel-map.html           # Protected travel map tool
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
 │   ├── appsettings.json              # App configuration (includes API key placeholders)
