@@ -39,19 +39,22 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Pin management**: Add, view, edit, and delete location pins
   - **Pin details**: Store place name, date visited, and notes for each location
   - **Click to add**: Click anywhere on the map to add a new pin
-  - **Per-user storage**: Each user's pins stored in separate JSON files
-  - **Persistent data**: Pins saved across sessions
+  - **Per-user storage**: Each user's pins stored separately
+  - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
+  - See [AZURE_STORAGE_SETUP.md](AZURE_STORAGE_SETUP.md) for storage configuration
 
 ## 🛠️ Technology Stack
 
 - **Backend**: ASP.NET Core 10 (.NET 10)
-- **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js
+- **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js, Leaflet.js
 - **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
 - **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Alpha Vantage
+- **Storage**: Azure Blob Storage (production), JSON files (development)
 - **Caching**: In-memory caching (IMemoryCache) for API rate optimization
 - **Hosting**: Azure App Service
-- **Infrastructure**: Azure Bicep templates
+- **Infrastructure**: Azure Bicep templates (App Service, Storage Account)
 - **CI/CD**: GitHub Actions
+- **Testing**: xUnit, Moq, Playwright (UI validation)
 
 ## 🚀 Getting Started
 
@@ -152,7 +155,8 @@ AIPersonalAssistant/
 │   │   ├── IStockService.cs          # Stock service interface
 │   │   ├── StockService.cs           # Alpha Vantage stock data implementation
 │   │   ├── ITravelService.cs         # Travel map service interface
-│   │   └── TravelService.cs          # Travel pins JSON file storage implementation
+│   │   ├── TravelService.cs          # Travel pins JSON file storage (development)
+│   │   └── BlobTravelService.cs      # Travel pins Azure Blob storage (production)
 │   ├── Models/                       # Data models
 │   │   ├── ExchangeRateModels.cs     # Exchange rate DTOs and response models
 │   │   ├── StockModels.cs            # Stock data DTOs and response models
@@ -180,14 +184,22 @@ AIPersonalAssistant/
 │   └── appsettings.Development.json  # Development-specific settings
 ├── AIPersonalAssistant.Tests/        # xUnit test project
 ├── infrastructure/                    # Azure infrastructure as code
-│   ├── main.bicep                    # App Service & Plan definitions
+│   ├── main.bicep                    # App Service, Storage Account definitions
 │   └── parameters.json               # Bicep deployment parameters
+├── playwright-tests/                  # Playwright UI validation tests
+│   ├── ui-validation.spec.js         # UI layout validation tests
+│   └── playwright.config.js          # Playwright configuration
 ├── .github/
+│   ├── agents/                       # Copilot agent definitions
+│   │   ├── implementer.md            # Implementer agent spec
+│   │   └── validator.md              # Validator agent spec
 │   └── workflows/
-│       └── deploy.yml                # CI/CD pipeline (build, test, deploy)
+│       ├── ci.yml                    # CI/CD pipeline (build, test, deploy)
+│       └── deploy.yml                # Manual deployment workflow
 ├── setup-azure-ad.ps1                # Automated Azure AD app registration
 ├── EXCHANGE_RATE_SETUP.md            # Exchange rate API setup instructions
 ├── STOCK_TOOLS_SETUP.md              # Stock tools API setup instructions
+├── AZURE_STORAGE_SETUP.md            # Azure Blob Storage setup for Travel Map
 └── README.md
 ```
 
@@ -276,11 +288,13 @@ AIPersonalAssistant/
 **Azure Resources:**
 - App Service Plan (B1 Linux)
 - App Service (camilo-personal-assistant)
+- Storage Account (for Travel Map pins in production)
 - Configuration stored in App Service settings (not in code)
 
 **CI/CD Pipeline:**
 1. **Build Job**: Restore, build, test, publish, upload artifact
-2. **Deploy Job**: Download artifact, authenticate to Azure, deploy via ZIP
+2. **Infrastructure Job**: Deploy Bicep templates (App Service + Storage Account)
+3. **Deploy Job**: Download artifact, authenticate to Azure, deploy via ZIP, configure settings
 
 **Infrastructure:** Managed via Bicep templates in `infrastructure/` folder
 
@@ -324,6 +338,16 @@ Run unit tests:
 ```bash
 dotnet test
 ```
+
+Run Playwright UI validation tests:
+```bash
+cd playwright-tests
+npx playwright test
+```
+
+**Test Coverage:**
+- 16 unit tests (xUnit + Moq)
+- 2 Playwright UI validation tests
 
 ## 📝 Configuration
 
