@@ -114,6 +114,8 @@ select:focus {
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.2s;
+    width: auto !important;
+    flex-shrink: 0;
 }
 
 .add-stock-btn:hover {
