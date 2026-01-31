@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Map - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/travel-map.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>🗺️ Travel Map</h1>
+        <button id="backBtn">Back to Tools</button>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Add/Edit Pin Modal -->
+    <div id="pinModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modalTitle">Add New Pin</h2>
+            <form id="pinForm">
+                <input type="hidden" id="pinId">
+                <input type="hidden" id="pinLat">
+                <input type="hidden" id="pinLng">
+                
+                <div class="form-group">
+                    <label for="placeName">Place Name</label>
+                    <input type="text" id="placeName" name="placeName" placeholder="e.g., Paris, France" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dateVisited">Date Visited</label>
+                    <input type="date" id="dateVisited" name="dateVisited">
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="What made this place special?"></textarea>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary" id="saveBtn">Save Pin</button>
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="button" class="btn-danger" id="deleteBtn" style="display: none;">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/travel-map.js"></script>
+</body>
+</html>
