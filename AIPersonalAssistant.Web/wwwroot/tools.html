@@ -11,7 +11,7 @@
         h1 { color: #333; }
         .user-info { display: flex; align-items: center; gap: 1rem; }
         .user-email { color: #666; font-size: 0.9rem; }
-        #logoutBtn { padding: 0.5rem 1rem; background: #764ba2; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #logoutBtn, #adminBtn { padding: 0.5rem 1rem; background: #764ba2; color: white; border: none; border-radius: 5px; cursor: pointer; }
         .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
         .tool-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; cursor: pointer; }
         .tool-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
@@ -25,6 +25,7 @@
         <h1>Tools</h1>
         <div class="user-info">
             <span class="user-email" id="userEmail">Loading...</span>
+            <button id="adminBtn" style="display:none" onclick="window.location.href='/admin.html'">Admin</button>
             <button id="logoutBtn">Logout</button>
         </div>
     </div>

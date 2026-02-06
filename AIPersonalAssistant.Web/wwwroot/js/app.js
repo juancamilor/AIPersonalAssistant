@@ -11,6 +11,10 @@ const checkAuth = async () => {
         
         const user = await response.json();
         document.getElementById('userEmail').textContent = user.email;
+        if (user.isAdmin) {
+            const adminBtn = document.getElementById('adminBtn');
+            if (adminBtn) adminBtn.style.display = '';
+        }
         return user;
     } catch (error) {
         console.error('Auth check failed:', error);
