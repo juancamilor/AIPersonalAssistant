@@ -359,4 +359,5 @@ document.getElementById('backBtn').addEventListener('click', () => {
 
 // Initialize
 setDefaultDates();
+selectedStocks.push('MSFT');
 renderSelectedStocks();
