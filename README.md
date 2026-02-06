@@ -6,38 +6,46 @@ A modern web application for personal productivity with Microsoft Account authen
 
 ### Authentication & Security
 - **Microsoft Account Integration**: Secure OAuth 2.0 authentication using Azure AD
-- **Email Allow List**: Restrict access to authorized users only
+- **Email Allow List**: Restrict access to authorized users only (dynamic — managed via Admin panel)
+- **Role-based Access**: Admin and Regular User roles
+- **Admin Panel**: Add/remove users without redeployment
 - Supports personal Microsoft accounts (Outlook.com, Hotmail, Live)
 - Protected API endpoints with authorization checks
+- Admin-only endpoints with `AdminOnly` policy
 - Friendly access denied page for unauthorized users
 
 ### Current Tools
-- **Rate Exchange**: Currency converter with **real-time exchange rates from multiple sources**
+- **Rate Exchange**: Currency converter with **real-time and historical exchange rates**
   - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
   - **Smart averaging**: Calculates average rate from all successful API sources
+  - **Historical rates**: Frankfurter API (USD/CAD/MXN) + Freecurrencyapi.com (COP) for past dates
+  - **Auto-select currencies**: Selecting a "From" currency auto-checks all others
+  - **Historical chart**: Chart.js line graph showing accumulated exchange rate history
   - **Amount conversion**: Convert any amount (default: 1, supports decimals)
   - **Transparent pricing**: Expandable details showing individual rates from each source
   - **Color-coded status**: Green checkmarks for successful fetches, red X for failures
   - Support for USD, CAD, MXN, and COP
-  - Historical date selection
   - Multi-currency conversion
   - 10-minute caching to optimize API usage
   - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
 
 - **Stock Tools**: Stock performance analyzer with **multi-stock comparison**
-  - **Alpha Vantage API**: Historical daily stock data
+  - **Alpha Vantage API**: Historical daily stock data (20+ years of data)
+  - **Auto-load MSFT**: Chart loads automatically on page open
   - **Multi-stock comparison**: Compare multiple stocks with overlapping charts
   - **Three stocks available**: Microsoft (MSFT), Meta (META), Google (GOOGL)
-  - **Date range selection**: Analyze custom time periods (up to ~100 trading days)
+  - **Date range selection**: Analyze custom time periods (full historical data)
   - **Interactive Chart.js visualization**: Overlaid line charts with color-coded stocks
   - **Performance metrics per stock**: Start/End price, High, Low, Change %
   - 1-hour caching to optimize API usage
   - See [STOCK_TOOLS_SETUP.md](STOCK_TOOLS_SETUP.md) for API key setup instructions
 
 - **Travel Map**: Interactive world map to **track visited places**
-  - **Leaflet.js map**: Interactive world map with zoom and pan
-  - **Pin management**: Add, view, edit, and delete location pins
+  - **Leaflet.js map**: Interactive world map with zoom and pan (English-only labels)
+  - **Pin management**: Add, view, edit, and delete location pins with loading indicators
   - **Pin details**: Store place name, date visited, and notes for each location
+  - **Photo gallery**: Upload up to 5 images per pin (drag & drop, auto-resize to 500KB)
+  - **Image thumbnails**: Preview photos in map popups with lightbox viewer
   - **Click to add**: Click anywhere on the map to add a new pin
   - **Per-user storage**: Each user's pins stored separately
   - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
@@ -48,7 +56,7 @@ A modern web application for personal productivity with Microsoft Account authen
 - **Backend**: ASP.NET Core 10 (.NET 10)
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js, Leaflet.js
 - **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
-- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Alpha Vantage
+- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Frankfurter, Alpha Vantage
 - **Storage**: Azure Blob Storage (production), JSON files (development)
 - **Caching**: In-memory caching (IMemoryCache) for API rate optimization
 - **Hosting**: Azure App Service
@@ -142,25 +150,38 @@ AIPersonalAssistant/
 │   ├── Controllers/                  # API controllers
 │   │   ├── AuthController.cs         # Authentication endpoints (login, logout, user info)
 │   │   ├── ToolsController.cs        # Tools listing API
-│   │   ├── RateExchangeController.cs # Currency conversion API with multi-source integration
+│   │   ├── RateExchangeController.cs # Currency conversion API with multi-source + historical
 │   │   ├── StockController.cs        # Stock data API with Alpha Vantage integration
-│   │   ├── TravelController.cs       # Travel map pins CRUD API
+│   │   ├── TravelController.cs       # Travel map pins CRUD + image upload API
+│   │   ├── AdminController.cs        # Admin user management API (admin-only)
 │   │   └── AccessDeniedController.cs # Access denied endpoint
 │   ├── Authorization/                # Authorization logic
 │   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
-│   │   └── EmailAllowListHandler.cs      # Authorization handler
+│   │   ├── EmailAllowListHandler.cs      # Authorization handler (dynamic user list)
+│   │   ├── AdminRequirement.cs           # Admin role requirement
+│   │   └── AdminHandler.cs              # Admin role authorization handler
 │   ├── Services/                     # Business logic services
 │   │   ├── IExchangeRateService.cs   # Exchange rate service interface
-│   │   ├── ExchangeRateService.cs    # Multi-API exchange rate implementation
+│   │   ├── ExchangeRateService.cs    # Multi-API exchange rate (current + historical)
+│   │   ├── IExchangeRateHistoryService.cs # Rate history storage interface
+│   │   ├── LocalExchangeRateHistoryService.cs # Rate history JSON storage (dev)
+│   │   ├── BlobExchangeRateHistoryService.cs  # Rate history Azure Blob (prod)
 │   │   ├── IStockService.cs          # Stock service interface
 │   │   ├── StockService.cs           # Alpha Vantage stock data implementation
 │   │   ├── ITravelService.cs         # Travel map service interface
 │   │   ├── TravelService.cs          # Travel pins JSON file storage (development)
-│   │   └── BlobTravelService.cs      # Travel pins Azure Blob storage (production)
+│   │   ├── BlobTravelService.cs      # Travel pins Azure Blob storage (production)
+│   │   ├── ITravelImageService.cs    # Travel image storage interface
+│   │   ├── LocalTravelImageService.cs # Travel images local storage (dev)
+│   │   ├── BlobTravelImageService.cs # Travel images Azure Blob (prod)
+│   │   ├── IUserManagementService.cs # User management interface
+│   │   ├── LocalUserManagementService.cs # User list JSON storage (dev)
+│   │   └── BlobUserManagementService.cs  # User list Azure Blob (prod)
 │   ├── Models/                       # Data models
 │   │   ├── ExchangeRateModels.cs     # Exchange rate DTOs and response models
+│   │   ├── ExchangeRateHistory.cs    # Exchange rate history entry model
 │   │   ├── StockModels.cs            # Stock data DTOs and response models
-│   │   └── TravelModels.cs           # Travel pin DTOs and request models
+│   │   └── TravelModels.cs           # Travel pin DTOs (with image URLs)
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
@@ -168,16 +189,18 @@ AIPersonalAssistant/
 │   │   │   ├── stock-tools.css       # Stock tools page styles (multi-stock comparison)
 │   │   │   └── travel-map.css        # Travel map styles (Leaflet map, modals)
 │   │   ├── js/
-│   │   │   ├── app.js                # Authentication checking & tools loading
+│   │   │   ├── app.js                # Authentication checking, tools loading & admin button
 │   │   │   ├── login.js              # OAuth redirect handler
-│   │   │   ├── rate-exchange.js      # Currency converter with source breakdown UI
-│   │   │   ├── stock-tools.js        # Stock analyzer with multi-stock Chart.js visualization
-│   │   │   └── travel-map.js         # Travel map with Leaflet.js and pin CRUD
+│   │   │   ├── rate-exchange.js      # Currency converter with history chart
+│   │   │   ├── stock-tools.js        # Stock analyzer with auto-load MSFT
+│   │   │   ├── travel-map.js         # Travel map with image gallery & English tiles
+│   │   │   └── admin.js              # Admin panel user management
 │   │   ├── login.html                # Login page with Microsoft sign-in
-│   │   ├── tools.html                # Protected tools dashboard
-│   │   ├── rate-exchange.html        # Protected currency converter tool
+│   │   ├── tools.html                # Protected tools dashboard (with admin button)
+│   │   ├── rate-exchange.html        # Protected currency converter (with history chart)
 │   │   ├── stock-tools.html          # Protected stock analyzer tool (multi-stock)
-│   │   ├── travel-map.html           # Protected travel map tool
+│   │   ├── travel-map.html           # Protected travel map (with image drop zone)
+│   │   ├── admin.html                # Protected admin panel (admin-only)
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
 │   ├── appsettings.json              # App configuration (includes API key placeholders)
@@ -187,7 +210,12 @@ AIPersonalAssistant/
 │   ├── main.bicep                    # App Service, Storage Account definitions
 │   └── parameters.json               # Bicep deployment parameters
 ├── playwright-tests/                  # Playwright UI validation tests
-│   ├── ui-validation.spec.js         # UI layout validation tests
+│   ├── tests/
+│   │   ├── ui-validation.spec.js     # UI layout validation tests
+│   │   ├── stock-tools.spec.js       # Stock Tools smoke tests
+│   │   ├── travel-map.spec.js        # Travel Map smoke tests
+│   │   ├── rate-exchange.spec.js     # Rate Exchange smoke tests
+│   │   └── admin.spec.js             # Admin panel smoke tests
 │   └── playwright.config.js          # Playwright configuration
 ├── .github/
 │   ├── agents/                       # Copilot agent definitions

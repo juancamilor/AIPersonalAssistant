@@ -1,0 +1,24 @@
+[
+  {
+    "Id": "0900b5e9-14bc-4d68-95aa-f4c15e5a7637",
+    "UserId": "AAAAAAAAAAAAAAAAAAAAAEb3vHRFBsl9-qun6T-NUTc",
+    "Latitude": -2.811371193331128,
+    "Longitude": -72.07031250000001,
+    "PlaceName": "Medellin",
+    "DateVisited": "2026-01-24T00:00:00",
+    "Notes": "You thawer the the pin. Awesome  !",
+    "CreatedAt": "2026-01-31T17:14:05.0735275Z",
+    "UpdatedAt": "2026-01-31T17:14:15.3852722Z"
+  },
+  {
+    "Id": "805193e7-432e-4acf-9536-1d6a6f60e854",
+    "UserId": "AAAAAAAAAAAAAAAAAAAAAEb3vHRFBsl9-qun6T-NUTc",
+    "Latitude": 47.848882633888906,
+    "Longitude": -122.78320312500001,
+    "PlaceName": "Seatle",
+    "DateVisited": "2026-01-06T00:00:00",
+    "Notes": "I am leaving here now.",
+    "CreatedAt": "2026-01-31T17:44:07.2231519Z",
+    "UpdatedAt": "2026-01-31T17:44:07.223152Z"
+  }
+]
