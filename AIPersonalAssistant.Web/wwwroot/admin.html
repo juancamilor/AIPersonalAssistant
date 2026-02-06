@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Panel</h1>
+        <button id="backBtn" onclick="window.location.href='/tools.html'">← Back</button>
+    </div>
+    <div class="container">
+        <div class="form-card">
+            <h2>Add User</h2>
+            <form id="addUserForm">
+                <div class="form-row">
+                    <div class="form-group-flex">
+                        <input type="email" id="emailInput" placeholder="Enter user email" required>
+                    </div>
+                    <button type="submit" id="addUserBtn">Add User</button>
+                </div>
+            </form>
+        </div>
+        <div class="users-card">
+            <h2>Users</h2>
+            <div id="usersTableContainer">
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersBody"></tbody>
+                </table>
+            </div>
+            <p id="noUsers" style="display:none; color:#666; text-align:center; padding:2rem;">No users found.</p>
+        </div>
+    </div>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
