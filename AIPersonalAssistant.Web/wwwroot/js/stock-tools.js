@@ -361,3 +361,4 @@ document.getElementById('backBtn').addEventListener('click', () => {
 setDefaultDates();
 selectedStocks.push('MSFT');
 renderSelectedStocks();
+document.getElementById('stockForm').dispatchEvent(new Event('submit'));
