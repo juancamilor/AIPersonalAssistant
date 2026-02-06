@@ -9,6 +9,7 @@ public class TravelPin
     public string PlaceName { get; set; } = string.Empty;
     public DateTime? DateVisited { get; set; }
     public string Notes { get; set; } = string.Empty;
+    public List<string> ImageUrls { get; set; } = new();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }
