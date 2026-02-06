@@ -44,11 +44,15 @@ if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configur
 {
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelService, AIPersonalAssistant.Web.Services.BlobTravelService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.BlobExchangeRateHistoryService>();
+    builder.Services.AddSingleton<AIPersonalAssistant.Web.Services.IUserManagementService, AIPersonalAssistant.Web.Services.BlobUserManagementService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelImageService, AIPersonalAssistant.Web.Services.BlobTravelImageService>();
 }
 else
 {
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelService, AIPersonalAssistant.Web.Services.TravelService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.LocalExchangeRateHistoryService>();
+    builder.Services.AddSingleton<AIPersonalAssistant.Web.Services.IUserManagementService, AIPersonalAssistant.Web.Services.LocalUserManagementService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelImageService, AIPersonalAssistant.Web.Services.LocalTravelImageService>();
 }
 
 builder.Services.AddControllers();
