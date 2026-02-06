@@ -8,9 +8,10 @@ let pins = [];
 function initMap() {
     map = L.map('map').setView([20, 0], 2);
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
     }).addTo(map);
     
     // Click on map to add pin
@@ -123,6 +124,16 @@ function closeModal() {
 async function savePin(e) {
     e.preventDefault();
     
+    const saveBtn = document.getElementById('saveBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const originalText = saveBtn.textContent;
+    
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    deleteBtn.disabled = true;
+    cancelBtn.disabled = true;
+    
     const pinId = document.getElementById('pinId').value;
     const pinData = {
         latitude: parseFloat(document.getElementById('pinLat').value),
@@ -158,6 +169,11 @@ async function savePin(e) {
     } catch (error) {
         console.error('Error saving pin:', error);
         alert('Failed to save pin. Please try again.');
+    } finally {
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
+        deleteBtn.disabled = false;
+        cancelBtn.disabled = false;
     }
 }
 
@@ -169,6 +185,16 @@ async function deletePin() {
     if (!confirm('Are you sure you want to delete this pin?')) {
         return;
     }
+    
+    const deleteBtn = document.getElementById('deleteBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const originalText = deleteBtn.textContent;
+    
+    deleteBtn.textContent = 'Deleting...';
+    deleteBtn.disabled = true;
+    saveBtn.disabled = true;
+    cancelBtn.disabled = true;
     
     try {
         const response = await fetch(`/api/travel/pins/${pinId}`, {
@@ -189,6 +215,11 @@ async function deletePin() {
     } catch (error) {
         console.error('Error deleting pin:', error);
         alert('Failed to delete pin. Please try again.');
+    } finally {
+        deleteBtn.textContent = originalText;
+        deleteBtn.disabled = false;
+        saveBtn.disabled = false;
+        cancelBtn.disabled = false;
     }
 }
 
