@@ -43,10 +43,12 @@ builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IStockService, AIPer
 if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configuration["AzureStorage:ConnectionString"]))
 {
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelService, AIPersonalAssistant.Web.Services.BlobTravelService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.BlobExchangeRateHistoryService>();
 }
 else
 {
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelService, AIPersonalAssistant.Web.Services.TravelService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.LocalExchangeRateHistoryService>();
 }
 
 builder.Services.AddControllers();
