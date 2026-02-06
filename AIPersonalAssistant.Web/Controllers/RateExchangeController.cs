@@ -11,10 +11,12 @@ namespace AIPersonalAssistant.Web.Controllers;
 public class RateExchangeController : ControllerBase
 {
     private readonly IExchangeRateService _exchangeRateService;
+    private readonly IExchangeRateHistoryService _historyService;
 
-    public RateExchangeController(IExchangeRateService exchangeRateService)
+    public RateExchangeController(IExchangeRateService exchangeRateService, IExchangeRateHistoryService historyService)
     {
         _exchangeRateService = exchangeRateService;
+        _historyService = historyService;
     }
 
     [HttpPost("convert")]
@@ -45,12 +47,48 @@ public class RateExchangeController : ControllerBase
                 Conversions = conversions
             };
 
+            var standardFrom = ConvertToStandardCode(request.FromCurrency);
+            foreach (var conversion in conversions)
+            {
+                if (conversion.AverageRate > 0)
+                {
+                    var standardTo = ConvertToStandardCode(conversion.ToCurrency);
+                    _ = _historyService.SaveRateAsync(request.Date, standardFrom, standardTo, conversion.AverageRate);
+                }
+            }
+
             return Ok(response);
         }
         catch (Exception)
         {
             return StatusCode(500, new { error = "Failed to fetch exchange rates. Please try again later." });
         }
+    }
+
+    [HttpGet("history")]
+    public async Task<IActionResult> GetHistory([FromQuery] string from, [FromQuery] string to)
+    {
+        if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
+        {
+            return BadRequest(new { error = "Please provide both 'from' and 'to' currency codes." });
+        }
+
+        var standardFrom = ConvertToStandardCode(from);
+        var standardTo = ConvertToStandardCode(to);
+        var history = await _historyService.GetHistoryAsync(standardFrom, standardTo);
+        return Ok(history);
+    }
+
+    private static string ConvertToStandardCode(string currencyCode)
+    {
+        return currencyCode switch
+        {
+            "US" => "USD",
+            "CAD" => "CAD",
+            "MX" => "MXN",
+            "CO" => "COP",
+            _ => currencyCode
+        };
     }
 }
 
