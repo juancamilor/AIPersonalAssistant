@@ -68,11 +68,23 @@ function createMarker(pin) {
     const marker = L.marker([pin.latitude, pin.longitude], { icon });
     
     const dateStr = pin.dateVisited ? new Date(pin.dateVisited).toLocaleDateString() : 'Not specified';
+    const images = pin.imageUrls || [];
+    const maxThumbs = 3;
+    const thumbsToShow = images.slice(0, maxThumbs);
+    const remaining = images.length - maxThumbs;
+    let thumbsHtml = '';
+    if (thumbsToShow.length > 0) {
+        const thumbItems = thumbsToShow.map(imgId =>
+            `<img src="/api/travel/pins/${pin.id}/images/${imgId}" class="popup-thumb" onclick="openImageLightbox('/api/travel/pins/${pin.id}/images/${imgId}')" alt="photo" />`
+        ).join('');
+        thumbsHtml = `<div class="popup-thumbs">${thumbItems}${remaining > 0 ? `<span class="popup-thumbs-more">+${remaining} more</span>` : ''}</div>`;
+    }
     const popupContent = `
         <div class="pin-popup">
             <h3>${escapeHtml(pin.placeName || 'Unnamed Location')}</h3>
             <p><strong>Date:</strong> ${dateStr}</p>
             ${pin.notes ? `<p>${escapeHtml(pin.notes)}</p>` : ''}
+            ${thumbsHtml}
             <span class="edit-link" onclick="openEditPinModal('${pin.id}')">✏️ Edit</span>
         </div>
     `;
@@ -94,6 +106,7 @@ function openAddPinModal(lat, lng) {
     document.getElementById('notes').value = '';
     document.getElementById('deleteBtn').style.display = 'none';
     document.getElementById('pinModal').style.display = 'flex';
+    configureImageSection(null);
 }
 
 // Open modal to edit existing pin
@@ -110,6 +123,7 @@ function openEditPinModal(pinId) {
     document.getElementById('notes').value = pin.notes || '';
     document.getElementById('deleteBtn').style.display = 'block';
     document.getElementById('pinModal').style.display = 'flex';
+    configureImageSection(pinId);
     
     // Close any open popups
     map.closePopup();
@@ -223,11 +237,146 @@ async function deletePin() {
     }
 }
 
+// --- Image Upload ---
+
+function configureImageSection(pinId) {
+    const gallery = document.getElementById('imageGallery');
+    const dropZone = document.getElementById('dropZone');
+    const hint = document.getElementById('imageSaveHint');
+    const status = document.getElementById('uploadStatus');
+    gallery.innerHTML = '';
+    status.style.display = 'none';
+
+    if (!pinId) {
+        dropZone.classList.add('disabled');
+        hint.style.display = 'block';
+    } else {
+        dropZone.classList.remove('disabled');
+        hint.style.display = 'none';
+        loadPinImages(pinId);
+    }
+}
+
+async function loadPinImages(pinId) {
+    const gallery = document.getElementById('imageGallery');
+    gallery.innerHTML = '';
+    try {
+        const res = await fetch(`/api/travel/pins/${pinId}/images`, { credentials: 'include' });
+        if (!res.ok) return;
+        const images = await res.json();
+        images.forEach(img => {
+            const thumb = document.createElement('div');
+            thumb.className = 'image-thumb';
+            thumb.innerHTML = `<img src="/api/travel/pins/${pinId}/images/${img.id}" alt="pin image"><button class="remove-img" title="Remove">&times;</button>`;
+            thumb.querySelector('.remove-img').addEventListener('click', () => removeImage(pinId, img.id));
+            gallery.appendChild(thumb);
+        });
+        updateDropZoneState(images.length);
+    } catch (e) {
+        console.error('Error loading images:', e);
+    }
+}
+
+function updateDropZoneState(count) {
+    const dropZone = document.getElementById('dropZone');
+    const pinId = document.getElementById('pinId').value;
+    if (!pinId) return;
+    if (count >= 5) {
+        dropZone.classList.add('disabled');
+    } else {
+        dropZone.classList.remove('disabled');
+    }
+}
+
+async function uploadImages(files) {
+    const pinId = document.getElementById('pinId').value;
+    if (!pinId) return;
+
+    const gallery = document.getElementById('imageGallery');
+    const currentCount = gallery.querySelectorAll('.image-thumb').length;
+    const allowed = 5 - currentCount;
+    if (allowed <= 0) { alert('Maximum 5 images per pin.'); return; }
+
+    const toUpload = Array.from(files).slice(0, allowed);
+    const status = document.getElementById('uploadStatus');
+    status.style.display = 'block';
+
+    for (let i = 0; i < toUpload.length; i++) {
+        status.textContent = `Uploading ${i + 1}/${toUpload.length}...`;
+        const formData = new FormData();
+        formData.append('file', toUpload[i]);
+        try {
+            await fetch(`/api/travel/pins/${pinId}/images`, {
+                method: 'POST',
+                credentials: 'include',
+                body: formData
+            });
+        } catch (e) {
+            console.error('Upload failed:', e);
+        }
+    }
+
+    status.style.display = 'none';
+    await loadPinImages(pinId);
+}
+
+async function removeImage(pinId, imageId) {
+    try {
+        await fetch(`/api/travel/pins/${pinId}/images/${imageId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        await loadPinImages(pinId);
+    } catch (e) {
+        console.error('Error removing image:', e);
+    }
+}
+
+function initDropZone() {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+
+    dropZone.addEventListener('click', () => {
+        if (!dropZone.classList.contains('disabled')) fileInput.click();
+    });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) uploadImages(fileInput.files);
+        fileInput.value = '';
+    });
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (!dropZone.classList.contains('disabled')) dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (dropZone.classList.contains('disabled')) return;
+        const files = e.dataTransfer.files;
+        if (files.length) uploadImages(files);
+    });
+}
+
 // Escape HTML to prevent XSS
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Open a simple lightbox for a full-size image
+function openImageLightbox(src) {
+    const overlay = document.createElement('div');
+    overlay.className = 'image-lightbox-overlay';
+    overlay.innerHTML = `<img src="${src}" class="image-lightbox-img" />`;
+    overlay.addEventListener('click', () => overlay.remove());
+    document.body.appendChild(overlay);
 }
 
 // Event listeners
@@ -249,4 +398,5 @@ document.getElementById('pinModal').addEventListener('click', (e) => {
 
 // Initialize
 initMap();
+initDropZone();
 loadPins();
