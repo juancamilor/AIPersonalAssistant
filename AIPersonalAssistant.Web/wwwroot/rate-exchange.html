@@ -6,6 +6,7 @@
     <title>Rate Exchange - AI Personal Assistant</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/rate-exchange.css?v=20260123-01">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Force deployment refresh 2026-01-23-01 -->
 </head>
 <body>
@@ -70,6 +71,11 @@
         <div id="resultsSection" class="results-card" style="display: none;">
             <h2>Conversion Results</h2>
             <div id="resultsContent"></div>
+        </div>
+
+        <div id="historyChartSection" style="display:none; margin-top: 20px;">
+            <h3>Historical Rates</h3>
+            <canvas id="historyChart" width="400" height="200"></canvas>
         </div>
 
         <div id="errorSection" class="error-card" style="display: none;">

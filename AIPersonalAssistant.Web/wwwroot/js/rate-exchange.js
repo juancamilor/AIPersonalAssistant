@@ -66,6 +66,7 @@ document.getElementById('exchangeForm').addEventListener('submit', async (e) => 
         
         const data = await response.json();
         displayResults(data);
+        loadHistoryChart(fromCurrency, toCurrencies);
     } catch (error) {
         console.error('Error:', error);
         showError('An error occurred while fetching exchange rates. Please try again.');
@@ -216,6 +217,70 @@ function formatNumber(num) {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }).format(num);
+}
+
+let historyChartInstance = null;
+
+const chartColors = ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'];
+
+async function loadHistoryChart(fromCurrency, toCurrencies) {
+    const chartSection = document.getElementById('historyChartSection');
+    const ctx = document.getElementById('historyChart').getContext('2d');
+
+    const datasets = [];
+    let labels = [];
+
+    try {
+        const results = await Promise.all(
+            toCurrencies.map(to =>
+                fetch(`/api/rateexchange/history?from=${encodeURIComponent(fromCurrency)}&to=${encodeURIComponent(to)}`, { credentials: 'include' })
+                    .then(r => r.ok ? r.json() : null)
+            )
+        );
+
+        results.forEach((data, i) => {
+            if (!data || !data.rates) return;
+            const to = toCurrencies[i];
+            const dates = data.rates.map(r => r.date);
+            const rates = data.rates.map(r => r.rate);
+            if (dates.length > labels.length) labels = dates;
+            datasets.push({
+                label: `${getCurrencyCode(fromCurrency)} → ${getCurrencyCode(to)}`,
+                data: rates,
+                borderColor: chartColors[i % chartColors.length],
+                backgroundColor: chartColors[i % chartColors.length] + '33',
+                fill: false,
+                tension: 0.3
+            });
+        });
+
+        if (datasets.length === 0) {
+            chartSection.style.display = 'none';
+            return;
+        }
+
+        if (historyChartInstance) {
+            historyChartInstance.destroy();
+        }
+
+        historyChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' } },
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Exchange Rate' } }
+                }
+            }
+        });
+
+        chartSection.style.display = 'block';
+    } catch (err) {
+        console.error('Failed to load history chart:', err);
+        chartSection.style.display = 'none';
+    }
 }
 
 // Dynamically disable/enable checkboxes based on from currency selection
