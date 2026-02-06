@@ -11,10 +11,12 @@ namespace AIPersonalAssistant.Web.Controllers;
 public class TravelController : ControllerBase
 {
     private readonly ITravelService _travelService;
+    private readonly ITravelImageService _imageService;
 
-    public TravelController(ITravelService travelService)
+    public TravelController(ITravelService travelService, ITravelImageService imageService)
     {
         _travelService = travelService;
+        _imageService = imageService;
     }
 
     private string GetUserId()
@@ -101,5 +103,71 @@ public class TravelController : ControllerBase
         }
         
         return NoContent();
+    }
+
+    [HttpPost("pins/{pinId}/images")]
+    public async Task<IActionResult> UploadImage(string pinId, IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded");
+
+        var allowedTypes = new[] { "image/jpeg", "image/png", "image/webp" };
+        if (!allowedTypes.Contains(file.ContentType.ToLower()))
+            return BadRequest("Only JPEG, PNG, and WebP images are allowed");
+
+        var userId = GetUserId();
+        var pin = await _travelService.GetPinAsync(userId, pinId);
+        if (pin == null)
+            return NotFound("Pin not found");
+        if (pin.ImageUrls?.Count >= 5)
+            return BadRequest("Maximum 5 images per pin");
+
+        using var stream = file.OpenReadStream();
+        var imageId = await _imageService.SaveImageAsync(pinId, stream, file.FileName);
+
+        pin.ImageUrls ??= new List<string>();
+        pin.ImageUrls.Add(imageId);
+        await _travelService.UpdatePinAsync(userId, pinId, new TravelPinRequest
+        {
+            Latitude = pin.Latitude,
+            Longitude = pin.Longitude,
+            PlaceName = pin.PlaceName,
+            DateVisited = pin.DateVisited,
+            Notes = pin.Notes
+        });
+
+        return Ok(new { imageId });
+    }
+
+    [HttpDelete("pins/{pinId}/images/{imageId}")]
+    public async Task<IActionResult> DeleteImage(string pinId, string imageId)
+    {
+        var userId = GetUserId();
+        var pin = await _travelService.GetPinAsync(userId, pinId);
+        if (pin == null)
+            return NotFound("Pin not found");
+
+        await _imageService.DeleteImageAsync(pinId, imageId);
+        pin.ImageUrls?.Remove(imageId);
+        await _travelService.UpdatePinAsync(userId, pinId, new TravelPinRequest
+        {
+            Latitude = pin.Latitude,
+            Longitude = pin.Longitude,
+            PlaceName = pin.PlaceName,
+            DateVisited = pin.DateVisited,
+            Notes = pin.Notes
+        });
+
+        return Ok();
+    }
+
+    [HttpGet("pins/{pinId}/images/{imageId}")]
+    public async Task<IActionResult> GetImage(string pinId, string imageId)
+    {
+        var result = await _imageService.GetImageAsync(pinId, imageId);
+        if (result == null)
+            return NotFound();
+
+        return File(result.Value.stream, result.Value.contentType);
     }
 }
