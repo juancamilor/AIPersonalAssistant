@@ -86,7 +86,7 @@ public class StockService : IStockService
             var client = _httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(30);
 
-            var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={apiKey}";
+            var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={apiKey}";
             _logger.LogInformation("Fetching from Alpha Vantage for symbol: {Symbol}", symbol);
             var httpResponse = await client.GetAsync(url);
 
