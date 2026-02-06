@@ -42,6 +42,19 @@
                     <textarea id="notes" name="notes" rows="4" placeholder="What made this place special?"></textarea>
                 </div>
                 
+                <!-- Image Upload Section -->
+                <div class="form-group" id="imageSection">
+                    <label>Photos</label>
+                    <div id="imageGallery" class="image-gallery"></div>
+                    <div id="dropZone" class="drop-zone">
+                        <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+                        <p class="drop-zone-text">📷 Drag & drop images here or <span class="browse-link">browse</span></p>
+                        <p class="drop-zone-hint">Max 5 images per pin</p>
+                    </div>
+                    <div id="uploadStatus" class="upload-status" style="display:none"></div>
+                    <p id="imageSaveHint" class="image-save-hint" style="display:none">Save the pin first to add images</p>
+                </div>
+
                 <div class="modal-buttons">
                     <button type="submit" class="btn-primary" id="saveBtn">Save Pin</button>
                     <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
