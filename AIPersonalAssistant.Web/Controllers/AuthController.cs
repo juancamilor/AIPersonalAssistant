@@ -9,6 +9,13 @@ namespace AIPersonalAssistant.Web.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
+    private readonly IConfiguration _configuration;
+
+    public AuthController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     [HttpGet("login")]
     [AllowAnonymous]
     public IActionResult Login(string returnUrl = "/tools.html")
@@ -36,12 +43,16 @@ public class AuthController : ControllerBase
                     "Unknown";
         
         var name = User.FindFirst("name")?.Value ?? email;
+        
+        var adminEmails = _configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
+        var isAdmin = adminEmails.Any(a => a.Equals(email, StringComparison.OrdinalIgnoreCase));
 
         return Ok(new
         {
             email,
             name,
-            isAuthenticated = User.Identity?.IsAuthenticated ?? false
+            isAuthenticated = User.Identity?.IsAuthenticated ?? false,
+            isAdmin
         });
     }
 }

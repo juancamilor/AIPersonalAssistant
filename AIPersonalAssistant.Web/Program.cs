@@ -9,6 +9,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
+var adminEmails = builder.Configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -22,9 +23,16 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .AddRequirements(new EmailAllowListRequirement(allowedEmails))
         .Build();
+
+    options.AddPolicy("AdminOnly", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new AdminRequirement(adminEmails));
+    });
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, EmailAllowListHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, AdminHandler>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
