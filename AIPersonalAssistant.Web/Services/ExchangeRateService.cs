@@ -39,12 +39,33 @@ public class ExchangeRateService : IExchangeRateService
                 continue;
             }
 
-            var tasks = new List<Task<SourceRate>>
+            var isHistorical = date.Date < DateTime.Today;
+            List<Task<SourceRate>> tasks;
+
+            if (isHistorical)
             {
-                FetchFromExchangeRateApi(baseCurrency, targetCurrency),
-                FetchFromOpenExchangeRates(baseCurrency, targetCurrency),
-                FetchFromCurrencyApi(baseCurrency, targetCurrency)
-            };
+                // Frankfurter supports USD, CAD, MXN but NOT COP
+                var frankfurterSupported = new HashSet<string> { "USD", "CAD", "MXN", "EUR", "GBP", "JPY", "CHF", "AUD", "NZD" };
+                
+                tasks = new List<Task<SourceRate>>();
+                
+                if (frankfurterSupported.Contains(targetCurrency) && frankfurterSupported.Contains(baseCurrency))
+                {
+                    tasks.Add(FetchFromFrankfurter(baseCurrency, targetCurrency, date));
+                }
+                
+                // CurrencyAPI historical works for all currencies including COP
+                tasks.Add(FetchHistoricalFromCurrencyApi(baseCurrency, targetCurrency, date));
+            }
+            else
+            {
+                tasks = new List<Task<SourceRate>>
+                {
+                    FetchFromExchangeRateApi(baseCurrency, targetCurrency),
+                    FetchFromOpenExchangeRates(baseCurrency, targetCurrency),
+                    FetchFromCurrencyApi(baseCurrency, targetCurrency)
+                };
+            }
 
             var sourceRates = await Task.WhenAll(tasks);
             var successfulRates = sourceRates.Where(r => r.Success).ToList();
@@ -217,6 +238,108 @@ public class ExchangeRateService : IExchangeRateService
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to fetch from CurrencyAPI");
+            sourceRate.ErrorMessage = ex.Message;
+        }
+
+        return sourceRate;
+    }
+
+    private async Task<SourceRate> FetchFromFrankfurter(string fromCurrency, string toCurrency, DateTime date)
+    {
+        var sourceRate = new SourceRate
+        {
+            Source = "Frankfurter (Historical)",
+            Timestamp = DateTime.UtcNow,
+            Success = false
+        };
+
+        try
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            
+            var dateStr = date.ToString("yyyy-MM-dd");
+            var url = $"https://api.frankfurter.app/{dateStr}?from={fromCurrency}&to={toCurrency}";
+            var response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var json = System.Text.Json.JsonDocument.Parse(content);
+                
+                if (json.RootElement.TryGetProperty("rates", out var ratesElement) &&
+                    ratesElement.TryGetProperty(toCurrency, out var rateElement))
+                {
+                    sourceRate.Rate = rateElement.GetDecimal();
+                    sourceRate.Success = true;
+                }
+            }
+            else
+            {
+                sourceRate.ErrorMessage = $"HTTP {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch from Frankfurter for {From}->{To} on {Date}", fromCurrency, toCurrency, date);
+            sourceRate.ErrorMessage = ex.Message;
+        }
+
+        return sourceRate;
+    }
+
+    private async Task<SourceRate> FetchHistoricalFromCurrencyApi(string fromCurrency, string toCurrency, DateTime date)
+    {
+        var sourceRate = new SourceRate
+        {
+            Source = "CurrencyAPI (Historical)",
+            Timestamp = DateTime.UtcNow,
+            Success = false
+        };
+
+        try
+        {
+            var apiKey = _configuration["ExchangeRateAPIs:CurrencyApi:ApiKey"];
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                sourceRate.ErrorMessage = "API key not configured";
+                return sourceRate;
+            }
+
+            var client = _httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            
+            var dateStr = date.ToString("yyyy-MM-dd");
+            var url = $"https://api.freecurrencyapi.com/v1/historical?apikey={apiKey}&date={dateStr}&base_currency={fromCurrency}&currencies={toCurrency}";
+            var response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var json = System.Text.Json.JsonDocument.Parse(content);
+                
+                if (json.RootElement.TryGetProperty("data", out var dataElement))
+                {
+                    // Historical response has date key inside data
+                    foreach (var dateEntry in dataElement.EnumerateObject())
+                    {
+                        if (dateEntry.Value.TryGetProperty(toCurrency, out var rateElement))
+                        {
+                            sourceRate.Rate = rateElement.GetDecimal();
+                            sourceRate.Success = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                sourceRate.ErrorMessage = $"HTTP {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch historical from CurrencyAPI for {From}->{To} on {Date}", fromCurrency, toCurrency, date);
             sourceRate.ErrorMessage = ex.Message;
         }
 
