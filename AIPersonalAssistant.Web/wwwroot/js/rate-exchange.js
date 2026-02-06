@@ -229,6 +229,7 @@ document.getElementById('fromCurrency').addEventListener('change', (e) => {
             cb.checked = false;
         } else {
             cb.disabled = false;
+            cb.checked = true;
         }
     });
 });
