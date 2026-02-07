@@ -1,0 +1,38 @@
+[
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "USD",
+    "ToCurrency": "CAD",
+    "Rate": 1.3674934044666666666666666667
+  },
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "USD",
+    "ToCurrency": "MXN",
+    "Rate": 17.282900848266666666666666667
+  },
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "USD",
+    "ToCurrency": "COP",
+    "Rate": 3669.3251192611333333333333333
+  },
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "MXN",
+    "ToCurrency": "USD",
+    "Rate": 0.05783076205
+  },
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "MXN",
+    "ToCurrency": "CAD",
+    "Rate": 0.07910314675
+  },
+  {
+    "Date": "2026-02-07T00:00:00",
+    "FromCurrency": "MXN",
+    "ToCurrency": "COP",
+    "Rate": 210.84509358875
+  }
+]

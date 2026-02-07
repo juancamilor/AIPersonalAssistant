@@ -11,13 +11,15 @@ namespace AIPersonalAssistant.Tests;
 public class TravelControllerTests
 {
     private readonly Mock<ITravelService> _mockTravelService;
+    private readonly Mock<ITravelImageService> _mockImageService;
     private readonly TravelController _controller;
     private const string TestUserId = "test-user-123";
 
     public TravelControllerTests()
     {
         _mockTravelService = new Mock<ITravelService>();
-        _controller = new TravelController(_mockTravelService.Object);
+        _mockImageService = new Mock<ITravelImageService>();
+        _controller = new TravelController(_mockTravelService.Object, _mockImageService.Object);
         
         // Setup user claims
         var claims = new List<Claim>
