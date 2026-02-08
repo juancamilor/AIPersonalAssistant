@@ -98,7 +98,8 @@ jobs:
             "AzureAd__TenantId=${{ secrets.AZUREAD_TENANT_ID }}" \
             "ExchangeRateAPIs__ExchangeRateApi__ApiKey=${{ secrets.EXCHANGERATE_API_KEY }}" \
             "ExchangeRateAPIs__OpenExchangeRates__ApiKey=${{ secrets.OPENEXCHANGERATES_API_KEY }}" \
-            "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}"
+            "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}" \
+            "StockAPI__AlphaVantage__ApiKey=${{ secrets.ALPHAVANTAGE_API_KEY }}"
         
     - name: Display deployment URL
       run: |
