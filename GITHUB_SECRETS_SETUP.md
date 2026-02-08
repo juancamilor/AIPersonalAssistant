@@ -3,6 +3,34 @@
 ## Overview
 The CI/CD pipeline automatically configures all application settings (Azure AD authentication + API keys) in Azure App Service during deployment. You need to add these secrets to GitHub **one time only**.
 
+## ⚠️ KEY REGISTRY — Master Reference
+
+When adding ANY new API key to the application, ALL of these places MUST be updated:
+
+| Config Key (appsettings) | User Secrets Command | GitHub Secret Name | ci.yml | deploy.yml |
+|---|---|---|---|---|
+| `AzureAd:ClientId` | `dotnet user-secrets set "AzureAd:ClientId" "value"` | `AZUREAD_CLIENT_ID` | ✅ Line 124 | ✅ Line 96 |
+| `AzureAd:ClientSecret` | `dotnet user-secrets set "AzureAd:ClientSecret" "value"` | `AZUREAD_CLIENT_SECRET` | ✅ Line 125 | ✅ Line 97 |
+| `AzureAd:TenantId` | `dotnet user-secrets set "AzureAd:TenantId" "value"` | `AZUREAD_TENANT_ID` | ✅ Line 126 | ✅ Line 98 |
+| `ExchangeRateAPIs:ExchangeRateApi:ApiKey` | `dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "value"` | `EXCHANGERATE_API_KEY` | ✅ Line 127 | ✅ Line 99 |
+| `ExchangeRateAPIs:OpenExchangeRates:ApiKey` | `dotnet user-secrets set "ExchangeRateAPIs:OpenExchangeRates:ApiKey" "value"` | `OPENEXCHANGERATES_API_KEY` | ✅ Line 128 | ✅ Line 100 |
+| `ExchangeRateAPIs:CurrencyApi:ApiKey` | `dotnet user-secrets set "ExchangeRateAPIs:CurrencyApi:ApiKey" "value"` | `CURRENCYAPI_KEY` | ✅ Line 129 | ✅ Line 101 |
+| `StockAPI:AlphaVantage:ApiKey` | `dotnet user-secrets set "StockAPI:AlphaVantage:ApiKey" "value"` | `ALPHAVANTAGE_API_KEY` | ✅ Line 130 | ✅ Line 102 |
+
+### 🚨 Mandatory Checklist for Adding a New API Key
+
+When adding ANY new service that requires an API key:
+
+- [ ] Add placeholder in `appsettings.json`
+- [ ] Add `dotnet user-secrets set` command to SECURITY.md and relevant setup doc
+- [ ] Create GitHub Secret in repository settings
+- [ ] Add to `.github/workflows/ci.yml` Configure Application Settings step
+- [ ] Add to `.github/workflows/deploy.yml` Configure Application Settings step
+- [ ] Add to this KEY REGISTRY table
+- [ ] Update DEPLOYMENT.md Environment Variables section
+- [ ] Test locally with user-secrets
+- [ ] Deploy and verify key reaches production via /api/health endpoint
+
 ## Required GitHub Secrets
 
 Add these 7 secrets to your GitHub repository:

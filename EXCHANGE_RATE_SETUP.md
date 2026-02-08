@@ -110,3 +110,12 @@ Frontend → RateExchangeController → ExchangeRateService
 - Rates are cached for 10 minutes to save API calls
 - If one or more APIs fail, the average is calculated from successful sources
 - All three APIs support USD, CAD, MXN, COP currencies
+
+### Production Deployment
+
+All Exchange Rate API keys are automatically deployed via GitHub Actions. See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for the KEY REGISTRY.
+
+**GitHub Secrets:**
+- `EXCHANGERATE_API_KEY` → `ExchangeRateAPIs__ExchangeRateApi__ApiKey`
+- `OPENEXCHANGERATES_API_KEY` → `ExchangeRateAPIs__OpenExchangeRates__ApiKey`  
+- `CURRENCYAPI_KEY` → `ExchangeRateAPIs__CurrencyApi__ApiKey`

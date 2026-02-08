@@ -154,6 +154,15 @@ az webapp config appsettings set \
     "ExchangeRateAPIs__CurrencyApi__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/CurrencyApi-Key/)"
 ```
 
+## Key Propagation Verification
+
+After deploying, verify all keys reached production:
+1. Visit `https://camilo-personal-assistant.azurewebsites.net/api/health`
+2. Check that all API keys show as "configured" 
+3. If any key shows "missing", check the KEY REGISTRY in [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md)
+
+**Common failure:** Key added to `ci.yml` but NOT to `deploy.yml` (or vice versa). Both files must be updated.
+
 ## API Key Rotation
 
 ### When to Rotate:

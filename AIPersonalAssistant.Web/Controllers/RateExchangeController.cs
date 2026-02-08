@@ -76,7 +76,31 @@ public class RateExchangeController : ControllerBase
         var standardFrom = ConvertToStandardCode(from);
         var standardTo = ConvertToStandardCode(to);
         var history = await _historyService.GetHistoryAsync(standardFrom, standardTo);
-        return Ok(history);
+        return Ok(new { rates = history });
+    }
+
+    [HttpGet("timeseries")]
+    public async Task<IActionResult> GetTimeSeries(
+        [FromQuery] string from,
+        [FromQuery] string to,
+        [FromQuery] DateTime startDate,
+        [FromQuery] DateTime endDate)
+    {
+        if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
+            return BadRequest(new { error = "Please provide 'from' and 'to' currency codes." });
+        
+        if (startDate >= endDate)
+            return BadRequest(new { error = "Start date must be before end date." });
+        
+        if ((endDate - startDate).TotalDays > 365)
+            return BadRequest(new { error = "Maximum date range is 1 year." });
+        
+        var toCurrencies = to.Split(',').Select(c => c.Trim()).ToList();
+        var series = await _exchangeRateService.GetTimeSeriesAsync(from, toCurrencies, startDate, endDate);
+        
+        var dates = series.Values.FirstOrDefault(v => v.Any())?.Select(p => p.Date).ToList() ?? new List<string>();
+        
+        return Ok(new { dates, series });
     }
 
     private static string ConvertToStandardCode(string currencyCode)

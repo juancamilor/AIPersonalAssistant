@@ -235,6 +235,18 @@ The CI/CD pipeline configures these settings in Azure App Service:
 - `ASPNETCORE_ENVIRONMENT`: Production
 - `WEBSITE_RUN_FROM_PACKAGE`: 1 (for deployment optimization)
 
+### Adding a New API Key
+
+**CRITICAL:** When adding a new API key, you MUST update ALL of these locations or the key won't reach production:
+1. `appsettings.json` — Add placeholder value
+2. `dotnet user-secrets` — Set for local development
+3. GitHub Secrets — Add the secret to repository settings
+4. `.github/workflows/ci.yml` — Add to Configure Application Settings step
+5. `.github/workflows/deploy.yml` — Add to Configure Application Settings step
+6. `GITHUB_SECRETS_SETUP.md` — Update the KEY REGISTRY table
+
+See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for the complete KEY REGISTRY.
+
 ### Configuration Management
 
 **✅ Recommended Approach: GitHub Actions (Current Implementation)**

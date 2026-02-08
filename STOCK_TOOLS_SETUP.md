@@ -41,6 +41,13 @@ Set as application setting:
 Note: Use double underscores `__` instead of colons in Azure.
 ```
 
+### Production Deployment
+
+The Stock API key is automatically deployed via GitHub Actions. See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for the KEY REGISTRY.
+
+**GitHub Secret:** `ALPHAVANTAGE_API_KEY`  
+**Azure Setting:** `StockAPI__AlphaVantage__ApiKey`
+
 ## Testing Without API Key
 
 The application will show an error message if the API key is not configured. Unlike the exchange rate tool, stock data requires a valid API key to function.

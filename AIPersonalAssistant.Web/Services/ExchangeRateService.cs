@@ -346,6 +346,78 @@ public class ExchangeRateService : IExchangeRateService
         return sourceRate;
     }
 
+    public async Task<Dictionary<string, List<TimeSeriesPoint>>> GetTimeSeriesAsync(string fromCurrency, List<string> toCurrencies, DateTime startDate, DateTime endDate)
+    {
+        var baseCurrency = ConvertToStandardCode(fromCurrency);
+        var result = new Dictionary<string, List<TimeSeriesPoint>>();
+        
+        var frankfurterSupported = new HashSet<string> { "USD", "CAD", "MXN", "EUR", "GBP", "JPY", "CHF", "AUD", "NZD", "SEK", "NOK", "DKK", "PLN", "CZK", "HUF", "RON", "BGN", "HRK", "ISK", "TRY", "BRL", "CNY", "HKD", "IDR", "ILS", "INR", "KRW", "MYR", "PHP", "SGD", "THB", "ZAR" };
+        
+        var standardToCurrencies = toCurrencies.Select(c => ConvertToStandardCode(c)).ToList();
+        var frankfurterCurrencies = standardToCurrencies.Where(c => frankfurterSupported.Contains(c)).ToList();
+        
+        if (frankfurterSupported.Contains(baseCurrency) && frankfurterCurrencies.Any())
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.Timeout = TimeSpan.FromSeconds(30);
+                
+                var startStr = startDate.ToString("yyyy-MM-dd");
+                var endStr = endDate.ToString("yyyy-MM-dd");
+                var symbols = string.Join(",", frankfurterCurrencies);
+                var url = $"https://api.frankfurter.app/{startStr}..{endStr}?from={baseCurrency}&to={symbols}";
+                
+                _logger.LogInformation("Fetching time series from Frankfurter: {Url}", url);
+                var response = await client.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var json = System.Text.Json.JsonDocument.Parse(content);
+                    
+                    if (json.RootElement.TryGetProperty("rates", out var ratesElement))
+                    {
+                        foreach (var currency in frankfurterCurrencies)
+                        {
+                            result[currency] = new List<TimeSeriesPoint>();
+                        }
+                        
+                        foreach (var dateProperty in ratesElement.EnumerateObject())
+                        {
+                            var dateStr2 = dateProperty.Name;
+                            foreach (var currency in frankfurterCurrencies)
+                            {
+                                if (dateProperty.Value.TryGetProperty(currency, out var rateVal))
+                                {
+                                    result[currency].Add(new TimeSeriesPoint
+                                    {
+                                        Date = dateStr2,
+                                        Rate = rateVal.GetDecimal()
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to fetch time series from Frankfurter");
+            }
+        }
+        
+        foreach (var tc in standardToCurrencies)
+        {
+            if (!result.ContainsKey(tc))
+            {
+                result[tc] = new List<TimeSeriesPoint>();
+            }
+        }
+        
+        return result;
+    }
+
     private string ConvertToStandardCode(string currencyCode)
     {
         return currencyCode switch
