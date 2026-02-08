@@ -81,6 +81,22 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         
+    - name: Validate Required Secrets
+      run: |
+        MISSING=""
+        [ -z "${{ secrets.AZUREAD_CLIENT_ID }}" ] && MISSING="$MISSING AZUREAD_CLIENT_ID"
+        [ -z "${{ secrets.AZUREAD_CLIENT_SECRET }}" ] && MISSING="$MISSING AZUREAD_CLIENT_SECRET"
+        [ -z "${{ secrets.AZUREAD_TENANT_ID }}" ] && MISSING="$MISSING AZUREAD_TENANT_ID"
+        [ -z "${{ secrets.EXCHANGERATE_API_KEY }}" ] && MISSING="$MISSING EXCHANGERATE_API_KEY"
+        [ -z "${{ secrets.OPENEXCHANGERATES_API_KEY }}" ] && MISSING="$MISSING OPENEXCHANGERATES_API_KEY"
+        [ -z "${{ secrets.CURRENCYAPI_KEY }}" ] && MISSING="$MISSING CURRENCYAPI_KEY"
+        [ -z "${{ secrets.ALPHAVANTAGE_API_KEY }}" ] && MISSING="$MISSING ALPHAVANTAGE_API_KEY"
+        if [ -n "$MISSING" ]; then
+          echo "::error::Missing required secrets:$MISSING"
+          exit 1
+        fi
+        echo "All required secrets are configured."
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
@@ -101,6 +117,21 @@ jobs:
             "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}" \
             "StockAPI__AlphaVantage__ApiKey=${{ secrets.ALPHAVANTAGE_API_KEY }}"
         
+    - name: Post-Deploy Health Check
+      run: |
+        echo "Waiting 30 seconds for app to start..."
+        sleep 30
+        echo "Checking health endpoint..."
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://camilo-personal-assistant.azurewebsites.net/api/health)
+        echo "Health check response: $RESPONSE"
+        if [ "$RESPONSE" != "200" ]; then
+          echo "::warning::Health check returned $RESPONSE — some services may be misconfigured"
+          curl -s https://camilo-personal-assistant.azurewebsites.net/api/health | jq . || true
+        else
+          echo "✅ Health check passed!"
+          curl -s https://camilo-personal-assistant.azurewebsites.net/api/health | jq . || true
+        fi
+
     - name: Display deployment URL
       run: |
         echo "✅ Application deployed successfully!"
