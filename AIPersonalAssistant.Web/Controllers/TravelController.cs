@@ -133,7 +133,8 @@ public class TravelController : ControllerBase
             Longitude = pin.Longitude,
             PlaceName = pin.PlaceName,
             DateVisited = pin.DateVisited,
-            Notes = pin.Notes
+            Notes = pin.Notes,
+            ImageUrls = pin.ImageUrls
         });
 
         return Ok(new { imageId });
@@ -155,7 +156,8 @@ public class TravelController : ControllerBase
             Longitude = pin.Longitude,
             PlaceName = pin.PlaceName,
             DateVisited = pin.DateVisited,
-            Notes = pin.Notes
+            Notes = pin.Notes,
+            ImageUrls = pin.ImageUrls
         });
 
         return Ok();

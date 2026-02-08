@@ -21,4 +21,5 @@ public class TravelPinRequest
     public string PlaceName { get; set; } = string.Empty;
     public DateTime? DateVisited { get; set; }
     public string Notes { get; set; } = string.Empty;
+    public List<string>? ImageUrls { get; set; }
 }

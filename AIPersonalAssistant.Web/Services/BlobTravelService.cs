@@ -117,6 +117,8 @@ public class BlobTravelService : ITravelService
         pin.PlaceName = request.PlaceName;
         pin.DateVisited = request.DateVisited;
         pin.Notes = request.Notes;
+        if (request.ImageUrls != null)
+            pin.ImageUrls = request.ImageUrls;
         pin.UpdatedAt = DateTime.UtcNow;
         
         await SavePinsAsync(userId, pins);
