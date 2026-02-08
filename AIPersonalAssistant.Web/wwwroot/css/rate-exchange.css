@@ -306,6 +306,33 @@ select:focus {
     font-size: 1rem;
 }
 
+/* Time Series Chart */
+.section-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.timeseries-controls label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    color: #555;
+}
+
+.timeseries-controls .form-control {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+#timeSeriesSection h3 {
+    margin-bottom: 1rem;
+}
+
 @media (max-width: 768px) {
     body {
         padding: 1rem;

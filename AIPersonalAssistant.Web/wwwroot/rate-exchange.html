@@ -81,6 +81,51 @@
         <div id="errorSection" class="error-card" style="display: none;">
             <p id="errorMessage"></p>
         </div>
+
+        <!-- Historical Exchange Rate Chart -->
+        <div class="section-card" id="timeSeriesSection" style="margin-top: 2rem;">
+            <h3>📈 Historical Exchange Rate Chart</h3>
+            <div class="timeseries-controls" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem;">
+                <div>
+                    <label for="tsFromCurrency">From Currency</label>
+                    <select id="tsFromCurrency" class="form-control">
+                        <option value="US">USD - US Dollar</option>
+                        <option value="CA">CAD - Canadian Dollar</option>
+                        <option value="MX">MXN - Mexican Peso</option>
+                        <option value="EU">EUR - Euro</option>
+                        <option value="GB">GBP - British Pound</option>
+                        <option value="JP">JPY - Japanese Yen</option>
+                        <option value="CO">COP - Colombian Peso</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tsToCurrency">To Currency</label>
+                    <select id="tsToCurrency" class="form-control">
+                        <option value="CA">CAD - Canadian Dollar</option>
+                        <option value="MX">MXN - Mexican Peso</option>
+                        <option value="EU">EUR - Euro</option>
+                        <option value="GB">GBP - British Pound</option>
+                        <option value="JP">JPY - Japanese Yen</option>
+                        <option value="US">USD - US Dollar</option>
+                        <option value="CO">COP - Colombian Peso</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tsStartDate">Start Date</label>
+                    <input type="date" id="tsStartDate" class="form-control" />
+                </div>
+                <div>
+                    <label for="tsEndDate">End Date</label>
+                    <input type="date" id="tsEndDate" class="form-control" />
+                </div>
+                <button id="tsLoadBtn" class="btn btn-primary" onclick="loadTimeSeries()">Show History</button>
+            </div>
+            <div id="tsNote" style="display:none; color: #856404; background: #fff3cd; padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+            <div id="tsChartContainer" style="display:none; position:relative; height:400px;">
+                <canvas id="timeSeriesChart"></canvas>
+            </div>
+            <div id="tsNoData" style="display:none; text-align:center; color:#666; padding:2rem;">No data available for the selected currencies and date range.</div>
+        </div>
     </div>
 
     <script src="/js/rate-exchange.js?v=20260122-01"></script>
