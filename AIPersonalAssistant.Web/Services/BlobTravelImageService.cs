@@ -9,8 +9,15 @@ public class BlobTravelImageService : ITravelImageService
     private readonly BlobContainerClient _containerClient;
     private const long MaxFileSizeBytes = 500 * 1024;
 
-    public BlobTravelImageService(BlobServiceClient blobServiceClient)
+    public BlobTravelImageService(IConfiguration configuration)
     {
+        var connectionString = configuration["AzureStorage:ConnectionString"];
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException("AzureStorage:ConnectionString is not configured");
+        }
+
+        var blobServiceClient = new BlobServiceClient(connectionString);
         _containerClient = blobServiceClient.GetBlobContainerClient("travel-images");
         _containerClient.CreateIfNotExists();
     }
