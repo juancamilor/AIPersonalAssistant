@@ -56,7 +56,7 @@ const loadUsers = async () => {
 
         tbody.innerHTML = users.map(user => {
             const isSelf = user.email === currentUserEmail;
-            const roleBadge = user.isAdmin
+            const roleBadge = user.role === 'Admin'
                 ? '<span class="role-badge admin">Admin</span>'
                 : '<span class="role-badge user">User</span>';
             const removeBtn = isSelf
