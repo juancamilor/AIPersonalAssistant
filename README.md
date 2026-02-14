@@ -29,12 +29,12 @@ A modern web application for personal productivity with Microsoft Account authen
   - 10-minute caching to optimize API usage
   - See [EXCHANGE_RATE_SETUP.md](EXCHANGE_RATE_SETUP.md) for API key setup instructions
 
-- **Stock Tools**: Stock performance analyzer with **multi-stock comparison**
-  - **Alpha Vantage API**: Historical daily stock data (20+ years of data)
+- **Stocks**: Stock performance analyzer with **multi-stock comparison**
+  - **Alpha Vantage API**: Historical daily stock data (~5 months on free tier)
   - **Auto-load MSFT**: Chart loads automatically on page open
   - **Multi-stock comparison**: Compare multiple stocks with overlapping charts
   - **Three stocks available**: Microsoft (MSFT), Meta (META), Google (GOOGL)
-  - **Date range selection**: Analyze custom time periods (full historical data)
+  - **Date range selection**: Analyze custom time periods (last ~5 months on free tier)
   - **Interactive Chart.js visualization**: Overlaid line charts with color-coded stocks
   - **Performance metrics per stock**: Start/End price, High, Low, Change %
   - 1-hour caching to optimize API usage
@@ -51,12 +51,26 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
   - See [AZURE_STORAGE_SETUP.md](AZURE_STORAGE_SETUP.md) for storage configuration
 
+- **Taxes Manager**: Federal tax estimator with **W2 OCR and stock sales import**
+  - **W2 OCR extraction**: Upload W2 PDF/image → Azure Document Intelligence extracts income data
+  - **Stock sales import**: Upload Excel file with capital gains/losses
+  - **Tax calculation**: 2025 MFJ brackets, standard deduction, and capital gains rates
+  - **Federal estimate only**: Not tax advice — see disclaimer in tool
+  - See [TAXES_TOOL_SETUP.md](TAXES_TOOL_SETUP.md) for Azure Document Intelligence setup
+
+- **Chess Trainer**: Interactive chess training tool with **4 modes**
+  - **Play vs AI**: Play against Stockfish WASM engine at adjustable difficulty
+  - **Puzzles**: Solve tactical puzzles from curated puzzle set
+  - **Lessons**: Step-through chess lessons with guided instruction
+  - **Analysis**: Paste/play positions and analyze with Stockfish engine
+  - **Fully client-side**: Stockfish WASM runs in the browser — no server needed
+
 ## 🛠️ Technology Stack
 
 - **Backend**: ASP.NET Core 10 (.NET 10)
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js, Leaflet.js
 - **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
-- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Frankfurter, Alpha Vantage
+- **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Frankfurter, Alpha Vantage, Azure Document Intelligence
 - **Storage**: Azure Blob Storage (production), JSON files (development)
 - **Caching**: In-memory caching (IMemoryCache) for API rate optimization
 - **Hosting**: Azure App Service
@@ -116,7 +130,18 @@ A modern web application for personal productivity with Microsoft Account authen
    
    # Stock Tools API key (get from STOCK_TOOLS_SETUP.md)
    dotnet user-secrets set "StockAPI:AlphaVantage:ApiKey" "YOUR_ALPHAVANTAGE_API_KEY"
+   
+   # Taxes Manager (get from TAXES_TOOL_SETUP.md)
+   dotnet user-secrets set "AzureDocumentIntelligence:Endpoint" "YOUR_ENDPOINT"
+   dotnet user-secrets set "AzureDocumentIntelligence:ApiKey" "YOUR_API_KEY"
    ```
+   
+   **Local Testing Without Azure AD:**
+   Set `BYPASS_AUTH=true` in your environment to skip authentication during local development:
+   ```bash
+   $env:BYPASS_AUTH="true"
+   ```
+   This only works when `ASPNETCORE_ENVIRONMENT=Development`. See [SECURITY.md](SECURITY.md) for details.
    
    **Security Note:** User secrets are stored outside the project directory in:
    - Windows: `%APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json`
@@ -153,7 +178,9 @@ AIPersonalAssistant/
 │   │   ├── RateExchangeController.cs # Currency conversion API with multi-source + historical
 │   │   ├── StockController.cs        # Stock data API with Alpha Vantage integration
 │   │   ├── TravelController.cs       # Travel map pins CRUD + image upload API
+│   │   ├── TaxesController.cs        # Taxes Manager API (W2 OCR + stock sales + tax calc)
 │   │   ├── AdminController.cs        # Admin user management API (admin-only)
+│   │   ├── HealthController.cs       # Health check endpoint
 │   │   └── AccessDeniedController.cs # Access denied endpoint
 │   ├── Authorization/                # Authorization logic
 │   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
@@ -174,6 +201,8 @@ AIPersonalAssistant/
 │   │   ├── ITravelImageService.cs    # Travel image storage interface
 │   │   ├── LocalTravelImageService.cs # Travel images local storage (dev)
 │   │   ├── BlobTravelImageService.cs # Travel images Azure Blob (prod)
+│   │   ├── ITaxesService.cs          # Taxes service interface
+│   │   ├── TaxesService.cs           # W2 OCR + stock sales + tax calculation
 │   │   ├── IUserManagementService.cs # User management interface
 │   │   ├── LocalUserManagementService.cs # User list JSON storage (dev)
 │   │   └── BlobUserManagementService.cs  # User list Azure Blob (prod)
@@ -181,25 +210,41 @@ AIPersonalAssistant/
 │   │   ├── ExchangeRateModels.cs     # Exchange rate DTOs and response models
 │   │   ├── ExchangeRateHistory.cs    # Exchange rate history entry model
 │   │   ├── StockModels.cs            # Stock data DTOs and response models
+│   │   ├── TaxModels.cs             # Tax calculation DTOs (W2, stock sales, estimates)
 │   │   └── TravelModels.cs           # Travel pin DTOs (with image URLs)
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
+│   │   │   ├── admin.css             # Admin panel styles
 │   │   │   ├── rate-exchange.css     # Currency converter styles with expandable details
-│   │   │   ├── stock-tools.css       # Stock tools page styles (multi-stock comparison)
-│   │   │   └── travel-map.css        # Travel map styles (Leaflet map, modals)
+│   │   │   ├── stock-tools.css       # Stocks page styles (multi-stock comparison)
+│   │   │   ├── travel-map.css        # Travel map styles (Leaflet map, modals)
+│   │   │   ├── taxes-manager.css     # Taxes Manager styles
+│   │   │   └── chess-trainer.css     # Chess Trainer styles
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking, tools loading & admin button
 │   │   │   ├── login.js              # OAuth redirect handler
 │   │   │   ├── rate-exchange.js      # Currency converter with history chart
 │   │   │   ├── stock-tools.js        # Stock analyzer with auto-load MSFT
 │   │   │   ├── travel-map.js         # Travel map with image gallery & English tiles
+│   │   │   ├── taxes-manager.js      # Taxes Manager frontend logic
+│   │   │   ├── chess-trainer.js      # Chess Trainer main module
+│   │   │   ├── chess-play.js         # Chess Play vs AI mode
+│   │   │   ├── chess-puzzles.js      # Chess Puzzles mode
+│   │   │   ├── chess-lessons.js      # Chess Lessons mode
+│   │   │   ├── chess-analysis.js     # Chess Analysis mode
+│   │   │   ├── chess-engine.js       # Stockfish WASM integration
 │   │   │   └── admin.js              # Admin panel user management
+│   │   ├── data/
+│   │   │   ├── chess-lessons.json    # Chess lesson content
+│   │   │   └── chess-puzzles.json    # Chess puzzle set
 │   │   ├── login.html                # Login page with Microsoft sign-in
 │   │   ├── tools.html                # Protected tools dashboard (with admin button)
 │   │   ├── rate-exchange.html        # Protected currency converter (with history chart)
 │   │   ├── stock-tools.html          # Protected stock analyzer tool (multi-stock)
 │   │   ├── travel-map.html           # Protected travel map (with image drop zone)
+│   │   ├── taxes-manager.html        # Protected Taxes Manager tool
+│   │   ├── chess-trainer.html        # Protected Chess Trainer tool
 │   │   ├── admin.html                # Protected admin panel (admin-only)
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
@@ -226,7 +271,8 @@ AIPersonalAssistant/
 │       └── deploy.yml                # Manual deployment workflow
 ├── setup-azure-ad.ps1                # Automated Azure AD app registration
 ├── EXCHANGE_RATE_SETUP.md            # Exchange rate API setup instructions
-├── STOCK_TOOLS_SETUP.md              # Stock tools API setup instructions
+├── STOCK_TOOLS_SETUP.md              # Stocks API setup instructions
+├── TAXES_TOOL_SETUP.md               # Taxes Manager setup (Azure Document Intelligence)
 ├── AZURE_STORAGE_SETUP.md            # Azure Blob Storage setup for Travel Map
 └── README.md
 ```

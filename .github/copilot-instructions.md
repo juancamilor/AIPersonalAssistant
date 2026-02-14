@@ -102,3 +102,4 @@
 * Update the Project Structure section when adding new files or folders.
 * Ensure API documentation is updated when adding new endpoints.
 * Update setup documentation (e.g., STOCK_TOOLS_SETUP.md, EXCHANGE_RATE_SETUP.md) when adding new integrations.
+* Always update documentation before committing/checking in code to keep everything up to date.

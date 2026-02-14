@@ -86,7 +86,7 @@ public class StockService : IStockService
             var client = _httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(30);
 
-            var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=full&apikey={apiKey}";
+            var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&outputsize=compact&apikey={apiKey}";
             _logger.LogInformation("Fetching from Alpha Vantage for symbol: {Symbol}", symbol);
             var httpResponse = await client.GetAsync(url);
 
@@ -108,6 +108,12 @@ public class StockService : IStockService
             if (json.RootElement.TryGetProperty("Note", out var noteElement))
             {
                 _logger.LogWarning("Alpha Vantage rate limit: {Note}", noteElement.GetString());
+                return null;
+            }
+
+            if (json.RootElement.TryGetProperty("Information", out var infoElement))
+            {
+                _logger.LogWarning("Alpha Vantage info: {Info}", infoElement.GetString());
                 return null;
             }
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Trainer - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chess-trainer.css">
+    <!-- Chess.js for move validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <!-- Chessboard.js for the board UI -->
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>♟️ Chess Trainer</h1>
+        <button id="backBtn">Back to Tools</button>
+    </div>
+
+    <div class="container">
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="play">🎮 Play</button>
+            <button class="tab-btn" data-tab="puzzles">🧩 Puzzles</button>
+            <button class="tab-btn" data-tab="lessons">📖 Lessons</button>
+            <button class="tab-btn" data-tab="analysis">🔍 Analysis</button>
+        </div>
+
+        <!-- Play Mode -->
+        <div class="tab-content active" id="tab-play">
+            <div class="play-layout">
+                <div class="play-controls-top">
+                    <div class="control-group">
+                        <label>Difficulty</label>
+                        <select id="difficultySelect">
+                            <option value="1">Beginner (~800 Elo)</option>
+                            <option value="2">Casual (~1200 Elo)</option>
+                            <option value="3" selected>Intermediate (~1600 Elo)</option>
+                            <option value="4">Advanced (~2000 Elo)</option>
+                            <option value="5">Grandmaster (~2500+ Elo)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Play as</label>
+                        <select id="colorSelect">
+                            <option value="white">White</option>
+                            <option value="black">Black</option>
+                            <option value="random">Random</option>
+                        </select>
+                    </div>
+                    <button id="newGameBtn" class="btn-primary">New Game</button>
+                    <button id="hintBtn" class="btn-secondary">💡 Hint</button>
+                </div>
+                <div class="board-area">
+                    <div class="board-container">
+                        <div id="playBoard" class="chess-board"></div>
+                    </div>
+                    <div class="side-panel">
+                        <div class="game-status" id="gameStatus">Click "New Game" to start</div>
+                        <div class="move-list" id="moveList"></div>
+                        <div class="game-controls">
+                            <button id="undoBtn" class="btn-small" disabled>↩ Undo</button>
+                            <button id="resignBtn" class="btn-small" disabled>🏳️ Resign</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Post-game analysis -->
+                <div id="postGameAnalysis" class="post-game-section" style="display:none;">
+                    <h3>Game Analysis</h3>
+                    <div id="analysisResults"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Puzzles Mode -->
+        <div class="tab-content" id="tab-puzzles">
+            <div class="puzzles-layout">
+                <div class="puzzle-controls">
+                    <div class="puzzle-stats">
+                        <span>Rating: <strong id="puzzleRating">1200</strong></span>
+                        <span>Solved: <strong id="puzzlesSolved">0</strong></span>
+                        <span>Streak: <strong id="puzzleStreak">0</strong> 🔥</span>
+                    </div>
+                    <div class="puzzle-difficulty-tabs">
+                        <button class="pill-btn active" data-difficulty="all">All</button>
+                        <button class="pill-btn" data-difficulty="easy">Easy</button>
+                        <button class="pill-btn" data-difficulty="medium">Medium</button>
+                        <button class="pill-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+                <div class="board-area">
+                    <div class="board-container">
+                        <div id="puzzleBoard" class="chess-board"></div>
+                    </div>
+                    <div class="side-panel">
+                        <div id="puzzleInfo" class="puzzle-info">
+                            <h3 id="puzzleTitle">Puzzle</h3>
+                            <p id="puzzleTheme"></p>
+                            <p id="puzzleTurn" class="turn-indicator"></p>
+                        </div>
+                        <div id="puzzleFeedback" class="puzzle-feedback"></div>
+                        <div class="puzzle-actions">
+                            <button id="nextPuzzleBtn" class="btn-primary">Next Puzzle</button>
+                            <button id="showSolutionBtn" class="btn-secondary">Show Solution</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Mode -->
+        <div class="tab-content" id="tab-lessons">
+            <div class="lessons-layout">
+                <div id="lessonsList" class="lessons-grid">
+                    <!-- Populated by JS -->
+                </div>
+                <div id="lessonView" class="lesson-view" style="display:none;">
+                    <div class="lesson-header">
+                        <button id="backToLessonsBtn" class="btn-secondary">← Back to Lessons</button>
+                        <h3 id="lessonTitle"></h3>
+                    </div>
+                    <div class="board-area">
+                        <div class="board-container">
+                            <div id="lessonBoard" class="chess-board"></div>
+                        </div>
+                        <div class="side-panel lesson-text-panel">
+                            <div id="lessonContent" class="lesson-content"></div>
+                            <div class="lesson-nav">
+                                <button id="lessonPrevBtn" class="btn-small">← Previous</button>
+                                <span id="lessonProgress"></span>
+                                <button id="lessonNextBtn" class="btn-small">Next →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Mode -->
+        <div class="tab-content" id="tab-analysis">
+            <div class="analysis-layout">
+                <div class="analysis-input">
+                    <div class="input-group">
+                        <label>Paste PGN or FEN:</label>
+                        <textarea id="pgnInput" rows="4" placeholder="Paste PGN notation or FEN string here..."></textarea>
+                        <button id="loadPgnBtn" class="btn-primary">Load Position</button>
+                    </div>
+                </div>
+                <div class="board-area">
+                    <div class="eval-bar-container">
+                        <div id="evalBar" class="eval-bar">
+                            <div id="evalBarFill" class="eval-bar-fill"></div>
+                        </div>
+                        <div id="evalScore" class="eval-score">0.0</div>
+                    </div>
+                    <div class="board-container">
+                        <div id="analysisBoard" class="chess-board"></div>
+                    </div>
+                    <div class="side-panel">
+                        <div class="engine-lines" id="engineLines">
+                            <h4>Engine Analysis</h4>
+                            <div id="topLines"></div>
+                        </div>
+                        <div class="analysis-moves" id="analysisMoveList"></div>
+                        <div class="analysis-nav">
+                            <button id="analysisStartBtn" class="btn-small">⏮</button>
+                            <button id="analysisPrevBtn" class="btn-small">◀</button>
+                            <button id="analysisNextBtn" class="btn-small">▶</button>
+                            <button id="analysisEndBtn" class="btn-small">⏭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/chess-engine.js"></script>
+    <script src="/js/chess-trainer.js"></script>
+    <script src="/js/chess-play.js"></script>
+    <script src="/js/chess-puzzles.js"></script>
+    <script src="/js/chess-lessons.js"></script>
+    <script src="/js/chess-analysis.js"></script>
+</body>
+</html>

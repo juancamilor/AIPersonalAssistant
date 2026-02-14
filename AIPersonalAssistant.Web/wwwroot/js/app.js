@@ -62,10 +62,14 @@ const handleToolClick = (event) => {
     
     if (toolName === 'Rate Exchange') {
         window.location.href = '/rate-exchange.html';
-    } else if (toolName === 'Stock Tools') {
+    } else if (toolName === 'Stocks') {
         window.location.href = '/stock-tools.html';
     } else if (toolName === 'Travel Map') {
         window.location.href = '/travel-map.html';
+    } else if (toolName === 'Taxes Manager') {
+        window.location.href = '/taxes-manager.html';
+    } else if (toolName === 'Chess Trainer') {
+        window.location.href = '/chess-trainer.html';
     }
 };
 

@@ -7,7 +7,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
 document.getElementById('exchangeForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const date = document.getElementById('date').value;
+    const date = new Date().toISOString().split('T')[0];
     const fromCurrency = document.getElementById('fromCurrency').value;
     const amount = parseFloat(document.getElementById('amount').value) || 1;
     const toCurrencyCheckboxes = document.querySelectorAll('input[name="toCurrency"]:checked');
@@ -73,10 +73,6 @@ document.getElementById('exchangeForm').addEventListener('submit', async (e) => 
     }
 });
 
-// Set today's date as default
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('date').value = today;
-
 function displayResults(data) {
     const resultsContent = document.getElementById('resultsContent');
     const fromCurrencyName = getCurrencyName(data.fromCurrency);
@@ -85,7 +81,6 @@ function displayResults(data) {
     
     let html = `
         <div class="results-header">
-            <p><strong>Date:</strong> ${formatDate(data.date)}</p>
             <p><strong>From:</strong> ${fromCurrencyName}</p>
             <p><strong>Amount:</strong> ${formatNumber(amount)} ${fromCurrencyCode}</p>
         </div>
@@ -268,10 +263,11 @@ async function loadHistoryChart(fromCurrency, toCurrencies) {
             data: { labels, datasets },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { position: 'top' } },
                 scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Exchange Rate' } }
+                    x: { title: { display: true, text: 'Date' }, ticks: { maxTicksLimit: 10 } },
+                    y: { title: { display: true, text: 'Exchange Rate' }, beginAtZero: false }
                 }
             }
         });

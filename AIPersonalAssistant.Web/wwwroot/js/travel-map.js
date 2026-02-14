@@ -260,14 +260,15 @@ async function loadPinImages(pinId) {
     const gallery = document.getElementById('imageGallery');
     gallery.innerHTML = '';
     try {
-        const res = await fetch(`/api/travel/pins/${pinId}/images`, { credentials: 'include' });
+        const res = await fetch(`/api/travel/pins/${pinId}`, { credentials: 'include' });
         if (!res.ok) return;
-        const images = await res.json();
-        images.forEach(img => {
+        const pin = await res.json();
+        const images = pin.imageUrls || [];
+        images.forEach(imgId => {
             const thumb = document.createElement('div');
             thumb.className = 'image-thumb';
-            thumb.innerHTML = `<img src="/api/travel/pins/${pinId}/images/${img.id}" alt="pin image"><button class="remove-img" title="Remove">&times;</button>`;
-            thumb.querySelector('.remove-img').addEventListener('click', () => removeImage(pinId, img.id));
+            thumb.innerHTML = `<img src="/api/travel/pins/${pinId}/images/${imgId}" alt="pin image"><button class="remove-img" title="Remove">&times;</button>`;
+            thumb.querySelector('.remove-img').addEventListener('click', () => removeImage(pinId, imgId));
             gallery.appendChild(thumb);
         });
         updateDropZoneState(images.length);
@@ -305,11 +306,14 @@ async function uploadImages(files) {
         const formData = new FormData();
         formData.append('file', toUpload[i]);
         try {
-            await fetch(`/api/travel/pins/${pinId}/images`, {
+            const uploadRes = await fetch(`/api/travel/pins/${pinId}/images`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
             });
+            if (!uploadRes.ok) {
+                console.error('Upload failed with status:', uploadRes.status);
+            }
         } catch (e) {
             console.error('Upload failed:', e);
         }

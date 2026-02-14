@@ -5,39 +5,52 @@ using AIPersonalAssistant.Web.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+var bypassAuth = builder.Environment.IsDevelopment() && 
+    builder.Configuration.GetValue<bool>("BYPASS_AUTH", false);
 
-var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
-var adminEmails = builder.Configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
-
-builder.Services.AddAuthorization(options =>
+if (!bypassAuth)
 {
-    options.AddPolicy("EmailAllowList", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new EmailAllowListRequirement(allowedEmails));
-    });
-    
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .AddRequirements(new EmailAllowListRequirement(allowedEmails))
-        .Build();
+    builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-    options.AddPolicy("AdminOnly", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new AdminRequirement(adminEmails));
-    });
-});
+    var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
+    var adminEmails = builder.Configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
 
-builder.Services.AddSingleton<IAuthorizationHandler, EmailAllowListHandler>();
-builder.Services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("EmailAllowList", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.Requirements.Add(new EmailAllowListRequirement(allowedEmails));
+        });
+        
+        options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .AddRequirements(new EmailAllowListRequirement(allowedEmails))
+            .Build();
+
+        options.AddPolicy("AdminOnly", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.Requirements.Add(new AdminRequirement(adminEmails));
+        });
+    });
+
+    builder.Services.AddSingleton<IAuthorizationHandler, EmailAllowListHandler>();
+    builder.Services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+}
+else
+{
+    builder.Services.AddAuthentication("BypassScheme")
+        .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, AIPersonalAssistant.Web.Authorization.BypassAuthHandler>("BypassScheme", null);
+    builder.Services.AddAuthorization();
+}
 
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateService, AIPersonalAssistant.Web.Services.ExchangeRateService>();
 builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IStockService, AIPersonalAssistant.Web.Services.StockService>();
+builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITaxesService, AIPersonalAssistant.Web.Services.TaxesService>();
 
 // Use Blob storage in production, JSON file in development
 if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configuration["AzureStorage:ConnectionString"]))

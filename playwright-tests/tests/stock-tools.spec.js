@@ -1,13 +1,13 @@
 // Smoke tests for the Stock Tools page
 const { test, expect } = require('@playwright/test');
 
-const STOCK_TOOLS_URL = 'https://localhost:7028/stock-tools.html';
+const STOCK_TOOLS_URL = '/stock-tools.html';
 
 test.describe('Stock Tools - Smoke Tests', () => {
 
   test('should navigate to Stock Tools page', async ({ page }) => {
     await page.goto(STOCK_TOOLS_URL);
-    await expect(page).toHaveTitle(/Stock Tools/);
+    await expect(page).toHaveTitle(/Stocks/);
   });
 
   test('MSFT should be pre-selected in the stocks list', async ({ page }) => {

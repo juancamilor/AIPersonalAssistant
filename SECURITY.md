@@ -21,6 +21,27 @@ This document outlines security best practices for handling sensitive configurat
 
 ## Local Development Security
 
+### Authentication Bypass for Local Testing
+
+The application supports a `BYPASS_AUTH` environment variable for local development and Playwright testing:
+
+- **Only active when** `ASPNETCORE_ENVIRONMENT=Development` **AND** `BYPASS_AUTH=true`
+- **Never active in production** — the bypass is ignored when the environment is not Development
+- **Purpose**: Enables running Playwright tests and local development without configuring Azure AD
+
+```bash
+# PowerShell
+$env:BYPASS_AUTH="true"
+
+# Or set in launchSettings.json
+"environmentVariables": {
+  "ASPNETCORE_ENVIRONMENT": "Development",
+  "BYPASS_AUTH": "true"
+}
+```
+
+⚠️ **Do NOT set `BYPASS_AUTH` in any production or staging environment.** The code explicitly checks for the Development environment before honoring this variable.
+
 ### User Secrets Setup
 
 User Secrets are stored **outside** your project directory and **never** committed to Git.
@@ -44,6 +65,10 @@ dotnet user-secrets set "ExchangeRateAPIs:CurrencyApi:ApiKey" "your-key"
 
 # Stock Tools API
 dotnet user-secrets set "StockAPI:AlphaVantage:ApiKey" "your-key"
+
+# Taxes Manager (Azure Document Intelligence)
+dotnet user-secrets set "AzureDocumentIntelligence:Endpoint" "your-endpoint"
+dotnet user-secrets set "AzureDocumentIntelligence:ApiKey" "your-key"
 ```
 
 **List Secrets:**

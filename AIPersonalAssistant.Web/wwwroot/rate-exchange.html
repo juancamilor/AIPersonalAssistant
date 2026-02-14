@@ -19,11 +19,6 @@
         <div class="form-card">
             <h2>Currency Converter</h2>
             <form id="exchangeForm">
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-
                 <div class="form-row">
                     <div class="form-group form-group-flex">
                         <label for="fromCurrency">From Currency</label>
@@ -73,9 +68,11 @@
             <div id="resultsContent"></div>
         </div>
 
-        <div id="historyChartSection" style="display:none; margin-top: 20px;">
-            <h3>Historical Rates</h3>
-            <canvas id="historyChart" width="400" height="200"></canvas>
+        <div id="historyChartSection" class="section-card" style="display:none;">
+            <h3>📊 30-Day Historical Rates</h3>
+            <div style="position:relative; height:300px;">
+                <canvas id="historyChart"></canvas>
+            </div>
         </div>
 
         <div id="errorSection" class="error-card" style="display: none;">

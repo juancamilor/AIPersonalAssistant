@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxes Manager - AI Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/taxes-manager.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Taxes Manager</h1>
+        <button id="backBtn">Back to Tools</button>
+    </div>
+
+    <div class="container">
+        <!-- Step 1: W2 Upload -->
+        <div class="form-card">
+            <div class="step-indicator">Step 1</div>
+            <h2>📄 Upload W2</h2>
+            <p class="step-description">Upload your W2 form (JPEG, PNG, or PDF) to extract income and withholding data.</p>
+            <div class="upload-area" id="w2UploadArea">
+                <div class="upload-icon">📤</div>
+                <p>Drag & drop your W2 file here</p>
+                <span class="upload-hint">or click to browse</span>
+                <input type="file" id="w2FileInput" accept=".jpg,.jpeg,.png,.pdf" hidden>
+            </div>
+            <div id="w2Status" class="upload-status" style="display:none;"></div>
+        </div>
+
+        <!-- Step 2: Stock Sales -->
+        <div class="form-card">
+            <div class="step-indicator">Step 2</div>
+            <h2>📈 Stock Sales <span class="optional-badge">Optional</span></h2>
+            <p class="step-description">Add stock sale transactions via Excel upload or manual entry.</p>
+
+            <div class="tab-toggle">
+                <button class="tab-btn active" data-tab="upload">Upload Excel</button>
+                <button class="tab-btn" data-tab="manual">Manual Entry</button>
+            </div>
+
+            <!-- Upload Excel Tab -->
+            <div class="tab-content active" id="tab-upload">
+                <div class="upload-area" id="excelUploadArea">
+                    <div class="upload-icon">📊</div>
+                    <p>Drag & drop your Excel file here</p>
+                    <span class="upload-hint">or click to browse (.xlsx)</span>
+                    <input type="file" id="excelFileInput" accept=".xlsx" hidden>
+                </div>
+                <div id="excelStatus" class="upload-status" style="display:none;"></div>
+            </div>
+
+            <!-- Manual Entry Tab -->
+            <div class="tab-content" id="tab-manual">
+                <div class="table-wrapper">
+                    <table class="manual-table" id="stockSalesTable">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Buy Date</th>
+                                <th>Buy Price</th>
+                                <th>Sell Date</th>
+                                <th>Sell Price</th>
+                                <th>Qty</th>
+                                <th>Type</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockSalesBody">
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="add-row-btn" id="addRowBtn">+ Add Row</button>
+            </div>
+
+            <div id="stockSalesPreview" style="display:none;">
+                <h3>Loaded Stock Sales</h3>
+                <div id="stockSalesPreviewContent"></div>
+            </div>
+        </div>
+
+        <!-- Step 3: Calculate -->
+        <div class="form-card calculate-section">
+            <div class="step-indicator">Step 3</div>
+            <h2>🧮 Calculate Tax Estimate</h2>
+            <button id="calculateBtn" class="calculate-btn" disabled>Calculate Estimate</button>
+            <p class="calculate-hint" id="calculateHint">Upload your W2 first to enable calculation.</p>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingSection" class="loading-card" style="display:none;">
+            <div class="spinner"></div>
+            <p>Calculating your tax estimate...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="errorSection" class="error-card" style="display:none;">
+            <p id="errorMessage"></p>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsSection" style="display:none;">
+            <!-- W2 Summary -->
+            <div class="results-card">
+                <h2>📄 W2 Summary</h2>
+                <div id="w2SummaryContent"></div>
+            </div>
+
+            <!-- Stock Sales Summary -->
+            <div class="results-card" id="stockSummaryCard" style="display:none;">
+                <h2>📈 Stock Sales Summary</h2>
+                <div id="stockSummaryContent"></div>
+            </div>
+
+            <!-- Tax Estimate -->
+            <div class="results-card highlight-card">
+                <h2>💰 Tax Estimate</h2>
+                <div id="taxEstimateContent"></div>
+            </div>
+
+            <!-- Filing Cheat Sheet -->
+            <div class="results-card" id="cheatSheetCard" style="display:none;">
+                <div class="cheat-sheet-header">
+                    <h2>📋 Filing Cheat Sheet</h2>
+                    <button id="copyCheatSheetBtn" class="copy-btn">📋 Copy to Clipboard</button>
+                </div>
+                <div id="cheatSheetContent"></div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer-banner">
+                <span class="disclaimer-icon">⚠️</span>
+                <p id="disclaimerText">This is an estimate for informational purposes only. It is not tax advice. Consult a tax professional for accurate filing.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/taxes-manager.js"></script>
+</body>
+</html>

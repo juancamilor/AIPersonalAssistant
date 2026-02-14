@@ -1,19 +1,22 @@
-# Stock Tools Feature - API Setup Instructions
+# Stocks Feature - API Setup Instructions
 
 ## Overview
-The Stock Tools feature displays historical stock performance using data from **Alpha Vantage API** with interactive Chart.js charts.
+The Stocks feature displays historical stock performance using data from **Alpha Vantage API** with interactive Chart.js charts.
 
 ## Features
 - Select from 3 stocks: Microsoft (MSFT), Meta (META), Google (GOOGL)
 - Choose custom date range
 - Interactive line chart showing closing prices
 - Summary statistics: Start/End price, High, Low, Change, Change %
+- Info banner noting free-tier data limitations
 
 ## Required API Key
 
 ### Alpha Vantage
 - **Sign up:** https://www.alphavantage.co/support/#api-key
-- **Free tier:** 500 requests/day, 5 calls/minute
+- **Free tier:** 25 requests/day, 5 calls/minute
+- **Free tier data:** Returns last 100 trading days (~5 months) using `outputsize=compact`
+- **Premium tier:** Full historical data (20+ years) with `outputsize=full`
 - **Steps:**
   1. Visit the link above and request a free API key
   2. Copy your API key
@@ -70,9 +73,9 @@ Frontend (stock-tools.html + Chart.js)
 
 ## Caching Strategy
 
-- Full daily data is cached per stock symbol for **1 hour**
+- Stock data is cached per symbol for **1 hour**
 - Date filtering happens on cached data (reduces API calls)
-- This keeps you well within the 500 requests/day limit
+- Free tier returns ~5 months of data (`outputsize=compact`); premium returns full history (`outputsize=full`)
 
 ## Supported Stocks
 
@@ -107,7 +110,8 @@ The endpoint `POST /api/stock/data` returns:
 
 ### "No data available for the selected date range"
 - Try expanding the date range
-- Note: Alpha Vantage may not have data for very recent dates (today/yesterday)
+- Note: Free tier only returns ~5 months of data; older dates require a premium API key
+- Alpha Vantage may not have data for very recent dates (today/yesterday)
 
 ### Chart not displaying
 - Ensure you have an internet connection (Chart.js loads from CDN)

@@ -1,0 +1,402 @@
+[
+  {
+    "id": "p1",
+    "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+    "solution": ["h5f7"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "easy",
+    "description": "Scholar's Mate — White to checkmate in one"
+  },
+  {
+    "id": "p2",
+    "fen": "rnbqkbnr/ppp1pppp/8/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3",
+    "solution": ["e5d6"],
+    "theme": "Pawn Tactics",
+    "difficulty": "easy",
+    "description": "Capture en passant"
+  },
+  {
+    "id": "p3",
+    "fen": "r1bqkbnr/pppppppp/2n5/8/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+    "solution": ["f1b5"],
+    "theme": "Pin",
+    "difficulty": "easy",
+    "description": "Pin the knight to the king with the bishop"
+  },
+  {
+    "id": "p4",
+    "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+    "solution": ["f3e5"],
+    "theme": "Fork",
+    "difficulty": "easy",
+    "description": "Knight captures the undefended pawn forking key squares"
+  },
+  {
+    "id": "p5",
+    "fen": "6k1/5ppp/8/8/8/8/5PPP/4R1K1 w - - 0 1",
+    "solution": ["e1e8"],
+    "theme": "Back Rank Mate",
+    "difficulty": "easy",
+    "description": "Deliver back rank checkmate"
+  },
+  {
+    "id": "p6",
+    "fen": "r2qk2r/ppp2ppp/2n1bn2/2bpp3/4P3/1BP2N2/PP1P1PPP/RNBQ1RK1 w kq - 4 6",
+    "solution": ["d1a4"],
+    "theme": "Fork",
+    "difficulty": "easy",
+    "description": "Queen fork — attack the king and the undefended piece"
+  },
+  {
+    "id": "p7",
+    "fen": "r1bqr1k1/pppp1ppp/2n2n2/2b5/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 w - - 6 6",
+    "solution": ["c1g5"],
+    "theme": "Pin",
+    "difficulty": "easy",
+    "description": "Pin the knight to the queen"
+  },
+  {
+    "id": "p8",
+    "fen": "rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+    "solution": ["d2d4"],
+    "theme": "Opening",
+    "difficulty": "easy",
+    "description": "Occupy the center with a pawn"
+  },
+  {
+    "id": "p9",
+    "fen": "8/8/8/8/8/5k2/4q3/6K1 b - - 0 1",
+    "solution": ["e2g2"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "easy",
+    "description": "Queen delivers checkmate"
+  },
+  {
+    "id": "p10",
+    "fen": "r3k2r/ppp2ppp/2nqbn2/2bpp3/2B1P3/2NP1N2/PPP1QPPP/R1B2RK1 w kq - 6 7",
+    "solution": ["c4d5"],
+    "theme": "Pawn Tactics",
+    "difficulty": "easy",
+    "description": "Capture the center pawn and open lines"
+  },
+  {
+    "id": "p11",
+    "fen": "r1b1kb1r/pppp1ppp/2n2n2/4N3/2B1P1q1/8/PPPP1PPP/RNBQK2R w KQkq - 4 5",
+    "solution": ["c4f7"],
+    "theme": "Discovered Attack",
+    "difficulty": "easy",
+    "description": "Bishop check discovers attack on the queen"
+  },
+  {
+    "id": "p12",
+    "fen": "8/8/8/1k6/8/8/1K2R3/8 w - - 0 1",
+    "solution": ["e2e5"],
+    "theme": "Endgame",
+    "difficulty": "easy",
+    "description": "Cut off the king with the rook"
+  },
+  {
+    "id": "p13",
+    "fen": "rnb1kbnr/ppppqppp/8/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+    "solution": ["e1g1"],
+    "theme": "Opening",
+    "difficulty": "easy",
+    "description": "Castle kingside to safety"
+  },
+  {
+    "id": "p14",
+    "fen": "r1bqkb1r/pppp1ppp/2n5/4p2n/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+    "solution": ["f3e5"],
+    "theme": "Fork",
+    "difficulty": "easy",
+    "description": "Knight takes pawn and forks"
+  },
+  {
+    "id": "p15",
+    "fen": "6k1/pp3ppp/8/8/8/8/PPr2PPP/3R2K1 w - - 0 1",
+    "solution": ["d1d8"],
+    "theme": "Back Rank Mate",
+    "difficulty": "easy",
+    "description": "Back rank mate in one"
+  },
+  {
+    "id": "p16",
+    "fen": "r2qr1k1/pppb1ppp/2np1n2/2b1p3/2B1P3/2NP1N2/PPPBQPPP/R4RK1 w - - 0 10",
+    "solution": ["c3d5", "f6d5", "c4d5"],
+    "theme": "Pin",
+    "difficulty": "medium",
+    "description": "Exchange on d5 exploiting the pin on the e-file"
+  },
+  {
+    "id": "p17",
+    "fen": "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 w - - 0 6",
+    "solution": ["c1g5", "h7h6", "g5h4"],
+    "theme": "Pin",
+    "difficulty": "medium",
+    "description": "Pin the knight and maintain pressure"
+  },
+  {
+    "id": "p18",
+    "fen": "2r3k1/5ppp/p3p3/1p6/3Pn3/1B2P3/PP3PPP/2R3K1 w - - 0 1",
+    "solution": ["c1c8"],
+    "theme": "Back Rank Mate",
+    "difficulty": "medium",
+    "description": "Back rank threat forces material gain"
+  },
+  {
+    "id": "p19",
+    "fen": "r1b1k2r/ppppqppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 4 5",
+    "solution": ["c3d5", "f6d5", "e4d5"],
+    "theme": "Fork",
+    "difficulty": "medium",
+    "description": "Capture and fork the knight pair"
+  },
+  {
+    "id": "p20",
+    "fen": "r2q1rk1/pp2ppbp/2np1np1/2p5/4PP2/2NP2P1/PPP1N1BP/R1BQ1RK1 w - - 0 9",
+    "solution": ["f4f5", "g6f5", "e4f5"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Pawn advance opening the kingside"
+  },
+  {
+    "id": "p21",
+    "fen": "r3kb1r/ppp1qppp/2n1b3/3np3/8/1B2BN2/PPPP1PPP/RN1Q1RK1 w kq - 4 7",
+    "solution": ["f3e5", "c6e5", "b3d5"],
+    "theme": "Discovered Attack",
+    "difficulty": "medium",
+    "description": "Knight capture reveals bishop attack"
+  },
+  {
+    "id": "p22",
+    "fen": "r2qkbnr/ppp2ppp/2n5/3pp1B1/4P1b1/5N2/PPPP1PPP/RN1QKB1R w KQkq - 4 4",
+    "solution": ["g5f6", "d8f6", "f3e5"],
+    "theme": "Fork",
+    "difficulty": "medium",
+    "description": "Capture, recapture, then knight fork"
+  },
+  {
+    "id": "p23",
+    "fen": "r1bq1rk1/pp3ppp/2nbpn2/2pp4/3P4/2NBPN2/PPP2PPP/R1BQ1RK1 w - - 0 8",
+    "solution": ["d4c5", "d6c5", "e3e4"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Exchange in the center and push"
+  },
+  {
+    "id": "p24",
+    "fen": "r1bqk2r/pppp1Bpp/2n2n2/2b1p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 4",
+    "solution": ["e8f7"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "medium",
+    "description": "King must capture the bishop — only legal move"
+  },
+  {
+    "id": "p25",
+    "fen": "2r2rk1/pp1bqppp/2n1p3/3pP3/3P4/2N2N2/PP2QPPP/R1B2RK1 w - - 0 12",
+    "solution": ["f3g5", "h7h6", "g5e6"],
+    "theme": "Fork",
+    "difficulty": "medium",
+    "description": "Knight maneuver to fork queen and rook"
+  },
+  {
+    "id": "p26",
+    "fen": "r4rk1/pp1q1ppp/2nbpn2/3p4/2PP4/2N1PN2/PPQ2PPP/R1B2RK1 w - - 0 10",
+    "solution": ["c4d5", "e6d5", "e3e4"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Break in the center with pawn advances"
+  },
+  {
+    "id": "p27",
+    "fen": "r1bqk2r/pppp1ppp/2n5/2b1p3/1PB1n3/5N2/P1PP1PPP/RNBQK2R w KQkq - 1 5",
+    "solution": ["b4c5"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Capture the bishop gaining material"
+  },
+  {
+    "id": "p28",
+    "fen": "r3r1k1/ppp2ppp/2n2n2/3q4/3P4/5NP1/PP2PPBP/R2Q1RK1 w - - 3 11",
+    "solution": ["f3e5", "c6e5", "d4e5"],
+    "theme": "Fork",
+    "difficulty": "medium",
+    "description": "Exchange sequence winning the knight"
+  },
+  {
+    "id": "p29",
+    "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQK2R w KQ - 2 6",
+    "solution": ["e4e5", "f6e4", "c3e4"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Central pawn thrust winning tempo"
+  },
+  {
+    "id": "p30",
+    "fen": "r1b1k2r/ppppnppp/2n1b3/1B2p1q1/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 6",
+    "solution": ["b5c6", "d7c6", "f3e5"],
+    "theme": "Discovered Attack",
+    "difficulty": "medium",
+    "description": "Bishop exchange reveals knight attack"
+  },
+  {
+    "id": "p31",
+    "fen": "r1b1kb1r/pppp1ppp/2n2n2/4p3/2BPP2q/5N2/PPP2PPP/RNBQK2R w KQkq - 3 4",
+    "solution": ["d4e5", "h4e4", "c4e2"],
+    "theme": "Deflection",
+    "difficulty": "medium",
+    "description": "Win material by deflecting the queen"
+  },
+  {
+    "id": "p32",
+    "fen": "r4rk1/pp3ppp/2n1bq2/2pp4/8/2NB1N2/PPP1QPPP/R4RK1 w - - 0 13",
+    "solution": ["d3h7", "g8h7", "e2e6"],
+    "theme": "Discovered Attack",
+    "difficulty": "medium",
+    "description": "Bishop sacrifice opens the king for the queen"
+  },
+  {
+    "id": "p33",
+    "fen": "r2q1rk1/ppp2ppp/3bbn2/3p4/8/1B1P1N2/PPP2PPP/R1BQ1RK1 w - - 0 10",
+    "solution": ["b3d5", "e6d5", "f3e5"],
+    "theme": "Skewer",
+    "difficulty": "medium",
+    "description": "Exchange then skewer the bishop and rook"
+  },
+  {
+    "id": "p34",
+    "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 3",
+    "solution": ["f2f4"],
+    "theme": "Opening",
+    "difficulty": "medium",
+    "description": "Vienna Gambit — challenge the center"
+  },
+  {
+    "id": "p35",
+    "fen": "r1bq1rk1/ppppbppp/2n2n2/4p3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 6 6",
+    "solution": ["c3d5", "f6d5", "c4d5"],
+    "theme": "Pawn Tactics",
+    "difficulty": "medium",
+    "description": "Central exchange gaining space"
+  },
+  {
+    "id": "p36",
+    "fen": "r1b2rk1/2q1bppp/p1nppn2/1p4B1/3NPP2/2N2Q2/PPP3PP/2KR1B1R w - - 0 11",
+    "solution": ["d4c6", "b7c6", "g5f6", "e7f6", "f3c6"],
+    "theme": "Deflection",
+    "difficulty": "hard",
+    "description": "Knight sacrifice leads to devastating discovered attacks"
+  },
+  {
+    "id": "p37",
+    "fen": "r2qr1k1/ppp2ppp/2n2b2/3p4/3Pn3/2NBPN2/PP3PPP/R1BQ1RK1 w - - 0 10",
+    "solution": ["d3e4", "d5e4", "f3d2", "e4e3", "f2e3"],
+    "theme": "Deflection",
+    "difficulty": "hard",
+    "description": "Bishop capture starts a forcing sequence"
+  },
+  {
+    "id": "p38",
+    "fen": "r1bqk2r/1ppp1ppp/p1n2n2/2b1p3/B3P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 0 5",
+    "solution": ["f3e5", "c6e5", "d2d4", "c5d4", "d1d4"],
+    "theme": "Fork",
+    "difficulty": "hard",
+    "description": "Knight sacrifice leads to central domination with queen fork"
+  },
+  {
+    "id": "p39",
+    "fen": "2r3k1/p4ppp/1p2p3/5b2/2Pn4/1P3N2/PB3PPP/3R2K1 b - - 0 22",
+    "solution": ["d4f3", "g2f3", "f5h3", "f3f4", "c8c4"],
+    "theme": "Discovered Attack",
+    "difficulty": "hard",
+    "description": "Knight sacrifice opens diagonal for devastating bishop attack"
+  },
+  {
+    "id": "p40",
+    "fen": "r1b1r1k1/ppqn1ppp/2pb1n2/4p3/2B1P3/2NP1N2/PPPBQPPP/R4RK1 w - - 4 10",
+    "solution": ["c3d5", "c6d5", "c4d5", "f6d5", "e4d5"],
+    "theme": "Pawn Tactics",
+    "difficulty": "hard",
+    "description": "Multi-exchange sequence winning the center"
+  },
+  {
+    "id": "p41",
+    "fen": "r4rk1/pp1nqppp/2p1p3/3pPb2/3P1B2/2N2Q1P/PPP2PP1/R4RK1 w - - 0 13",
+    "solution": ["f3g3", "g7g6", "f4h6", "f8e8", "g3g5"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "hard",
+    "description": "Build a mating attack on the kingside"
+  },
+  {
+    "id": "p42",
+    "fen": "2rr2k1/pp3ppp/2n1bq2/4p3/2B5/2N1P1P1/PP2QP1P/R4RK1 w - - 0 16",
+    "solution": ["c4e6", "f7e6", "e2g4", "e6e5", "g4g7"],
+    "theme": "Skewer",
+    "difficulty": "hard",
+    "description": "Bishop sacrifice exposes king to skewer and mating threats"
+  },
+  {
+    "id": "p43",
+    "fen": "r1b2rk1/ppq2ppp/2n1pn2/2ppP3/3P4/2PB1N2/PP1N1PPP/R1BQ1RK1 w - - 0 10",
+    "solution": ["e5f6", "g7f6", "d3h7", "g8h7", "d1h5"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "hard",
+    "description": "Greek gift sacrifice — bishop sac on h7 opens king"
+  },
+  {
+    "id": "p44",
+    "fen": "r1bq1rk1/ppp2ppp/2n5/3np1N1/2B5/8/PPPP1PPP/RNBQ1RK1 w - - 0 8",
+    "solution": ["g5f7", "f8f7", "c4d5", "c6d4", "d5f7"],
+    "theme": "Fork",
+    "difficulty": "hard",
+    "description": "Knight sac on f7 leads to winning material via double attack"
+  },
+  {
+    "id": "p45",
+    "fen": "r1b1k2r/pp1pqppp/2n1pn2/2p5/1bPP4/2NBPN2/PP3PPP/R1BQK2R w KQkq - 4 6",
+    "solution": ["d4c5", "b4c3", "b2c3", "e7c5", "d3e4"],
+    "theme": "Pawn Tactics",
+    "difficulty": "hard",
+    "description": "Nimzo-Indian pawn structure play"
+  },
+  {
+    "id": "p46",
+    "fen": "r2q1rk1/pp2bppp/2n1pn2/2ppP3/3P1P2/2PBB3/PP1N2PP/R2QK2R w KQ - 0 11",
+    "solution": ["e5f6", "e7f6", "d1h5", "g7g6", "h5h6"],
+    "theme": "Checkmate Pattern",
+    "difficulty": "hard",
+    "description": "Pawn capture opens lines for a mating attack"
+  },
+  {
+    "id": "p47",
+    "fen": "2r2rk1/ppqb1ppp/2n1pn2/3pN3/3P1B2/2PB4/PP1N1PPP/R2Q1RK1 w - - 4 13",
+    "solution": ["e5c6", "d7c6", "d3h7", "g8h7", "d1h5"],
+    "theme": "Discovered Attack",
+    "difficulty": "hard",
+    "description": "Knight exchange clears the diagonal for Greek gift"
+  },
+  {
+    "id": "p48",
+    "fen": "r1b2r1k/pppp2pp/2n2p2/2b1p3/4P1qP/3P1NP1/PPP2PB1/RNBQ1RK1 w - - 0 9",
+    "solution": ["f3e5", "f6e5", "d1g4"],
+    "theme": "Skewer",
+    "difficulty": "hard",
+    "description": "Knight sacrifice followed by queen skewer"
+  },
+  {
+    "id": "p49",
+    "fen": "r1bqkb1r/pp1npppp/2p2n2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 2 4",
+    "solution": ["c4d5", "c6d5", "f1g2"],
+    "theme": "Opening",
+    "difficulty": "hard",
+    "description": "Slav Defense exchange variation — fianchetto the bishop"
+  },
+  {
+    "id": "p50",
+    "fen": "r2q1rk1/pppbbppp/2n1pn2/3p2B1/2PP4/2N1PN2/PP3PPP/R2QKB1R w KQ - 4 7",
+    "solution": ["c4d5", "e6d5", "f1d3", "h7h6", "g5h4"],
+    "theme": "Pin",
+    "difficulty": "hard",
+    "description": "Exchange and develop with persistent pin"
+  }
+]
