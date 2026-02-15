@@ -11,7 +11,18 @@
 
     const pieceTheme = 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/img/chesspieces/wikipedia/{piece}.png';
 
+    let analysisInitialized = false;
+
     function initAnalysisMode() {
+        if (typeof Chessboard === 'undefined' || typeof Chess === 'undefined') {
+            const el = document.getElementById('evalScore');
+            if (el) el.textContent = 'Chess libraries failed to load.';
+            return;
+        }
+
+        if (analysisInitialized) return;
+        analysisInitialized = true;
+
         analysisGame = new Chess();
         analysisBoard = Chessboard('analysisBoard', {
             draggable: true,

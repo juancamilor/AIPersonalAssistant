@@ -301,8 +301,10 @@ async function uploadImages(files) {
     const status = document.getElementById('uploadStatus');
     status.style.display = 'block';
 
+    let hasError = false;
     for (let i = 0; i < toUpload.length; i++) {
         status.textContent = `Uploading ${i + 1}/${toUpload.length}...`;
+        status.className = '';
         const formData = new FormData();
         formData.append('file', toUpload[i]);
         try {
@@ -312,14 +314,25 @@ async function uploadImages(files) {
                 body: formData
             });
             if (!uploadRes.ok) {
-                console.error('Upload failed with status:', uploadRes.status);
+                const errorBody = await uploadRes.text().catch(() => '');
+                status.textContent = `Upload failed (HTTP ${uploadRes.status}): ${errorBody || 'Unknown error'}`;
+                status.style.color = 'red';
+                console.error('Upload failed with status:', uploadRes.status, errorBody);
+                hasError = true;
             }
         } catch (e) {
+            status.textContent = `Upload failed: ${e.message}`;
+            status.style.color = 'red';
             console.error('Upload failed:', e);
+            hasError = true;
         }
     }
 
-    status.style.display = 'none';
+    if (!hasError) {
+        status.textContent = 'Upload complete!';
+        status.style.color = 'green';
+        setTimeout(() => { status.style.display = 'none'; status.style.color = ''; }, 2000);
+    }
     await loadPinImages(pinId);
 }
 

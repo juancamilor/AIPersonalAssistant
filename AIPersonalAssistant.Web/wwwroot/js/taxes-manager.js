@@ -24,6 +24,7 @@
     const w2Input = document.getElementById('w2FileInput');
 
     w2Area.addEventListener('click', () => w2Input.click());
+    w2Area.addEventListener('dragenter', e => { e.preventDefault(); w2Area.classList.add('drag-over'); });
     w2Area.addEventListener('dragover', e => { e.preventDefault(); w2Area.classList.add('drag-over'); });
     w2Area.addEventListener('dragleave', () => w2Area.classList.remove('drag-over'));
     w2Area.addEventListener('drop', e => {
@@ -36,6 +37,16 @@
     });
 
     async function uploadW2(file) {
+        const allowed = ['.jpg', '.jpeg', '.png', '.pdf'];
+        const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+        if (!allowed.includes(ext)) {
+            const status = document.getElementById('w2Status');
+            status.style.display = 'block';
+            status.className = 'upload-status error';
+            status.textContent = '❌ Unsupported file type. Please upload JPG, PNG, or PDF.';
+            return;
+        }
+
         const status = document.getElementById('w2Status');
         status.style.display = 'block';
         status.className = 'upload-status loading';
@@ -66,6 +77,7 @@
     const excelInput = document.getElementById('excelFileInput');
 
     excelArea.addEventListener('click', () => excelInput.click());
+    excelArea.addEventListener('dragenter', e => { e.preventDefault(); excelArea.classList.add('drag-over'); });
     excelArea.addEventListener('dragover', e => { e.preventDefault(); excelArea.classList.add('drag-over'); });
     excelArea.addEventListener('dragleave', () => excelArea.classList.remove('drag-over'));
     excelArea.addEventListener('drop', e => {
@@ -78,6 +90,15 @@
     });
 
     async function uploadExcel(file) {
+        const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+        if (ext !== '.xlsx') {
+            const status = document.getElementById('excelStatus');
+            status.style.display = 'block';
+            status.className = 'upload-status error';
+            status.textContent = '❌ Unsupported file type. Please upload an .xlsx Excel file.';
+            return;
+        }
+
         const status = document.getElementById('excelStatus');
         status.style.display = 'block';
         status.className = 'upload-status loading';

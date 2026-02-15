@@ -7,7 +7,7 @@ namespace AIPersonalAssistant.Web.Services;
 public class BlobTravelImageService : ITravelImageService
 {
     private readonly BlobContainerClient _containerClient;
-    private const long MaxFileSizeBytes = 500 * 1024;
+    private const long MaxFileSizeBytes = 2 * 1024 * 1024;
 
     public BlobTravelImageService(IConfiguration configuration)
     {
@@ -41,9 +41,16 @@ public class BlobTravelImageService : ITravelImageService
             imageBytes = ms.ToArray();
         }
 
-        var blobClient = _containerClient.GetBlobClient(blobPath);
-        await using var uploadStream = new MemoryStream(imageBytes);
-        await blobClient.UploadAsync(uploadStream, new BlobHttpHeaders { ContentType = "image/jpeg" });
+        try
+        {
+            var blobClient = _containerClient.GetBlobClient(blobPath);
+            await using var uploadStream = new MemoryStream(imageBytes);
+            await blobClient.UploadAsync(uploadStream, new BlobHttpHeaders { ContentType = "image/jpeg" });
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to upload image to blob storage: {ex.Message}", ex);
+        }
 
         return imageId;
     }

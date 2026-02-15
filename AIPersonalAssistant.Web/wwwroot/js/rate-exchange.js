@@ -291,22 +291,23 @@ function initTimeSeriesDefaults() {
 }
 
 async function loadTimeSeries() {
-    const from = document.getElementById('tsFromCurrency').value;
-    const to = document.getElementById('tsToCurrency').value;
+    const checkboxes = document.querySelectorAll('#tsCheckboxGroup input[type="checkbox"]:checked');
+    const currencies = Array.from(checkboxes).map(cb => cb.value);
     const startDate = document.getElementById('tsStartDate').value;
     const endDate = document.getElementById('tsEndDate').value;
     const btn = document.getElementById('tsLoadBtn');
     const container = document.getElementById('tsChartContainer');
     const noData = document.getElementById('tsNoData');
     const note = document.getElementById('tsNote');
+    const colors = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#ef4444', '#3b82f6'];
 
     if (!startDate || !endDate) {
         alert('Please select start and end dates.');
         return;
     }
 
-    if (from === to) {
-        alert('From and To currencies must be different.');
+    if (currencies.length === 0) {
+        alert('Please select at least one currency.');
         return;
     }
 
@@ -317,65 +318,49 @@ async function loadTimeSeries() {
     note.style.display = 'none';
 
     try {
-        const response = await fetch(`/api/rateexchange/timeseries?from=${from}&to=${to}&startDate=${startDate}&endDate=${endDate}`, {
-            credentials: 'include'
-        });
-
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.error || 'Failed to fetch time series');
-        }
-
-        const data = await response.json();
-
-        const hasData = Object.values(data.series).some(points => points && points.length > 0);
-
-        if (!hasData) {
-            noData.style.display = '';
-            if (to === 'CO' || from === 'CO') {
-                note.textContent = '⚠️ Historical data for COP (Colombian Peso) has limited availability via free APIs.';
-                note.style.display = '';
-            }
-            return;
-        }
+        const results = await Promise.all(
+            currencies.map(currency =>
+                fetch(`/api/rateexchange/timeseries?from=USD&to=${currency}&startDate=${startDate}&endDate=${endDate}`, { credentials: 'include' })
+                    .then(r => r.ok ? r.json() : null)
+                    .catch(() => null)
+            )
+        );
 
         const datasets = [];
-        const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6f42c1'];
-        let colorIdx = 0;
-        let labels = data.dates || [];
+        let labels = [];
 
-        for (const [currency, points] of Object.entries(data.series)) {
-            if (points && points.length > 0) {
-                if (labels.length === 0) {
-                    labels = points.map(p => p.date);
+        results.forEach((data, i) => {
+            if (!data || !data.series) return;
+            for (const [currency, points] of Object.entries(data.series)) {
+                if (points && points.length > 0) {
+                    const dates = points.map(p => p.date);
+                    if (dates.length > labels.length) labels = dates;
+                    datasets.push({
+                        label: `USD → ${currency}`,
+                        data: points.map(p => p.rate),
+                        borderColor: colors[i % colors.length],
+                        backgroundColor: colors[i % colors.length] + '20',
+                        fill: false,
+                        tension: 0.1,
+                        pointRadius: dates.length > 90 ? 0 : 2
+                    });
                 }
-                datasets.push({
-                    label: currency,
-                    data: points.map(p => p.rate),
-                    borderColor: colors[colorIdx % colors.length],
-                    backgroundColor: colors[colorIdx % colors.length] + '20',
-                    fill: false,
-                    tension: 0.1,
-                    pointRadius: labels.length > 90 ? 0 : 2
-                });
-                colorIdx++;
             }
-        }
+        });
 
-        if (to === 'CO' || from === 'CO') {
-            const copSeries = data.series['COP'];
-            if (!copSeries || copSeries.length === 0) {
-                note.textContent = '⚠️ Historical data for COP (Colombian Peso) has limited availability via free APIs.';
-                note.style.display = '';
-            }
+        if (datasets.length === 0) {
+            noData.style.display = '';
+            return;
         }
 
         if (timeSeriesChartInstance) {
             timeSeriesChartInstance.destroy();
+            timeSeriesChartInstance = null;
         }
 
         container.style.display = '';
-        const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+        const canvas = document.getElementById('timeSeriesChart');
+        const ctx = canvas.getContext('2d');
         timeSeriesChartInstance = new Chart(ctx, {
             type: 'line',
             data: { labels, datasets },
@@ -385,9 +370,9 @@ async function loadTimeSeries() {
                 plugins: {
                     title: {
                         display: true,
-                        text: `Exchange Rate: ${from} → ${to} (${startDate} to ${endDate})`
+                        text: `Exchange Rates vs USD (${startDate} to ${endDate})`
                     },
-                    legend: { display: datasets.length > 1 }
+                    legend: { display: true, position: 'top' }
                 },
                 scales: {
                     x: {
@@ -403,15 +388,17 @@ async function loadTimeSeries() {
         });
     } catch (error) {
         console.error('Time series error:', error);
-        noData.textContent = error.message;
-        noData.style.display = '';
+        alert('Failed to load time series data: ' + error.message);
     } finally {
         btn.textContent = 'Show History';
         btn.disabled = false;
     }
 }
 
-document.addEventListener('DOMContentLoaded', initTimeSeriesDefaults);
+document.addEventListener('DOMContentLoaded', () => {
+    initTimeSeriesDefaults();
+    document.getElementById('tsLoadBtn').addEventListener('click', loadTimeSeries);
+});
 
 // Dynamically disable/enable checkboxes based on from currency selection
 document.getElementById('fromCurrency').addEventListener('change', (e) => {

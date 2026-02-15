@@ -1,0 +1,17 @@
+[
+  {
+    "Id": "33791364-75c8-4706-aad0-3dd6b73ec2b3",
+    "UserId": "54QwgjRAeTVXsXiGwwrLWifYxq1YJpGaASpmpeV9hss",
+    "Latitude": -1.3780274981428005,
+    "Longitude": -72.77343750000001,
+    "PlaceName": "Test",
+    "DateVisited": "2026-02-13T00:00:00",
+    "Notes": "Great",
+    "ImageUrls": [
+      "4e885b1d-687b-4e5a-b289-41ceeaef1c4b",
+      "6e8456e6-6803-4dba-aaf0-166bf2703753"
+    ],
+    "CreatedAt": "2026-02-14T18:22:48.3906927Z",
+    "UpdatedAt": "2026-02-14T18:23:02.3134086Z"
+  }
+]

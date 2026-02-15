@@ -12,11 +12,15 @@ public class TravelController : ControllerBase
 {
     private readonly ITravelService _travelService;
     private readonly ITravelImageService _imageService;
+    private readonly IWebHostEnvironment _env;
+    private readonly ILogger<TravelController> _logger;
 
-    public TravelController(ITravelService travelService, ITravelImageService imageService)
+    public TravelController(ITravelService travelService, ITravelImageService imageService, IWebHostEnvironment env, ILogger<TravelController> logger)
     {
         _travelService = travelService;
         _imageService = imageService;
+        _env = env;
+        _logger = logger;
     }
 
     private string GetUserId()
@@ -122,22 +126,33 @@ public class TravelController : ControllerBase
         if (pin.ImageUrls?.Count >= 5)
             return BadRequest("Maximum 5 images per pin");
 
-        using var stream = file.OpenReadStream();
-        var imageId = await _imageService.SaveImageAsync(pinId, stream, file.FileName);
-
-        pin.ImageUrls ??= new List<string>();
-        pin.ImageUrls.Add(imageId);
-        await _travelService.UpdatePinAsync(userId, pinId, new TravelPinRequest
+        try
         {
-            Latitude = pin.Latitude,
-            Longitude = pin.Longitude,
-            PlaceName = pin.PlaceName,
-            DateVisited = pin.DateVisited,
-            Notes = pin.Notes,
-            ImageUrls = pin.ImageUrls
-        });
+            using var stream = file.OpenReadStream();
+            var imageId = await _imageService.SaveImageAsync(pinId, stream, file.FileName);
 
-        return Ok(new { imageId });
+            pin.ImageUrls ??= new List<string>();
+            pin.ImageUrls.Add(imageId);
+            await _travelService.UpdatePinAsync(userId, pinId, new TravelPinRequest
+            {
+                Latitude = pin.Latitude,
+                Longitude = pin.Longitude,
+                PlaceName = pin.PlaceName,
+                DateVisited = pin.DateVisited,
+                Notes = pin.Notes,
+                ImageUrls = pin.ImageUrls
+            });
+
+            return Ok(new { imageId });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Image upload failed for pin {PinId}, file size: {FileSize} bytes", pinId, file.Length);
+            var message = _env.IsDevelopment()
+                ? $"Image upload failed: {ex.Message}"
+                : "Image upload failed. Please try again.";
+            return StatusCode(500, new { error = message });
+        }
     }
 
     [HttpDelete("pins/{pinId}/images/{imageId}")]

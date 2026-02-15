@@ -5,6 +5,7 @@ The Stocks feature displays historical stock performance using data from **Alpha
 
 ## Features
 - Select from 3 stocks: Microsoft (MSFT), Meta (META), Google (GOOGL)
+- **Auto-add on selection**: Selecting a stock from the dropdown automatically adds it to the chart (no separate Add button)
 - Choose custom date range
 - Interactive line chart showing closing prices
 - Summary statistics: Start/End price, High, Low, Change, Change %

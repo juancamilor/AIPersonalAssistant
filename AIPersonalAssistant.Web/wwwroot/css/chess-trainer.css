@@ -5,33 +5,36 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .header h1 {
     margin: 0;
-    color: #333;
+    color: #f1f5f9;
     font-size: 1.8rem;
 }
 
 #backBtn {
-    background: #764ba2;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
 #backBtn:hover {
-    background: #5a3580;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 /* Container */
@@ -45,11 +48,13 @@
 .tab-bar {
     display: flex;
     gap: 0.5rem;
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 0.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .tab-btn {
@@ -58,22 +63,22 @@
     border: none;
     border-radius: 8px;
     background: transparent;
-    color: #555;
+    color: #94a3b8;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
 .tab-btn:hover {
-    background: #f0f0f0;
-    color: #333;
+    background: rgba(99, 102, 241, 0.1);
+    color: #f1f5f9;
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 }
 
 /* Tab Content */
@@ -107,10 +112,12 @@
 .side-panel {
     flex: 1;
     min-width: 250px;
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 /* Game Status */
@@ -118,11 +125,12 @@
     text-align: center;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #333;
+    color: #f1f5f9;
     padding: 0.75rem;
     margin-bottom: 1rem;
-    background: #f9f9f9;
+    background: rgba(15, 23, 42, 0.5);
     border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 /* Move List */
@@ -134,26 +142,27 @@
     font-size: 0.95rem;
     line-height: 1.6;
     padding: 0.5rem;
+    color: #f1f5f9;
 }
 
 .move-list .move-number {
-    color: #888;
+    color: #64748b;
     margin-right: 0.25rem;
 }
 
 .move-list .move {
     cursor: pointer;
     padding: 2px 4px;
-    border-radius: 3px;
+    border-radius: 4px;
     transition: background 0.2s;
 }
 
 .move-list .move:hover {
-    background: #e8e8ff;
+    background: rgba(99, 102, 241, 0.2);
 }
 
 .move-list .move.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border-radius: 4px;
 }
@@ -170,11 +179,13 @@
     gap: 1rem;
     align-items: flex-end;
     flex-wrap: wrap;
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .control-group {
@@ -185,74 +196,76 @@
 
 .control-group label {
     font-size: 0.85rem;
-    color: #555;
+    color: #94a3b8;
     font-weight: 600;
 }
 
 .control-group select {
     padding: 0.5rem 0.75rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
     font-size: 0.9rem;
-    background: white;
+    background: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
     cursor: pointer;
 }
 
 .control-group select:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 /* Buttons */
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border: none;
     padding: 0.6rem 1.5rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .btn-secondary {
-    background: #667eea;
+    background: #6366f1;
     color: white;
     border: none;
     padding: 0.6rem 1.5rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
 }
 
 .btn-secondary:hover {
-    background: #5569d4;
+    background: #4f46e5;
     transform: translateY(-2px);
 }
 
 .btn-small {
-    background: #f0f0f0;
-    color: #333;
-    border: 1px solid #e0e0e0;
+    background: rgba(15, 23, 42, 0.5);
+    color: #f1f5f9;
+    border: 1px solid rgba(148, 163, 184, 0.2);
     padding: 0.4rem 0.8rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
     flex: 1;
 }
 
 .btn-small:hover:not(:disabled) {
-    background: #e0e0e0;
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
 }
 
 .btn-small:disabled {
@@ -262,11 +275,13 @@
 
 /* Puzzle Stats */
 .puzzle-controls {
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .puzzle-stats {
@@ -274,11 +289,11 @@
     gap: 2rem;
     margin-bottom: 1rem;
     font-size: 0.95rem;
-    color: #555;
+    color: #94a3b8;
 }
 
 .puzzle-stats strong {
-    color: #333;
+    color: #f1f5f9;
 }
 
 /* Pill Buttons */
@@ -289,22 +304,22 @@
 
 .pill-btn {
     padding: 0.4rem 1rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 20px;
-    background: white;
-    color: #555;
+    background: rgba(15, 23, 42, 0.5);
+    color: #94a3b8;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
 }
 
 .pill-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #6366f1;
+    color: #818cf8;
 }
 
 .pill-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border-color: transparent;
 }
@@ -323,14 +338,16 @@
 }
 
 .puzzle-feedback.correct {
-    background: #d3f9d8;
-    color: #2b8a3e;
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
     animation: feedbackPop 0.3s ease;
 }
 
 .puzzle-feedback.wrong {
-    background: #ffe3e3;
-    color: #c92a2a;
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
     animation: feedbackShake 0.4s ease;
 }
 
@@ -350,17 +367,18 @@
 
 .puzzle-info h3 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 .puzzle-info p {
     margin: 0.25rem 0;
-    color: #555;
+    color: #94a3b8;
 }
 
 .turn-indicator {
     font-weight: 600;
     font-size: 1rem;
+    color: #f1f5f9;
 }
 
 .puzzle-actions {
@@ -382,28 +400,31 @@
 }
 
 .lesson-card {
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s;
     position: relative;
 }
 
 .lesson-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(99, 102, 241, 0.3);
 }
 
 .lesson-card h3 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 .lesson-card p {
     margin: 0;
-    color: #666;
+    color: #94a3b8;
     font-size: 0.9rem;
 }
 
@@ -411,7 +432,7 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #51cf66;
+    background: #10b981;
     color: white;
     font-size: 0.75rem;
     padding: 0.2rem 0.6rem;
@@ -429,13 +450,13 @@
 
 .lesson-header h3 {
     margin: 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 .lesson-content {
     font-size: 0.95rem;
     line-height: 1.7;
-    color: #444;
+    color: #cbd5e1;
     min-height: 200px;
     max-height: 350px;
     overflow-y: auto;
@@ -451,22 +472,24 @@
 
 .lesson-nav span {
     font-size: 0.85rem;
-    color: #888;
+    color: #64748b;
 }
 
 /* Analysis Mode */
 .analysis-input {
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .input-group label {
     display: block;
     font-size: 0.9rem;
-    color: #555;
+    color: #94a3b8;
     font-weight: 600;
     margin-bottom: 0.4rem;
 }
@@ -474,19 +497,21 @@
 .input-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     resize: vertical;
     margin-bottom: 0.75rem;
     box-sizing: border-box;
+    background: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
 }
 
 .input-group textarea:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 /* Eval Bar */
@@ -501,10 +526,11 @@
 .eval-bar {
     width: 20px;
     height: 500px;
-    background: #333;
+    background: #1e293b;
     border-radius: 4px;
     overflow: hidden;
     position: relative;
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .eval-bar-fill {
@@ -512,7 +538,7 @@
     bottom: 0;
     width: 100%;
     height: 50%;
-    background: white;
+    background: #f1f5f9;
     transition: height 0.5s ease;
 }
 
@@ -520,7 +546,7 @@
     margin-top: 0.5rem;
     font-size: 0.85rem;
     font-weight: 700;
-    color: #333;
+    color: #f1f5f9;
 }
 
 /* Engine Lines */
@@ -530,26 +556,28 @@
 
 .engine-lines h4 {
     margin: 0 0 0.75rem 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 #topLines {
     font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     line-height: 1.8;
+    color: #f1f5f9;
 }
 
 .engine-line {
     padding: 0.4rem 0.5rem;
-    border-radius: 4px;
+    border-radius: 6px;
     margin-bottom: 0.25rem;
-    background: #f9f9f9;
+    background: rgba(15, 23, 42, 0.5);
     cursor: pointer;
     transition: background 0.2s;
+    border: 1px solid rgba(148, 163, 184, 0.05);
 }
 
 .engine-line:hover {
-    background: #e8e8ff;
+    background: rgba(99, 102, 241, 0.15);
 }
 
 .engine-line .eval {
@@ -566,6 +594,7 @@
     line-height: 1.6;
     margin-bottom: 1rem;
     padding: 0.5rem;
+    color: #f1f5f9;
 }
 
 .analysis-nav {
@@ -580,16 +609,18 @@
 
 /* Post-game Section */
 .post-game-section {
-    background: white;
-    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
     padding: 1.5rem;
     margin-top: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .post-game-section h3 {
     margin: 0 0 1rem 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 /* Responsive */

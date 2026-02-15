@@ -277,6 +277,11 @@
     }
 
     window.initPuzzleMode = function () {
+        if (typeof Chessboard === 'undefined' || typeof Chess === 'undefined') {
+            showFeedback('Chess libraries failed to load. Please check your internet connection and refresh.', 'wrong');
+            return;
+        }
+
         loadStats();
 
         if (puzzles.length > 0) {

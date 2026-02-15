@@ -115,7 +115,9 @@ jobs:
             "ExchangeRateAPIs__ExchangeRateApi__ApiKey=${{ secrets.EXCHANGERATE_API_KEY }}" \
             "ExchangeRateAPIs__OpenExchangeRates__ApiKey=${{ secrets.OPENEXCHANGERATES_API_KEY }}" \
             "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}" \
-            "StockAPI__AlphaVantage__ApiKey=${{ secrets.ALPHAVANTAGE_API_KEY }}"
+            "StockAPI__AlphaVantage__ApiKey=${{ secrets.ALPHAVANTAGE_API_KEY }}" \
+            "AzureDocumentIntelligence__Endpoint=${{ secrets.AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT }}" \
+            "AzureDocumentIntelligence__ApiKey=${{ secrets.AZURE_DOCUMENT_INTELLIGENCE_API_KEY }}"
         
     - name: Post-Deploy Health Check
       run: |

@@ -34,5 +34,23 @@
     "FromCurrency": "MXN",
     "ToCurrency": "COP",
     "Rate": 210.84509358875
+  },
+  {
+    "Date": "2026-02-14T00:00:00",
+    "FromCurrency": "CAD",
+    "ToCurrency": "USD",
+    "Rate": 0.73448531145
+  },
+  {
+    "Date": "2026-02-14T00:00:00",
+    "FromCurrency": "CAD",
+    "ToCurrency": "MXN",
+    "Rate": 12.613476944
+  },
+  {
+    "Date": "2026-02-14T00:00:00",
+    "FromCurrency": "CAD",
+    "ToCurrency": "COP",
+    "Rate": 2697.4476686494
   }
 ]

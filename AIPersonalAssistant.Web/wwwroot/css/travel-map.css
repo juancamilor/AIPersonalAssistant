@@ -8,9 +8,11 @@ body {
 }
 
 .header {
-    background: white;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(12px);
     padding: 1rem 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,25 +20,27 @@ body {
 }
 
 h1 {
-    color: #333;
+    color: #f1f5f9;
     font-size: 1.5rem;
     margin: 0;
 }
 
 #backBtn {
     padding: 0.6rem 1.2rem;
-    background: #764ba2 !important;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background 0.3s;
+    transition: all 0.2s;
     width: auto !important;
 }
 
 #backBtn:hover {
-    background: #5a3880 !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 #map {
@@ -52,7 +56,8 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,31 +65,33 @@ h1 {
 }
 
 .modal-content {
-    background: white;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(12px);
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: 12px;
     width: 90%;
     max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .modal-close {
     float: right;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #666;
+    color: #94a3b8;
     transition: color 0.2s;
 }
 
 .modal-close:hover {
-    color: #333;
+    color: #f1f5f9;
 }
 
 .modal-content h2 {
     margin: 0 0 1.5rem 0;
-    color: #333;
+    color: #f1f5f9;
 }
 
 .form-group {
@@ -93,7 +100,7 @@ h1 {
 
 .form-group label {
     display: block;
-    color: #555;
+    color: #94a3b8;
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
@@ -103,17 +110,20 @@ h1 {
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 5px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box;
+    background: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .form-group textarea {
@@ -130,60 +140,61 @@ h1 {
 .btn-primary {
     flex: 1;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .btn-secondary {
     padding: 0.75rem 1.5rem;
-    background: #e0e0e0;
-    color: #333;
-    border: none;
-    border-radius: 5px;
+    background: rgba(148, 163, 184, 0.15);
+    color: #f1f5f9;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .btn-secondary:hover {
-    background: #d0d0d0;
+    background: rgba(148, 163, 184, 0.25);
 }
 
 .btn-danger {
     padding: 0.75rem 1.5rem;
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .btn-danger:hover {
-    background: #ee5a5a;
+    background: rgba(239, 68, 68, 0.3);
+    color: #fee2e2;
 }
 
 /* Custom Pin Marker */
 .custom-pin {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     border: 3px solid white;
     border-radius: 50% 50% 50% 0;
     width: 30px;
     height: 30px;
     transform: rotate(-45deg);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 }
 
 .custom-pin-inner {
@@ -196,30 +207,38 @@ h1 {
 
 /* Leaflet popup customization */
 .leaflet-popup-content-wrapper {
-    border-radius: 8px;
+    border-radius: 12px;
+    background: rgba(30, 41, 59, 0.95);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .leaflet-popup-content {
     margin: 12px;
     min-width: 150px;
+    color: #f1f5f9;
+}
+
+.leaflet-popup-tip {
+    background: rgba(30, 41, 59, 0.95);
 }
 
 .pin-popup h3 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: #f1f5f9;
     font-size: 1.1rem;
 }
 
 .pin-popup p {
     margin: 0.25rem 0;
-    color: #666;
+    color: #94a3b8;
     font-size: 0.9rem;
 }
 
 .pin-popup .edit-link {
     display: inline-block;
     margin-top: 0.5rem;
-    color: #667eea;
+    color: #818cf8;
     cursor: pointer;
     font-weight: 600;
 }
@@ -241,9 +260,9 @@ h1 {
     width: 60px;
     height: 60px;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(148, 163, 184, 0.2);
     transition: opacity 0.2s;
 }
 
@@ -253,7 +272,7 @@ h1 {
 
 .popup-thumbs-more {
     font-size: 0.75rem;
-    color: #667eea;
+    color: #818cf8;
     font-weight: 600;
     margin-left: 2px;
     white-space: nowrap;
@@ -262,7 +281,7 @@ h1 {
 .image-lightbox-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(15, 23, 42, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,8 +292,8 @@ h1 {
 .image-lightbox-img {
     max-width: 90vw;
     max-height: 90vh;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .image-lightbox-close {
@@ -284,8 +303,8 @@ h1 {
     color: white;
     font-size: 2rem;
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -296,7 +315,7 @@ h1 {
 }
 
 .image-lightbox-close:hover {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(15, 23, 42, 0.9);
 }
 
 /* Image Upload */
@@ -311,9 +330,9 @@ h1 {
     position: relative;
     width: 72px;
     height: 72px;
-    border-radius: 6px;
+    border-radius: 8px;
     overflow: hidden;
-    border: 2px solid #e0e0e0;
+    border: 2px solid rgba(148, 163, 184, 0.2);
 }
 
 .image-thumb img {
@@ -328,14 +347,14 @@ h1 {
 }
 
 .image-thumb:hover {
-    border-color: #667eea;
+    border-color: #6366f1;
 }
 
 .image-thumb .remove-img {
     position: absolute;
     top: 2px;
     right: 2px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(15, 23, 42, 0.7);
     color: white;
     border: none;
     border-radius: 50%;
@@ -349,33 +368,33 @@ h1 {
 }
 
 .image-thumb .remove-img:hover {
-    background: #ff6b6b;
+    background: #ef4444;
 }
 
 .drop-zone {
-    border: 2px dashed #ccc;
-    border-radius: 8px;
+    border: 2px dashed rgba(148, 163, 184, 0.3);
+    border-radius: 12px;
     padding: 1.25rem;
     text-align: center;
     cursor: pointer;
-    background: #fafafa;
+    background: rgba(15, 23, 42, 0.4);
     transition: border-color 0.2s, background 0.2s;
 }
 
 .drop-zone:hover {
-    border-color: #667eea;
-    background: #f0f2ff;
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .drop-zone.drag-over {
-    border-color: #667eea;
-    background: rgba(102, 126, 234, 0.08);
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.15);
 }
 
 .drop-zone.disabled {
     opacity: 0.5;
     pointer-events: none;
-    background: #f5f5f5;
+    background: rgba(15, 23, 42, 0.3);
 }
 
 .drop-zone-icon {
@@ -385,18 +404,18 @@ h1 {
 
 .drop-zone-text {
     margin: 0;
-    color: #666;
+    color: #94a3b8;
     font-size: 0.9rem;
 }
 
 .drop-zone-hint {
     margin: 0.25rem 0 0;
-    color: #999;
+    color: #64748b;
     font-size: 0.8rem;
 }
 
 .browse-link {
-    color: #667eea;
+    color: #818cf8;
     font-weight: 600;
     text-decoration: underline;
     cursor: pointer;
@@ -405,13 +424,13 @@ h1 {
 .upload-status {
     margin-top: 0.5rem;
     font-size: 0.85rem;
-    color: #667eea;
+    color: #818cf8;
     font-weight: 600;
 }
 
 .upload-count {
     display: inline-block;
-    background: #667eea;
+    background: #6366f1;
     color: white;
     font-size: 0.75rem;
     font-weight: 600;
@@ -422,7 +441,7 @@ h1 {
 
 .image-save-hint {
     margin: 0.25rem 0 0;
-    color: #999;
+    color: #64748b;
     font-size: 0.85rem;
     font-style: italic;
 }

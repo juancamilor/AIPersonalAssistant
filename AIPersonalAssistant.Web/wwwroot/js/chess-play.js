@@ -294,10 +294,23 @@
         if (initialized) return;
         initialized = true;
 
+        if (typeof Chessboard === 'undefined') {
+            document.getElementById('gameStatus').textContent = 'Chess libraries failed to load. Please check your internet connection and refresh.';
+            return;
+        }
+
         document.getElementById('newGameBtn').addEventListener('click', startNewGame);
         document.getElementById('hintBtn').addEventListener('click', showHint);
         document.getElementById('undoBtn').addEventListener('click', undoMove);
         document.getElementById('resignBtn').addEventListener('click', resign);
+
+        // Render initial board so it's not blank before clicking New Game
+        game = new Chess();
+        board = Chessboard('playBoard', {
+            position: 'start',
+            pieceTheme: PIECE_THEME,
+            draggable: false
+        });
 
         window.addEventListener('resize', () => {
             if (board) board.resize();

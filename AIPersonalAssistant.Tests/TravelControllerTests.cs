@@ -1,8 +1,10 @@
 using AIPersonalAssistant.Web.Controllers;
 using AIPersonalAssistant.Web.Models;
 using AIPersonalAssistant.Web.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
 
@@ -12,6 +14,8 @@ public class TravelControllerTests
 {
     private readonly Mock<ITravelService> _mockTravelService;
     private readonly Mock<ITravelImageService> _mockImageService;
+    private readonly Mock<IWebHostEnvironment> _mockEnv;
+    private readonly Mock<ILogger<TravelController>> _mockLogger;
     private readonly TravelController _controller;
     private const string TestUserId = "test-user-123";
 
@@ -19,7 +23,10 @@ public class TravelControllerTests
     {
         _mockTravelService = new Mock<ITravelService>();
         _mockImageService = new Mock<ITravelImageService>();
-        _controller = new TravelController(_mockTravelService.Object, _mockImageService.Object);
+        _mockEnv = new Mock<IWebHostEnvironment>();
+        _mockLogger = new Mock<ILogger<TravelController>>();
+        _mockEnv.Setup(e => e.EnvironmentName).Returns("Development");
+        _controller = new TravelController(_mockTravelService.Object, _mockImageService.Object, _mockEnv.Object, _mockLogger.Object);
         
         // Setup user claims
         var claims = new List<Claim>

@@ -341,16 +341,8 @@ document.getElementById('stockForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Add stock button handler
-document.getElementById('addStockBtn').addEventListener('click', addStock);
-
-// Allow adding stock with Enter key
-document.getElementById('stockSymbol').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        addStock();
-    }
-});
+// Auto-add stock when selected from dropdown
+document.getElementById('stockSymbol').addEventListener('change', addStock);
 
 // Back button handler
 document.getElementById('backBtn').addEventListener('click', () => {

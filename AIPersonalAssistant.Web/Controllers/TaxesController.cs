@@ -38,7 +38,7 @@ public class TaxesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to analyze W2");
-            return StatusCode(500, new { error = "Failed to analyze W2 document. Please try again." });
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 
@@ -47,6 +47,10 @@ public class TaxesController : ControllerBase
     {
         if (file == null || file.Length == 0)
             return BadRequest(new { error = "No file provided" });
+
+        var ext = Path.GetExtension(file.FileName)?.ToLowerInvariant();
+        if (ext != ".xlsx")
+            return BadRequest(new { error = "Unsupported file type. Please upload an .xlsx Excel file." });
 
         try
         {

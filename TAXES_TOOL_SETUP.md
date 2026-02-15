@@ -10,6 +10,10 @@ The Taxes Manager tool provides a **federal tax estimate** by combining:
 
 The W2 OCR feature requires an **Azure Document Intelligence** (formerly Form Recognizer) resource.
 
+### Required Model
+
+This tool uses the **`prebuilt-tax.us.w2`** model to extract data from W2 forms.
+
 ### Create the Resource
 1. Go to the [Azure Portal](https://portal.azure.com/)
 2. Search for **"Document Intelligence"** and click **Create**

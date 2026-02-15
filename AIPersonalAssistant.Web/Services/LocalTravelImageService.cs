@@ -5,7 +5,7 @@ namespace AIPersonalAssistant.Web.Services;
 public class LocalTravelImageService : ITravelImageService
 {
     private readonly string _imageDirectory;
-    private const long MaxFileSizeBytes = 500 * 1024;
+    private const long MaxFileSizeBytes = 2 * 1024 * 1024;
 
     public LocalTravelImageService(IWebHostEnvironment environment)
     {

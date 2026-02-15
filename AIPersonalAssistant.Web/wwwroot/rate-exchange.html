@@ -25,7 +25,7 @@
                         <select id="fromCurrency" name="fromCurrency" required>
                             <option value="">Select currency...</option>
                             <option value="US">United States (USD)</option>
-                            <option value="CAD">Canada (CAD)</option>
+                            <option value="CAD" selected>Canada (CAD)</option>
                             <option value="MX">Mexico (MXN)</option>
                             <option value="CO">Colombia (COP)</option>
                         </select>
@@ -83,29 +83,16 @@
         <div class="section-card" id="timeSeriesSection" style="margin-top: 2rem;">
             <h3>📈 Historical Exchange Rate Chart</h3>
             <div class="timeseries-controls" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem;">
-                <div>
-                    <label for="tsFromCurrency">From Currency</label>
-                    <select id="tsFromCurrency" class="form-control">
-                        <option value="US">USD - US Dollar</option>
-                        <option value="CA">CAD - Canadian Dollar</option>
-                        <option value="MX">MXN - Mexican Peso</option>
-                        <option value="EU">EUR - Euro</option>
-                        <option value="GB">GBP - British Pound</option>
-                        <option value="JP">JPY - Japanese Yen</option>
-                        <option value="CO">COP - Colombian Peso</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="tsToCurrency">To Currency</label>
-                    <select id="tsToCurrency" class="form-control">
-                        <option value="CA">CAD - Canadian Dollar</option>
-                        <option value="MX">MXN - Mexican Peso</option>
-                        <option value="EU">EUR - Euro</option>
-                        <option value="GB">GBP - British Pound</option>
-                        <option value="JP">JPY - Japanese Yen</option>
-                        <option value="US">USD - US Dollar</option>
-                        <option value="CO">COP - Colombian Peso</option>
-                    </select>
+                <div class="form-group">
+                    <label>Select Currencies (vs USD)</label>
+                    <div class="checkbox-group" id="tsCheckboxGroup">
+                        <label><input type="checkbox" value="CAD" checked> CAD</label>
+                        <label><input type="checkbox" value="EUR"> EUR</label>
+                        <label><input type="checkbox" value="GBP"> GBP</label>
+                        <label><input type="checkbox" value="MXN"> MXN</label>
+                        <label><input type="checkbox" value="COP"> COP</label>
+                        <label><input type="checkbox" value="JPY"> JPY</label>
+                    </div>
                 </div>
                 <div>
                     <label for="tsStartDate">Start Date</label>
@@ -115,7 +102,7 @@
                     <label for="tsEndDate">End Date</label>
                     <input type="date" id="tsEndDate" class="form-control" />
                 </div>
-                <button id="tsLoadBtn" class="btn btn-primary" onclick="loadTimeSeries()">Show History</button>
+                <button id="tsLoadBtn" class="btn btn-primary">Show History</button>
             </div>
             <div id="tsNote" style="display:none; color: #856404; background: #fff3cd; padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;"></div>
             <div id="tsChartContainer" style="display:none; position:relative; height:400px;">

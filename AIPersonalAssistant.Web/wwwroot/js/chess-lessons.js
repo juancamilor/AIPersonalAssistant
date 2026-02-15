@@ -70,7 +70,7 @@
         currentLesson = null;
         if (board) { board.destroy(); board = null; }
         document.getElementById('lessonView').style.display = 'none';
-        document.getElementById('lessonsList').style.display = '';
+        document.getElementById('lessonsList').style.display = 'grid';
         renderLessonCards();
     }
 
@@ -227,6 +227,12 @@
     window.initLessonMode = function () {
         if (initialized) return;
         initialized = true;
+
+        if (typeof Chessboard === 'undefined' || typeof Chess === 'undefined') {
+            document.getElementById('lessonsList').innerHTML =
+                '<p style="color:red;">Chess libraries failed to load. Please check your internet connection and refresh.</p>';
+            return;
+        }
 
         // Bind nav buttons
         document.getElementById('backToLessonsBtn').addEventListener('click', closeLesson);

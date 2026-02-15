@@ -1,6 +1,6 @@
 # AI Personal Assistant
 
-A modern web application for personal productivity with Microsoft Account authentication and various productivity tools.
+A modern web application for personal productivity with Microsoft Account authentication and various productivity tools. Features a **slate/indigo dark theme with glass morphism UI** across all pages.
 
 ## 🌟 Features
 
@@ -19,8 +19,8 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Multi-source data**: Fetches rates from 3 APIs (ExchangeRate-API, OpenExchangeRates, CurrencyAPI)
   - **Smart averaging**: Calculates average rate from all successful API sources
   - **Historical rates**: Frankfurter API (USD/CAD/MXN) + Freecurrencyapi.com (COP) for past dates
-  - **Auto-select currencies**: Selecting a "From" currency auto-checks all others
-  - **Historical chart**: Chart.js line graph showing accumulated exchange rate history
+  - **Multi-select historical chart**: Select multiple currencies via checkboxes to compare vs USD on a Chart.js line graph
+  - **CAD pre-selected**: CAD is pre-selected by default for quick access
   - **Amount conversion**: Convert any amount (default: 1, supports decimals)
   - **Transparent pricing**: Expandable details showing individual rates from each source
   - **Color-coded status**: Green checkmarks for successful fetches, red X for failures
@@ -32,6 +32,7 @@ A modern web application for personal productivity with Microsoft Account authen
 - **Stocks**: Stock performance analyzer with **multi-stock comparison**
   - **Alpha Vantage API**: Historical daily stock data (~5 months on free tier)
   - **Auto-load MSFT**: Chart loads automatically on page open
+  - **Auto-add on selection**: Selecting a stock from the dropdown automatically adds it to the chart (no Add button)
   - **Multi-stock comparison**: Compare multiple stocks with overlapping charts
   - **Three stocks available**: Microsoft (MSFT), Meta (META), Google (GOOGL)
   - **Date range selection**: Analyze custom time periods (last ~5 months on free tier)
@@ -44,7 +45,8 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Leaflet.js map**: Interactive world map with zoom and pan (English-only labels)
   - **Pin management**: Add, view, edit, and delete location pins with loading indicators
   - **Pin details**: Store place name, date visited, and notes for each location
-  - **Photo gallery**: Upload up to 5 images per pin (drag & drop, auto-resize to 500KB)
+  - **Photo gallery**: Upload up to 5 images per pin (drag & drop, auto-resize to 2MB limit)
+  - **Upload error messages**: Visible error messages for file validation failures
   - **Image thumbnails**: Preview photos in map popups with lightbox viewer
   - **Click to add**: Click anywhere on the map to add a new pin
   - **Per-user storage**: Each user's pins stored separately
@@ -54,6 +56,8 @@ A modern web application for personal productivity with Microsoft Account authen
 - **Taxes Manager**: Federal tax estimator with **W2 OCR and stock sales import**
   - **W2 OCR extraction**: Upload W2 PDF/image → Azure Document Intelligence extracts income data
   - **Stock sales import**: Upload Excel file with capital gains/losses
+  - **Client-side file validation**: File type checked before upload with clear error messages
+  - **Drag-and-drop upload**: Drag files directly into the upload area
   - **Tax calculation**: 2025 MFJ brackets, standard deduction, and capital gains rates
   - **Federal estimate only**: Not tax advice — see disclaimer in tool
   - See [TAXES_TOOL_SETUP.md](TAXES_TOOL_SETUP.md) for Azure Document Intelligence setup
@@ -64,6 +68,7 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Lessons**: Step-through chess lessons with guided instruction
   - **Analysis**: Paste/play positions and analyze with Stockfish engine
   - **Fully client-side**: Stockfish WASM runs in the browser — no server needed
+  - **CDN load guards**: Graceful fallback if external libraries fail to load
 
 ## 🛠️ Technology Stack
 
@@ -260,6 +265,9 @@ AIPersonalAssistant/
 │   │   ├── stock-tools.spec.js       # Stock Tools smoke tests
 │   │   ├── travel-map.spec.js        # Travel Map smoke tests
 │   │   ├── rate-exchange.spec.js     # Rate Exchange smoke tests
+│   │   ├── rate-exchange-history.spec.js # Rate Exchange history tests
+│   │   ├── taxes-manager.spec.js     # Taxes Manager smoke tests (8 tests)
+│   │   ├── chess-trainer.spec.js     # Chess Trainer smoke tests (8 tests)
 │   │   └── admin.spec.js             # Admin panel smoke tests
 │   └── playwright.config.js          # Playwright configuration
 ├── .github/
@@ -421,7 +429,7 @@ npx playwright test
 
 **Test Coverage:**
 - 16 unit tests (xUnit + Moq)
-- 2 Playwright UI validation tests
+- Playwright UI smoke tests across all tools (taxes-manager, chess-trainer, stock-tools, travel-map, rate-exchange, admin)
 
 ## 📝 Configuration
 

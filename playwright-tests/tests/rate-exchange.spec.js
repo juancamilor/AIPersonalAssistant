@@ -9,7 +9,7 @@ test.describe('Rate Exchange - Page Structure', () => {
     const fromCurrency = page.locator('#fromCurrency');
     await expect(fromCurrency).toBeVisible();
 
-    const checkboxGroup = page.locator('.checkbox-group');
+    const checkboxGroup = page.locator('.checkbox-group').first();
     await expect(checkboxGroup).toBeVisible();
 
     await page.screenshot({ path: 'screenshots/rate-exchange-currency.png', fullPage: false });

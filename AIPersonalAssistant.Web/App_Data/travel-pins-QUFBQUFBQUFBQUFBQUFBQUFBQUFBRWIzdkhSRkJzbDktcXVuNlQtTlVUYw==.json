@@ -7,8 +7,11 @@
     "PlaceName": "Medellin",
     "DateVisited": "2026-01-24T00:00:00",
     "Notes": "You thawer the the pin. Awesome  !",
+    "ImageUrls": [
+      "31a3530e-c5ad-4b9b-94d7-dc3acf185ebc"
+    ],
     "CreatedAt": "2026-01-31T17:14:05.0735275Z",
-    "UpdatedAt": "2026-01-31T17:14:15.3852722Z"
+    "UpdatedAt": "2026-02-15T15:59:05.1683369Z"
   },
   {
     "Id": "805193e7-432e-4acf-9536-1d6a6f60e854",
@@ -18,6 +21,7 @@
     "PlaceName": "Seatle",
     "DateVisited": "2026-01-06T00:00:00",
     "Notes": "I am leaving here now.",
+    "ImageUrls": [],
     "CreatedAt": "2026-01-31T17:44:07.2231519Z",
     "UpdatedAt": "2026-01-31T17:44:07.223152Z"
   }

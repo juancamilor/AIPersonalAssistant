@@ -4,37 +4,40 @@ body {
 }
 
 .header {
-    background: white;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 12px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 h1 {
-    color: #333;
+    color: #f1f5f9;
     font-size: 1.8rem;
 }
 
 #backBtn {
     padding: 0.6rem 1.2rem;
-    background: #764ba2 !important;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background 0.3s;
+    transition: all 0.2s;
     width: auto !important;
 }
 
 #backBtn:hover {
-    background: #5a3880 !important;
-    transform: none !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    transform: translateY(-2px) !important;
     opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
 }
 
 .container {
@@ -43,15 +46,17 @@ h1 {
 }
 
 .form-card, .results-card, .error-card, .loading-card {
-    background: white;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(12px);
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
     margin-bottom: 2rem;
 }
 
 h2 {
-    color: #333;
+    color: #f1f5f9;
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
 }
@@ -73,7 +78,7 @@ h2 {
 
 label {
     display: block;
-    color: #555;
+    color: #94a3b8;
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
@@ -82,16 +87,19 @@ input[type="date"],
 select {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 5px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: rgba(15, 23, 42, 0.6);
+    color: #f1f5f9;
 }
 
 input[type="date"]:focus,
 select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 /* Stock selector styles */
@@ -107,19 +115,20 @@ select:focus {
 
 .add-stock-btn {
     padding: 0.75rem 1.5rem;
-    background: #667eea;
+    background: #6366f1;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
     width: auto !important;
     flex-shrink: 0;
 }
 
 .add-stock-btn:hover {
-    background: #5568d3;
+    background: #4f46e5;
+    transform: translateY(-1px);
 }
 
 .selected-stocks {
@@ -130,7 +139,7 @@ select:focus {
 }
 
 .no-stocks {
-    color: #999;
+    color: #94a3b8;
     font-style: italic;
     margin: 0;
 }
@@ -140,45 +149,47 @@ select:focus {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    background: #f5f5f5;
-    border-radius: 5px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
     font-size: 0.9rem;
 }
 
 .stock-tag span {
-    color: #333;
+    color: #f1f5f9;
 }
 
 .remove-stock {
     background: none;
     border: none;
-    color: #999;
+    color: #94a3b8;
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0;
     line-height: 1;
+    transition: color 0.2s;
 }
 
 .remove-stock:hover {
-    color: #ff6b6b;
+    color: #ef4444;
 }
 
 .analyze-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 .analyze-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
 .analyze-btn:active {
@@ -199,8 +210,8 @@ select:focus {
 .spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #667eea;
+    border: 4px solid rgba(148, 163, 184, 0.2);
+    border-top: 4px solid #6366f1;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 1rem;
@@ -212,7 +223,7 @@ select:focus {
 }
 
 .loading-card p {
-    color: #666;
+    color: #94a3b8;
     font-size: 1.1rem;
 }
 
@@ -223,9 +234,10 @@ select:focus {
 }
 
 .stock-summary {
-    background: #f9f9f9;
+    background: rgba(15, 23, 42, 0.5);
     padding: 1.5rem;
-    border-radius: 5px;
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 /* Multi-stock summary styles */
@@ -236,18 +248,19 @@ select:focus {
 }
 
 .stock-summary-card {
-    background: white;
+    background: rgba(30, 41, 59, 0.6);
     padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .stock-summary-card h3 {
-    color: #333;
+    color: #f1f5f9;
     font-size: 1.1rem;
     margin: 0 0 1rem 0;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .summary-grid {
@@ -259,28 +272,29 @@ select:focus {
 .summary-item {
     text-align: center;
     padding: 0.75rem 0.5rem;
-    background: #f9f9f9;
-    border-radius: 5px;
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.05);
 }
 
 .summary-label {
-    color: #666;
+    color: #94a3b8;
     font-size: 0.75rem;
     margin-bottom: 0.25rem;
 }
 
 .summary-value {
-    color: #333;
+    color: #f1f5f9;
     font-size: 1rem;
     font-weight: 600;
 }
 
 .summary-value.positive {
-    color: #51cf66;
+    color: #10b981;
 }
 
 .summary-value.negative {
-    color: #ff6b6b;
+    color: #ef4444;
 }
 
 .stock-legend {
@@ -292,12 +306,12 @@ select:focus {
 }
 
 .error-card {
-    background: #fff3f3;
-    border: 2px solid #ff6b6b;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .error-card p {
-    color: #c92a2a;
+    color: #fca5a5;
     font-size: 1rem;
 }
 

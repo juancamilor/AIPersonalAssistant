@@ -82,6 +82,9 @@ The application will still work if APIs are not configured:
 - ✅ Color-coded source status (green ✓ = success, red ✗ = failed)
 - ✅ Individual source rates displayed
 - ✅ Calculation method shown
+- ✅ CAD pre-selected by default for quick access
+- ✅ Multi-select currency checkboxes for historical chart (compare vs USD)
+- ✅ Historical chart shows selected currencies over time
 
 ## Architecture
 
