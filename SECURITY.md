@@ -1,7 +1,7 @@
-# Security Guidelines for AI Personal Assistant
+# Security Guidelines for Personal Assistant
 
 ## Overview
-This document outlines security best practices for handling sensitive configuration in the AI Personal Assistant application.
+This document outlines security best practices for handling sensitive configuration in the Personal Assistant application.
 
 ## API Key Management
 

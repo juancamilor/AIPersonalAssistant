@@ -1,4 +1,4 @@
-# AI Personal Assistant
+# Personal Assistant
 
 A modern web application for personal productivity with Microsoft Account authentication and various productivity tools. Features a **slate/indigo dark theme with glass morphism UI** across all pages.
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rate Exchange - AI Personal Assistant</title>
+    <title>Rate Exchange - Personal Assistant</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/rate-exchange.css?v=20260123-01">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -68,24 +68,17 @@
             <div id="resultsContent"></div>
         </div>
 
-        <div id="historyChartSection" class="section-card" style="display:none;">
-            <h3>📊 30-Day Historical Rates</h3>
-            <div style="position:relative; height:300px;">
-                <canvas id="historyChart"></canvas>
-            </div>
-        </div>
-
-        <div id="errorSection" class="error-card" style="display: none;">
+        <div id="errorSection"class="error-card" style="display: none;">
             <p id="errorMessage"></p>
         </div>
 
         <!-- Historical Exchange Rate Chart -->
         <div class="section-card" id="timeSeriesSection" style="margin-top: 2rem;">
             <h3>📈 Historical Exchange Rate Chart</h3>
-            <div class="timeseries-controls" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem;">
-                <div class="form-group">
+            <div class="timeseries-controls">
+                <div class="ts-currencies">
                     <label>Select Currencies (vs USD)</label>
-                    <div class="checkbox-group" id="tsCheckboxGroup">
+                    <div class="checkbox-group" id="tsCheckboxGroup" style="display: grid; grid-template-columns: repeat(3, auto); gap: 0.25rem 1rem;">
                         <label><input type="checkbox" value="CAD" checked> CAD</label>
                         <label><input type="checkbox" value="EUR"> EUR</label>
                         <label><input type="checkbox" value="GBP"> GBP</label>
@@ -94,15 +87,19 @@
                         <label><input type="checkbox" value="JPY"> JPY</label>
                     </div>
                 </div>
-                <div>
-                    <label for="tsStartDate">Start Date</label>
-                    <input type="date" id="tsStartDate" class="form-control" />
+                <div class="ts-date-controls">
+                    <div class="ts-dates">
+                        <div>
+                            <label for="tsStartDate">Start Date</label>
+                            <input type="date" id="tsStartDate" class="form-control" />
+                        </div>
+                        <div>
+                            <label for="tsEndDate">End Date</label>
+                            <input type="date" id="tsEndDate" class="form-control" />
+                        </div>
+                    </div>
+                    <button id="tsLoadBtn" class="btn btn-primary" style="width:100%;">Show History</button>
                 </div>
-                <div>
-                    <label for="tsEndDate">End Date</label>
-                    <input type="date" id="tsEndDate" class="form-control" />
-                </div>
-                <button id="tsLoadBtn" class="btn btn-primary">Show History</button>
             </div>
             <div id="tsNote" style="display:none; color: #856404; background: #fff3cd; padding: 0.5rem; border-radius: 4px; margin-bottom: 0.5rem;"></div>
             <div id="tsChartContainer" style="display:none; position:relative; height:400px;">

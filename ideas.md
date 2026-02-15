@@ -1,6 +1,6 @@
 # Ideas
 
-Future feature ideas and improvements for the AI Personal Assistant.
+Future feature ideas and improvements for the Personal Assistant.
 
 ---
 

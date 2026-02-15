@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide explains how to deploy the AI Personal Assistant web application to Azure using GitHub Actions.
+This guide explains how to deploy the Personal Assistant web application to Azure using GitHub Actions.
 
 ## Prerequisites
 

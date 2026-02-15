@@ -5,18 +5,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .header h1 {
     margin: 0;
-    color: #f1f5f9;
+    color: #1e293b;
     font-size: 1.8rem;
 }
 
@@ -48,13 +47,12 @@
 .tab-bar {
     display: flex;
     gap: 0.5rem;
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
     padding: 0.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .tab-btn {
@@ -63,7 +61,7 @@
     border: none;
     border-radius: 8px;
     background: transparent;
-    color: #94a3b8;
+    color: #64748b;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -72,7 +70,7 @@
 
 .tab-btn:hover {
     background: rgba(99, 102, 241, 0.1);
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .tab-btn.active {
@@ -112,12 +110,11 @@
 .side-panel {
     flex: 1;
     min-width: 250px;
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 /* Game Status */
@@ -125,12 +122,12 @@
     text-align: center;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #f1f5f9;
+    color: #1e293b;
     padding: 0.75rem;
     margin-bottom: 1rem;
-    background: rgba(15, 23, 42, 0.5);
+    background: #f1f5f9;
     border-radius: 8px;
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    border: 1px solid #e2e8f0;
 }
 
 /* Move List */
@@ -142,7 +139,7 @@
     font-size: 0.95rem;
     line-height: 1.6;
     padding: 0.5rem;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .move-list .move-number {
@@ -179,13 +176,12 @@
     gap: 1rem;
     align-items: flex-end;
     flex-wrap: wrap;
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .control-group {
@@ -196,17 +192,17 @@
 
 .control-group label {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: #64748b;
     font-weight: 600;
 }
 
 .control-group select {
     padding: 0.5rem 0.75rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
     font-size: 0.9rem;
-    background: rgba(15, 23, 42, 0.6);
-    color: #f1f5f9;
+    background: #ffffff;
+    color: #1e293b;
     cursor: pointer;
 }
 
@@ -252,9 +248,9 @@
 }
 
 .btn-small {
-    background: rgba(15, 23, 42, 0.5);
-    color: #f1f5f9;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
     padding: 0.4rem 0.8rem;
     border-radius: 8px;
     font-size: 0.85rem;
@@ -275,13 +271,12 @@
 
 /* Puzzle Stats */
 .puzzle-controls {
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .puzzle-stats {
@@ -289,11 +284,11 @@
     gap: 2rem;
     margin-bottom: 1rem;
     font-size: 0.95rem;
-    color: #94a3b8;
+    color: #64748b;
 }
 
 .puzzle-stats strong {
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 /* Pill Buttons */
@@ -304,10 +299,10 @@
 
 .pill-btn {
     padding: 0.4rem 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid #cbd5e1;
     border-radius: 20px;
-    background: rgba(15, 23, 42, 0.5);
-    color: #94a3b8;
+    background: #f1f5f9;
+    color: #64748b;
     font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s;
@@ -339,14 +334,14 @@
 
 .puzzle-feedback.correct {
     background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
+    color: #10b981;
     border: 1px solid rgba(16, 185, 129, 0.3);
     animation: feedbackPop 0.3s ease;
 }
 
 .puzzle-feedback.wrong {
     background: rgba(239, 68, 68, 0.15);
-    color: #fca5a5;
+    color: #ef4444;
     border: 1px solid rgba(239, 68, 68, 0.3);
     animation: feedbackShake 0.4s ease;
 }
@@ -367,18 +362,18 @@
 
 .puzzle-info h3 {
     margin: 0 0 0.5rem 0;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .puzzle-info p {
     margin: 0.25rem 0;
-    color: #94a3b8;
+    color: #64748b;
 }
 
 .turn-indicator {
     font-weight: 600;
     font-size: 1rem;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .puzzle-actions {
@@ -400,12 +395,11 @@
 }
 
 .lesson-card {
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -413,18 +407,18 @@
 
 .lesson-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-color: rgba(99, 102, 241, 0.3);
 }
 
 .lesson-card h3 {
     margin: 0 0 0.5rem 0;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .lesson-card p {
     margin: 0;
-    color: #94a3b8;
+    color: #64748b;
     font-size: 0.9rem;
 }
 
@@ -445,19 +439,19 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .lesson-header h3 {
     margin: 0;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .lesson-content {
     font-size: 0.95rem;
     line-height: 1.7;
-    color: #cbd5e1;
-    min-height: 200px;
+    color: #475569;
+    min-height: 100px;
     max-height: 350px;
     overflow-y: auto;
     margin-bottom: 1rem;
@@ -477,19 +471,18 @@
 
 /* Analysis Mode */
 .analysis-input {
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .input-group label {
     display: block;
     font-size: 0.9rem;
-    color: #94a3b8;
+    color: #64748b;
     font-weight: 600;
     margin-bottom: 0.4rem;
 }
@@ -497,15 +490,15 @@
 .input-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     resize: vertical;
     margin-bottom: 0.75rem;
     box-sizing: border-box;
-    background: rgba(15, 23, 42, 0.6);
-    color: #f1f5f9;
+    background: #ffffff;
+    color: #1e293b;
 }
 
 .input-group textarea:focus {
@@ -526,11 +519,11 @@
 .eval-bar {
     width: 20px;
     height: 500px;
-    background: #1e293b;
+    background: #e2e8f0;
     border-radius: 4px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    border: 1px solid #e2e8f0;
 }
 
 .eval-bar-fill {
@@ -538,7 +531,7 @@
     bottom: 0;
     width: 100%;
     height: 50%;
-    background: #f1f5f9;
+    background: #1e293b;
     transition: height 0.5s ease;
 }
 
@@ -546,7 +539,7 @@
     margin-top: 0.5rem;
     font-size: 0.85rem;
     font-weight: 700;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 /* Engine Lines */
@@ -556,24 +549,24 @@
 
 .engine-lines h4 {
     margin: 0 0 0.75rem 0;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 #topLines {
     font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     line-height: 1.8;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .engine-line {
     padding: 0.4rem 0.5rem;
     border-radius: 6px;
     margin-bottom: 0.25rem;
-    background: rgba(15, 23, 42, 0.5);
+    background: #f1f5f9;
     cursor: pointer;
     transition: background 0.2s;
-    border: 1px solid rgba(148, 163, 184, 0.05);
+    border: 1px solid #e2e8f0;
 }
 
 .engine-line:hover {
@@ -594,7 +587,7 @@
     line-height: 1.6;
     margin-bottom: 1rem;
     padding: 0.5rem;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 .analysis-nav {
@@ -609,18 +602,17 @@
 
 /* Post-game Section */
 .post-game-section {
-    background: rgba(30, 41, 59, 0.8);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(148, 163, 184, 0.1);
+    padding: 1rem;
+    margin-top: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
 
 .post-game-section h3 {
     margin: 0 0 1rem 0;
-    color: #f1f5f9;
+    color: #1e293b;
 }
 
 /* Responsive */

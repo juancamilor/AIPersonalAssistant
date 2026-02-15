@@ -10,7 +10,7 @@
     let hintSquares = [];
     let initialized = false;
 
-    const PIECE_THEME = 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/img/chesspieces/wikipedia/{piece}.png';
+    const PIECE_THEME = '/img/chesspieces/wikipedia/{piece}.png';
     const STATS_KEY = 'chess-play-stats';
 
     function loadStats() {

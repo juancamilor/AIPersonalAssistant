@@ -7,7 +7,7 @@
     let currentStepIndex = 0;
     let initialized = false;
 
-    const PIECE_THEME = 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/img/chesspieces/wikipedia/{piece}.png';
+    const PIECE_THEME = '/img/chesspieces/wikipedia/{piece}.png';
     const COMPLETED_KEY = 'chess-lessons-completed';
 
     function getCompleted() {

@@ -23,15 +23,5 @@ test.describe('Rate Exchange - Page Structure', () => {
     await expect(calculateBtn).toHaveText('Calculate Exchange Rates');
   });
 
-  test('History chart section element exists', async ({ page }) => {
-    await page.goto('/rate-exchange.html');
-
-    const historySection = page.locator('#historyChartSection');
-    await expect(historySection).toBeAttached();
-
-    const historyCanvas = page.locator('#historyChart');
-    await expect(historyCanvas).toBeAttached();
-  });
-
 });
 

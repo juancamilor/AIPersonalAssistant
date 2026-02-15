@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools - AI Personal Assistant</title>
+    <title>Tools - Personal Assistant</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
         body { padding: 2rem; }
-        .header { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2); border: 1px solid rgba(148, 163, 184, 0.1); display: flex; justify-content: space-between; align-items: center; }
-        h1 { color: #f1f5f9; }
+        .header { background: #ffffff; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        h1 { color: #1e293b; }
         .user-info { display: flex; align-items: center; gap: 1rem; }
-        .user-email { color: #94a3b8; font-size: 0.9rem; }
+        .user-email { color: #64748b; font-size: 0.9rem; }
         #logoutBtn, #adminBtn { padding: 0.5rem 1rem; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
         #logoutBtn:hover, #adminBtn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
         .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-        .tool-card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2); border: 1px solid rgba(148, 163, 184, 0.1); transition: all 0.2s; cursor: pointer; }
-        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); border-color: rgba(99, 102, 241, 0.3); }
+        .tool-card { background: #ffffff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: rgba(99, 102, 241, 0.3); }
         .tool-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        .tool-name { font-size: 1.25rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.5rem; }
-        .tool-description { color: #94a3b8; font-size: 0.9rem; }
+        .tool-name { font-size: 1.25rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem; }
+        .tool-description { color: #64748b; font-size: 0.9rem; }
     </style>
 </head>
 <body>

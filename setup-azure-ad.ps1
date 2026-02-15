@@ -1,4 +1,4 @@
-# Azure AD App Registration Script for AI Personal Assistant
+# Azure AD App Registration Script for Personal Assistant
 # This script creates an Azure AD app registration for Microsoft Account authentication
 
 Write-Host "=== Azure AD App Registration Setup ===" -ForegroundColor Cyan

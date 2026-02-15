@@ -10,7 +10,7 @@ class ChessEngine {
     init() {
         return new Promise((resolve, reject) => {
             try {
-                this.worker = new Worker('https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js');
+                this.worker = new Worker('/js/stockfish.js');
                 
                 this.worker.onmessage = (e) => {
                     this.handleMessage(e.data);

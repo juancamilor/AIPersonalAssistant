@@ -9,7 +9,7 @@
     let positions = [];
     let evalPending = false;
 
-    const pieceTheme = 'https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/img/chesspieces/wikipedia/{piece}.png';
+    const pieceTheme = '/img/chesspieces/wikipedia/{piece}.png';
 
     let analysisInitialized = false;
 

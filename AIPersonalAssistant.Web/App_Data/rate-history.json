@@ -52,5 +52,11 @@
     "FromCurrency": "CAD",
     "ToCurrency": "COP",
     "Rate": 2697.4476686494
+  },
+  {
+    "Date": "2026-02-15T00:00:00",
+    "FromCurrency": "CAD",
+    "ToCurrency": "USD",
+    "Rate": 0.7345353106
   }
 ]
