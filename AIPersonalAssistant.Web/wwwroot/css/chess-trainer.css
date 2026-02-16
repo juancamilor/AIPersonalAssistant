@@ -28,6 +28,9 @@
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
+    flex-shrink: 0;
+    width: auto;
+    white-space: nowrap;
 }
 
 #backBtn:hover {
