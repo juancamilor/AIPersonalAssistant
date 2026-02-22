@@ -194,9 +194,9 @@ async function saveRecipe(e) {
         category: document.getElementById('recipeCategory').value,
         ingredients: document.getElementById('recipeIngredients').value,
         instructions: document.getElementById('recipeInstructions').value,
-        prepTime: parseInt(document.getElementById('recipePrepTime').value) || 0,
-        cookTime: parseInt(document.getElementById('recipeCookTime').value) || 0,
-        servings: parseInt(document.getElementById('recipeServings').value) || 0
+        prepTime: document.getElementById('recipePrepTime').value || '',
+        cookTime: document.getElementById('recipeCookTime').value || '',
+        servings: document.getElementById('recipeServings').value || ''
     };
 
     try {
