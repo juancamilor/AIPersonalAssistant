@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Recipes - Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/help-palette.css">
+    <link rel="stylesheet" href="/css/recipes.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🍳 Cooking Recipes</h1>
+        <div class="header-right">
+            <span class="user-email" id="userEmail">Loading...</span>
+            <button id="addRecipeBtn">+ Add Recipe</button>
+            <button id="backBtn">Back to Tools</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search by title, ingredients, or description...">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+
+        <div class="recipes-grid" id="recipesGrid"></div>
+    </div>
+
+    <!-- Category datalist for autocomplete -->
+    <datalist id="categoryList"></datalist>
+
+    <!-- Add/Edit Recipe Modal -->
+    <div id="recipeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2 id="modalTitle">Add New Recipe</h2>
+            <form id="recipeForm">
+                <input type="hidden" id="recipeId">
+
+                <div class="form-group">
+                    <label for="recipeTitle">Title</label>
+                    <input type="text" id="recipeTitle" placeholder="e.g., Spaghetti Carbonara" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="recipeCategory">Category</label>
+                    <input type="text" id="recipeCategory" list="categoryList" placeholder="e.g., Italian, Dessert, Breakfast">
+                </div>
+
+                <div class="form-group">
+                    <label for="recipeDescription">Description</label>
+                    <textarea id="recipeDescription" rows="3" placeholder="A short description of the recipe..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="recipeIngredients">Ingredients</label>
+                    <textarea id="recipeIngredients" rows="5" placeholder="One ingredient per line..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="recipeInstructions">Instructions</label>
+                    <textarea id="recipeInstructions" rows="5" placeholder="Step by step instructions..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recipePrepTime">Prep Time (min)</label>
+                        <input type="number" id="recipePrepTime" min="0" placeholder="15">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipeCookTime">Cook Time (min)</label>
+                        <input type="number" id="recipeCookTime" min="0" placeholder="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipeServings">Servings</label>
+                        <input type="number" id="recipeServings" min="1" placeholder="4">
+                    </div>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="form-group" id="imageSection">
+                    <label>Photos</label>
+                    <div id="imageGallery" class="image-gallery"></div>
+                    <div id="dropZone" class="drop-zone">
+                        <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+                        <p class="drop-zone-text">📷 Drag & drop images here or <span class="browse-link">browse</span></p>
+                        <p class="drop-zone-hint">Max 5 images per recipe</p>
+                    </div>
+                    <div id="uploadStatus" class="upload-status" style="display:none"></div>
+                    <p id="imageSaveHint" class="image-save-hint" style="display:none">Save the recipe first to add images</p>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary" id="saveBtn">Save Recipe</button>
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="confirm-modal-content">
+            <h3>Delete Recipe</h3>
+            <p>Are you sure you want to delete this recipe? This action cannot be undone.</p>
+            <div class="confirm-modal-buttons">
+                <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/recipes.js"></script>
+    <script src="/js/help-palette.js"></script>
+</body>
+</html>

@@ -40,6 +40,7 @@
 * Follow existing error response patterns
 * Do not add authorization attributes unless requested
 * Do not add model validation unless requested
+* Current controllers: AuthController, ToolsController, RateExchangeController, StockController, TravelController, TaxesController, WishesController, RecipeController, AdminController, HealthController, AccessDeniedController
 
 ### For Key Vault and Azure Operations
 
@@ -48,12 +49,20 @@
 * Do not add additional security measures beyond the request
 * Use existing credential patterns from codebase
 
+### For Services
+
+* Follow the existing dual-storage pattern: local JSON storage (dev) + Azure Blob Storage (prod)
+* Current service pairs: ExchangeRate, Travel/TravelImage, Taxes, UserManagement, Wishes, Recipe/RecipeImage
+* Shareable features (Wishes, Recipes) use unguessable public links — no email-based sharing
+
 ### For JavaScript/Frontend
 
 * Only modify the specific functionality mentioned
 * Do not add new UI elements unless explicitly requested
 * Do not change existing styling or behavior
 * Keep error handling simple and consistent with existing code
+* The Help Command Palette (help-palette.js/css) is available on every tool page via the ❓ icon
+* All pages include mobile-responsive CSS for ≤480px screens
 
 ### For NuGet Packages and Dependencies
 

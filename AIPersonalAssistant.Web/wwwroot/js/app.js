@@ -70,6 +70,10 @@ const handleToolClick = (event) => {
         window.location.href = '/taxes-manager.html';
     } else if (toolName === 'Chess Trainer') {
         window.location.href = '/chess-trainer.html';
+    } else if (toolName === 'Cooking Recipes') {
+        window.location.href = '/recipes.html';
+    }else if (toolName === 'Final Wishes') {
+        window.location.href = '/wishes.html';
     }
 };
 

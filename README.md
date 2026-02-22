@@ -70,6 +70,30 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Fully client-side**: Stockfish WASM runs in the browser — no server needed
   - **CDN load guards**: Graceful fallback if external libraries fail to load
 
+- **Final Wishes**: Store and share **end-of-life wishes** securely
+  - **Rich text editor**: Write and organize final wishes with structured sections
+  - **Shareable public links**: Generate unguessable public links to share wishes (no email required)
+  - **Copyable links**: One-click copy of share URLs for easy distribution
+  - **Per-user storage**: Each user's wishes stored separately
+  - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
+
+- **Cooking Recipes**: Full-featured **recipe manager** with sharing
+  - **Recipe CRUD**: Create, view, edit, and delete recipes
+  - **Image upload**: Upload recipe photos with automatic storage
+  - **Categories & search**: Organize recipes by category and search by name/ingredients
+  - **Shareable public links**: Generate unguessable public links for individual recipes (no email required)
+  - **Copyable links**: One-click copy of share URLs for easy distribution
+  - **Per-user storage**: Each user's recipes stored separately
+  - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
+
+### UX & Accessibility
+- **Help Command Palette**: Slide-out sidebar accessible via ❓ icon on every tool page
+  - **Search & filter**: Quickly find help topics and tool instructions
+  - **Context-aware**: Available across all tool pages for consistent help access
+- **Mobile Responsiveness**: Phone-optimized CSS (≤480px) for all pages
+  - **Responsive layouts**: All tools and pages adapt to small screens
+  - **Touch-friendly**: Optimized tap targets and navigation for mobile devices
+
 ## 🛠️ Technology Stack
 
 - **Backend**: ASP.NET Core 10 (.NET 10)
@@ -184,6 +208,8 @@ AIPersonalAssistant/
 │   │   ├── StockController.cs        # Stock data API with Alpha Vantage integration
 │   │   ├── TravelController.cs       # Travel map pins CRUD + image upload API
 │   │   ├── TaxesController.cs        # Taxes Manager API (W2 OCR + stock sales + tax calc)
+│   │   ├── WishesController.cs        # Final Wishes API (CRUD + shareable links)
+│   │   ├── RecipeController.cs        # Cooking Recipes API (CRUD + image upload + sharing)
 │   │   ├── AdminController.cs        # Admin user management API (admin-only)
 │   │   ├── HealthController.cs       # Health check endpoint
 │   │   └── AccessDeniedController.cs # Access denied endpoint
@@ -208,6 +234,15 @@ AIPersonalAssistant/
 │   │   ├── BlobTravelImageService.cs # Travel images Azure Blob (prod)
 │   │   ├── ITaxesService.cs          # Taxes service interface
 │   │   ├── TaxesService.cs           # W2 OCR + stock sales + tax calculation
+│   │   ├── IWishesService.cs         # Final Wishes service interface
+│   │   ├── LocalWishesService.cs     # Wishes JSON file storage (dev)
+│   │   ├── BlobWishesService.cs      # Wishes Azure Blob storage (prod)
+│   │   ├── IRecipeService.cs         # Recipe service interface
+│   │   ├── LocalRecipeService.cs     # Recipes JSON file storage (dev)
+│   │   ├── BlobRecipeService.cs      # Recipes Azure Blob storage (prod)
+│   │   ├── IRecipeImageService.cs    # Recipe image storage interface
+│   │   ├── LocalRecipeImageService.cs # Recipe images local storage (dev)
+│   │   ├── BlobRecipeImageService.cs # Recipe images Azure Blob (prod)
 │   │   ├── IUserManagementService.cs # User management interface
 │   │   ├── LocalUserManagementService.cs # User list JSON storage (dev)
 │   │   └── BlobUserManagementService.cs  # User list Azure Blob (prod)
@@ -216,7 +251,9 @@ AIPersonalAssistant/
 │   │   ├── ExchangeRateHistory.cs    # Exchange rate history entry model
 │   │   ├── StockModels.cs            # Stock data DTOs and response models
 │   │   ├── TaxModels.cs             # Tax calculation DTOs (W2, stock sales, estimates)
-│   │   └── TravelModels.cs           # Travel pin DTOs (with image URLs)
+│   │   ├── TravelModels.cs           # Travel pin DTOs (with image URLs)
+│   │   ├── WishesModels.cs           # Final Wishes DTOs (wishes + share links)
+│   │   └── RecipeModels.cs           # Cooking Recipes DTOs (recipes + images + sharing)
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
@@ -225,7 +262,10 @@ AIPersonalAssistant/
 │   │   │   ├── stock-tools.css       # Stocks page styles (multi-stock comparison)
 │   │   │   ├── travel-map.css        # Travel map styles (Leaflet map, modals)
 │   │   │   ├── taxes-manager.css     # Taxes Manager styles
-│   │   │   └── chess-trainer.css     # Chess Trainer styles
+│   │   │   ├── chess-trainer.css     # Chess Trainer styles
+│   │   │   ├── wishes.css            # Final Wishes styles
+│   │   │   ├── recipes.css           # Cooking Recipes styles
+│   │   │   └── help-palette.css      # Help Command Palette styles
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking, tools loading & admin button
 │   │   │   ├── login.js              # OAuth redirect handler
@@ -239,7 +279,10 @@ AIPersonalAssistant/
 │   │   │   ├── chess-lessons.js      # Chess Lessons mode
 │   │   │   ├── chess-analysis.js     # Chess Analysis mode
 │   │   │   ├── chess-engine.js       # Stockfish WASM integration
-│   │   │   └── admin.js              # Admin panel user management
+│   │   │   ├── admin.js              # Admin panel user management
+│   │   │   ├── wishes.js             # Final Wishes frontend logic
+│   │   │   ├── recipes.js            # Cooking Recipes frontend logic
+│   │   │   └── help-palette.js       # Help Command Palette (slide-out sidebar)
 │   │   ├── data/
 │   │   │   ├── chess-lessons.json    # Chess lesson content
 │   │   │   └── chess-puzzles.json    # Chess puzzle set
@@ -250,6 +293,10 @@ AIPersonalAssistant/
 │   │   ├── travel-map.html           # Protected travel map (with image drop zone)
 │   │   ├── taxes-manager.html        # Protected Taxes Manager tool
 │   │   ├── chess-trainer.html        # Protected Chess Trainer tool
+│   │   ├── wishes.html               # Protected Final Wishes tool
+│   │   ├── recipes.html              # Protected Cooking Recipes tool
+│   │   ├── shared-wishes.html        # Public shared wishes page (no auth required)
+│   │   ├── shared-recipe.html        # Public shared recipe page (no auth required)
 │   │   ├── admin.html                # Protected admin panel (admin-only)
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
@@ -268,6 +315,10 @@ AIPersonalAssistant/
 │   │   ├── rate-exchange-history.spec.js # Rate Exchange history tests
 │   │   ├── taxes-manager.spec.js     # Taxes Manager smoke tests (8 tests)
 │   │   ├── chess-trainer.spec.js     # Chess Trainer smoke tests (8 tests)
+│   │   ├── wishes.spec.js            # Final Wishes smoke tests
+│   │   ├── recipes.spec.js           # Cooking Recipes smoke tests
+│   │   ├── help-palette.spec.js      # Help Command Palette tests
+│   │   ├── mobile-responsive.spec.js # Mobile responsiveness tests (≤480px)
 │   │   └── admin.spec.js             # Admin panel smoke tests
 │   └── playwright.config.js          # Playwright configuration
 ├── .github/
@@ -429,7 +480,7 @@ npx playwright test
 
 **Test Coverage:**
 - 16 unit tests (xUnit + Moq)
-- Playwright UI smoke tests across all tools (taxes-manager, chess-trainer, stock-tools, travel-map, rate-exchange, admin)
+- Playwright UI smoke tests across all tools (taxes-manager, chess-trainer, stock-tools, travel-map, rate-exchange, wishes, recipes, help-palette, mobile-responsive, admin)
 
 ## 📝 Configuration
 

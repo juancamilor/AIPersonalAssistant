@@ -393,3 +393,34 @@ select:focus {
         padding: 0.75rem 0.5rem;
     }
 }
+
+/* Phone */
+@media (max-width: 480px) {
+    body { padding: 0.75rem; }
+    h1 { font-size: 1.2rem; }
+    h2 { font-size: 1.2rem; }
+    #backBtn { min-height: 44px; }
+
+    .form-card, .results-card, .section-card, .error-card { padding: 1rem; }
+
+    .form-row { flex-direction: column; gap: 0; }
+    .form-group-flex { margin-bottom: 1rem; }
+
+    input[type="date"], input[type="number"], select { font-size: 16px; min-height: 44px; }
+    .calculate-btn { min-height: 44px; }
+    .details-btn { min-height: 44px; }
+
+    .results-card { overflow-x: auto; }
+    .results-table { min-width: 500px; }
+    .results-table th, .results-table td { padding: 0.6rem 0.4rem; font-size: 0.85rem; white-space: nowrap; }
+
+    .timeseries-controls { flex-direction: column; gap: 1rem; }
+    .ts-currencies { min-width: unset; width: 100%; }
+    .ts-date-controls { min-width: unset; width: 100%; }
+    .ts-dates { flex-direction: column; gap: 0.5rem; }
+
+    .checkbox-group { padding: 0.75rem; }
+    .checkbox-label { padding: 0.4rem; min-height: 44px; }
+
+    .source-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+}

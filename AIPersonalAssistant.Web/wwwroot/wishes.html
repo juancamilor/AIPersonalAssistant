@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Wishes - Personal Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/help-palette.css">
+    <link rel="stylesheet" href="/css/wishes.css">
+</head>
+<body>
+    <div class="header">
+        <h1>📜 Final Wishes</h1>
+        <div class="header-right">
+            <span class="user-email" id="userEmail">Loading...</span>
+            <button id="backBtn">Back to Tools</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <button class="btn-add" id="addWishBtn">+ Add New Wish</button>
+        <div class="wishes-grid" id="wishesGrid">
+            <p class="loading-text" id="loadingText">Loading wishes...</p>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="wishModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modalTitle">Add New Wish</h2>
+            <form id="wishForm">
+                <input type="hidden" id="wishId">
+                <div class="form-group">
+                    <label for="wishTitle">Title</label>
+                    <input type="text" id="wishTitle" placeholder="e.g., Letter to my family" required>
+                </div>
+                <div class="form-group">
+                    <label for="wishContent">Content</label>
+                    <textarea id="wishContent" rows="10" placeholder="Write your wishes here..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary" id="saveBtn">Save</button>
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content modal-content-sm">
+            <h2>Delete Wish</h2>
+            <p class="delete-msg">Are you sure you want to delete this wish? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" style="display: none;"></div>
+
+    <script src="/js/wishes.js"></script>
+    <script src="/js/help-palette.js"></script>
+</body>
+</html>

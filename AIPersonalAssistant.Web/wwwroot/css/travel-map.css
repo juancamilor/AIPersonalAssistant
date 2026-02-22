@@ -466,3 +466,32 @@ h1 {
         width: 100%;
     }
 }
+
+/* Phone */
+@media (max-width: 480px) {
+    .header { padding: 0.5rem 0.75rem; }
+    h1 { font-size: 1.1rem; }
+    #backBtn { min-height: 44px; font-size: 0.9rem; padding: 0.5rem 1rem; }
+
+    .modal-content { width: 95vw; max-height: 90vh; padding: 1.25rem; margin: 0; border-radius: 10px; }
+    .modal-close { font-size: 1.8rem; min-width: 44px; min-height: 44px; line-height: 44px; text-align: center; }
+
+    .btn-primary, .btn-secondary, .btn-danger { min-height: 44px; font-size: 0.95rem; }
+
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group textarea { font-size: 16px; }
+
+    .image-gallery { gap: 0.4rem; }
+    .image-thumb { width: 60px; height: 60px; }
+
+    .drop-zone { padding: 1rem; }
+    .drop-zone-icon { font-size: 1.2rem; }
+    .drop-zone-text { font-size: 0.85rem; }
+
+    .pin-popup h3 { font-size: 1rem; }
+    .popup-thumbs { max-width: 180px; }
+    .popup-thumb { width: 50px; height: 50px; }
+
+    .image-lightbox-close { width: 44px; height: 44px; line-height: 44px; font-size: 1.5rem; }
+}

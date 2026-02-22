@@ -217,3 +217,23 @@ h2 {
         font-size: 0.85rem;
     }
 }
+
+/* Phone */
+@media (max-width: 480px) {
+    body { padding: 0.75rem; }
+    h1 { font-size: 1.2rem; }
+    h2 { font-size: 1.15rem; }
+    #backBtn { min-height: 44px; }
+
+    .form-card, .users-card { padding: 1rem; }
+
+    .form-group-flex input { font-size: 16px; min-height: 44px; }
+    #addUserBtn { min-height: 44px; width: 100% !important; }
+
+    .users-card { overflow-x: auto; }
+    #usersTable { min-width: 480px; }
+    #usersTable thead th, #usersTable tbody td { padding: 0.5rem 0.4rem; font-size: 0.8rem; white-space: nowrap; }
+
+    .remove-btn { min-height: 44px; min-width: 44px; }
+    .role-badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; }
+}

@@ -59,6 +59,9 @@ if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configur
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.BlobExchangeRateHistoryService>();
     builder.Services.AddSingleton<AIPersonalAssistant.Web.Services.IUserManagementService, AIPersonalAssistant.Web.Services.BlobUserManagementService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelImageService, AIPersonalAssistant.Web.Services.BlobTravelImageService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IWishesService, AIPersonalAssistant.Web.Services.BlobWishesService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeService, AIPersonalAssistant.Web.Services.BlobRecipeService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeImageService, AIPersonalAssistant.Web.Services.BlobRecipeImageService>();
 }
 else
 {
@@ -66,6 +69,9 @@ else
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IExchangeRateHistoryService, AIPersonalAssistant.Web.Services.LocalExchangeRateHistoryService>();
     builder.Services.AddSingleton<AIPersonalAssistant.Web.Services.IUserManagementService, AIPersonalAssistant.Web.Services.LocalUserManagementService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.ITravelImageService, AIPersonalAssistant.Web.Services.LocalTravelImageService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IWishesService, AIPersonalAssistant.Web.Services.LocalWishesService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeService, AIPersonalAssistant.Web.Services.LocalRecipeService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeImageService, AIPersonalAssistant.Web.Services.LocalRecipeImageService>();
 }
 
 builder.Services.AddControllers();

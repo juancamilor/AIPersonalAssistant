@@ -584,3 +584,41 @@ h2 {
         padding: 0.4rem 0.25rem;
     }
 }
+
+/* Phone */
+@media (max-width: 480px) {
+    body { padding: 0.75rem; }
+    h1 { font-size: 1.2rem; }
+    h2 { font-size: 1.15rem; }
+    #backBtn { min-height: 44px; }
+
+    .form-card, .results-card, .error-card, .loading-card { padding: 1rem; }
+
+    .calculate-btn { min-height: 44px; }
+    .tab-btn { min-height: 44px; font-size: 0.85rem; }
+    .add-row-btn { min-height: 44px; }
+    .copy-btn { min-height: 44px; }
+    .remove-row-btn { min-width: 36px; min-height: 36px; }
+
+    .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .manual-table { min-width: 600px; }
+
+    .preview-table { font-size: 0.8rem; }
+    .preview-table th, .preview-table td { padding: 0.4rem 0.3rem; }
+
+    .upload-area { padding: 1.5rem 1rem; }
+    .upload-icon { font-size: 2rem; }
+    .upload-area p { font-size: 0.95rem; }
+
+    .summary-grid { grid-template-columns: 1fr; }
+    .summary-item { font-size: 0.85rem; }
+
+    .result-highlight .label { font-size: 1rem; }
+    .result-highlight .amount { font-size: 1.2rem; }
+
+    .cheat-entry { font-size: 0.85rem; }
+    .cheat-sheet-section h3 { font-size: 0.9rem; }
+
+    .disclaimer-banner { padding: 1rem; }
+    .disclaimer-banner p { font-size: 0.85rem; }
+}
