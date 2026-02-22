@@ -112,3 +112,4 @@
 * Ensure API documentation is updated when adding new endpoints.
 * Update setup documentation (e.g., STOCK_TOOLS_SETUP.md, EXCHANGE_RATE_SETUP.md) when adding new integrations.
 * Always update documentation before committing/checking in code to keep everything up to date.
+* Update this file (.github/copilot-instructions.md) when adding new controllers, services, or tools to keep the reference lists current.
