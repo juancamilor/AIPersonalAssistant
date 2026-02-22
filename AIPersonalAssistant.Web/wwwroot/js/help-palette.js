@@ -7,8 +7,8 @@
         { icon: '💱', name: 'Rate Exchange', desc: 'Convert currencies and view trends', href: '/rate-exchange.html' },
         { icon: '📈', name: 'Stock Tools', desc: 'Analyze stock performance and trends', href: '/stock-tools.html' },
         { icon: '🧾', name: 'Taxes Manager', desc: 'Estimate your tax return from W2 data', href: '/taxes-manager.html' },
-        { icon: '📜', name: 'Final Wishes', desc: 'Document and manage your final wishes', href: '/final-wishes.html' },
-        { icon: '🍳', name: 'Cooking Recipes', desc: 'Browse and save your favorite recipes', href: '/cooking-recipes.html' }
+        { icon: '📜', name: 'Final Wishes', desc: 'Document and manage your final wishes', href: '/wishes.html' },
+        { icon: '🍳', name: 'Cooking Recipes', desc: 'Browse and save your favorite recipes', href: '/recipes.html' }
     ];
 
     function create(tag, attrs, parent) {
