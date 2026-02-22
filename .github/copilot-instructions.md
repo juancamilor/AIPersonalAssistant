@@ -40,7 +40,7 @@
 * Follow existing error response patterns
 * Do not add authorization attributes unless requested
 * Do not add model validation unless requested
-* Current controllers: AuthController, ToolsController, RateExchangeController, StockController, TravelController, TaxesController, WishesController, RecipeController, AdminController, HealthController, AccessDeniedController
+* Current controllers: AuthController, ToolsController, RateExchangeController, StockController, TravelController, TaxesController, WishesController, RecipeController, MenopauseController, AdminController, HealthController, AccessDeniedController
 
 ### For Key Vault and Azure Operations
 
@@ -52,8 +52,8 @@
 ### For Services
 
 * Follow the existing dual-storage pattern: local JSON storage (dev) + Azure Blob Storage (prod)
-* Current service pairs: ExchangeRate, Travel/TravelImage, Taxes, UserManagement, Wishes, Recipe/RecipeImage
-* Shareable features (Wishes, Recipes) use unguessable public links — no email-based sharing
+* Current service pairs: ExchangeRate, Travel/TravelImage, Taxes, UserManagement, Wishes, Recipe/RecipeImage, Menopause
+* Shareable features (Wishes, Recipes, Menopause) use unguessable public links — no email-based sharing
 
 ### For JavaScript/Frontend
 

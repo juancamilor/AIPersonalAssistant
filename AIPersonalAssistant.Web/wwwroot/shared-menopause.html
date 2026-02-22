@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Summary - Shared Report</title>
+    <link rel="stylesheet" href="/css/menopause.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 1rem; }
+        .shared-header { text-align: center; margin-bottom: 2rem; }
+        .shared-header h1 { color: #1e293b; margin: 0; font-size: 1.8rem; }
+        .shared-header p { color: #64748b; margin: 0.5rem 0 0; }
+        .shared-container { max-width: 900px; margin: 0 auto; }
+        .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .overview-item { background: #fff; border-radius: 12px; padding: 1.5rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .overview-item .label { color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .overview-item .value { font-size: 2rem; font-weight: 700; color: #6366f1; }
+        .error-message { text-align: center; padding: 3rem; color: #64748b; }
+        .error-message h2 { color: #ef4444; }
+        @media (max-width: 600px) { .overview-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="shared-container">
+        <div class="shared-header">
+            <h1>🌸 Health Summary</h1>
+            <p>Shared for medical review</p>
+        </div>
+
+        <div id="content" style="display:none;">
+            <div class="overview-grid">
+                <div class="overview-item"><div class="label">Avg Mood</div><div class="value" id="avgMood">--</div></div>
+                <div class="overview-item"><div class="label">Avg Energy</div><div class="value" id="avgEnergy">--</div></div>
+                <div class="overview-item"><div class="label">Avg Sleep</div><div class="value" id="avgSleep">--</div></div>
+                <div class="overview-item"><div class="label">Avg Overall</div><div class="value" id="avgOverall">--</div></div>
+            </div>
+
+            <div class="card">
+                <h3>30-Day Wellness Trends</h3>
+                <div class="chart-container"><canvas id="sharedTrendChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h3>Symptom Frequency</h3>
+                <div class="chart-container"><canvas id="sharedSymptomChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h3>Hot Flashes per Day</h3>
+                <div class="chart-container"><canvas id="sharedHotFlashChart"></canvas></div>
+            </div>
+            <div class="card">
+                <h3>Sleep Quality Trend</h3>
+                <div class="chart-container"><canvas id="sharedSleepChart"></canvas></div>
+            </div>
+        </div>
+
+        <div id="loading" style="text-align:center;padding:3rem;color:#64748b;">Loading health data...</div>
+        <div id="errorDiv" class="error-message" style="display:none;">
+            <h2>Unable to Load Data</h2>
+            <p>This share link may be invalid or expired. Please ask for a new link.</p>
+        </div>
+    </div>
+
+    <script>
+    (async function() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        if (!token) { showError(); return; }
+
+        try {
+            const resp = await fetch(`/api/menopause/shared/${token}`);
+            if (!resp.ok) { showError(); return; }
+            const data = await resp.json();
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            renderShared(data);
+        } catch { showError(); }
+
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('errorDiv').style.display = 'block';
+        }
+
+        function renderShared(data) {
+            const ci = data.checkIns || [];
+            const now = new Date();
+            const d30 = new Date(now); d30.setDate(d30.getDate() - 30);
+            const recent = ci.filter(c => new Date(c.date) >= d30);
+
+            if (recent.length) {
+                const avg = (field) => (recent.reduce((s, c) => s + (c[field] || 0), 0) / recent.length).toFixed(1);
+                document.getElementById('avgMood').textContent = avg('mood');
+                document.getElementById('avgEnergy').textContent = avg('energy');
+                document.getElementById('avgSleep').textContent = avg('sleepQuality');
+                document.getElementById('avgOverall').textContent = avg('overall');
+            }
+
+            // Trend chart
+            const days = getLast30Days();
+            const ciMap = {};
+            ci.forEach(c => { const d = c.date.substring(0, 10); ciMap[d] = c; });
+            const moodData = days.map(d => ciMap[d] ? ciMap[d].mood : null);
+            const energyData = days.map(d => ciMap[d] ? ciMap[d].energy : null);
+            const sleepData = days.map(d => ciMap[d] ? ciMap[d].sleepQuality : null);
+            const overallData = days.map(d => ciMap[d] ? ciMap[d].overall : null);
+            const labels = days.map(d => formatShortDate(d));
+
+            new Chart(document.getElementById('sharedTrendChart'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Mood', data: moodData, borderColor: '#6366f1', tension: 0.3, spanGaps: true },
+                        { label: 'Energy', data: energyData, borderColor: '#f59e0b', tension: 0.3, spanGaps: true },
+                        { label: 'Sleep', data: sleepData, borderColor: '#10b981', tension: 0.3, spanGaps: true },
+                        { label: 'Overall', data: overallData, borderColor: '#ef4444', tension: 0.3, spanGaps: true }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 5 } } }
+            });
+
+            // Symptom chart
+            const symptoms = data.symptoms || [];
+            const symCounts = {};
+            symptoms.filter(s => new Date(s.date) >= d30).forEach(s => { symCounts[s.symptomType] = (symCounts[s.symptomType] || 0) + 1; });
+            const symLabels = Object.keys(symCounts);
+            new Chart(document.getElementById('sharedSymptomChart'), {
+                type: 'bar',
+                data: { labels: symLabels, datasets: [{ label: 'Count', data: symLabels.map(l => symCounts[l]), backgroundColor: '#8b5cf6' }] },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
+            });
+
+            // Hot flash chart
+            const hf = data.hotFlashes || [];
+            const hfMap = {};
+            hf.forEach(h => { const d = h.date.substring(0, 10); hfMap[d] = (hfMap[d] || 0) + 1; });
+            new Chart(document.getElementById('sharedHotFlashChart'), {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Hot Flashes', data: days.map(d => hfMap[d] || 0), backgroundColor: '#ef4444' }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Sleep chart
+            const sl = data.sleepLogs || [];
+            const slMap = {};
+            sl.forEach(s => { const d = s.date.substring(0, 10); slMap[d] = s; });
+            new Chart(document.getElementById('sharedSleepChart'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Sleep Quality', data: days.map(d => slMap[d] ? slMap[d].quality : null), borderColor: '#6366f1', tension: 0.3, spanGaps: true },
+                        { label: 'Night Sweats', data: days.map(d => slMap[d] ? slMap[d].nightSweats : null), borderColor: '#f59e0b', type: 'bar', backgroundColor: 'rgba(245,158,11,0.3)' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0 } } }
+            });
+        }
+
+        function getLast30Days() {
+            const days = [];
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                days.push(d.toISOString().substring(0, 10));
+            }
+            return days;
+        }
+
+        function formatShortDate(dateStr) {
+            const d = new Date(dateStr + 'T00:00:00');
+            return (d.getMonth() + 1) + '/' + d.getDate();
+        }
+    })();
+    </script>
+</body>
+</html>

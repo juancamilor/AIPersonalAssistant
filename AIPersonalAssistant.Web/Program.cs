@@ -62,6 +62,7 @@ if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(builder.Configur
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IWishesService, AIPersonalAssistant.Web.Services.BlobWishesService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeService, AIPersonalAssistant.Web.Services.BlobRecipeService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeImageService, AIPersonalAssistant.Web.Services.BlobRecipeImageService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IMenopauseService, AIPersonalAssistant.Web.Services.BlobMenopauseService>();
 }
 else
 {
@@ -72,6 +73,7 @@ else
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IWishesService, AIPersonalAssistant.Web.Services.LocalWishesService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeService, AIPersonalAssistant.Web.Services.LocalRecipeService>();
     builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IRecipeImageService, AIPersonalAssistant.Web.Services.LocalRecipeImageService>();
+    builder.Services.AddScoped<AIPersonalAssistant.Web.Services.IMenopauseService, AIPersonalAssistant.Web.Services.LocalMenopauseService>();
 }
 
 builder.Services.AddControllers();

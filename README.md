@@ -86,6 +86,17 @@ A modern web application for personal productivity with Microsoft Account authen
   - **Per-user storage**: Each user's recipes stored separately
   - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
 
+- **Menopause Wellness**: Track symptoms, mood, and wellness through menopause
+  - **Daily wellness check-in**: Track mood, energy, sleep, and overall wellness (emoji 1-5 scale)
+  - **Symptom journal**: Log symptoms with severity tracking and triggers
+  - **Hot flash quick-logging**: Record time, severity, duration, and triggers
+  - **Sleep quality tracking**: Track night sweats and sleep interruptions
+  - **Trend visualization**: Chart.js 30-day line/bar charts for wellness trends
+  - **Evidence-based tips**: Personalized wellness tips based on lowest-scoring areas
+  - **Shareable public link**: Generate unguessable public link for doctor review (no email required)
+  - **Per-user storage**: Each user's wellness data stored separately
+  - **Persistent data**: JSON files locally, **Azure Blob Storage** in production
+
 ### UX & Accessibility
 - **Help Command Palette**: Slide-out sidebar accessible via ❓ icon on every tool page
   - **Search & filter**: Quickly find help topics and tool instructions
@@ -210,6 +221,7 @@ AIPersonalAssistant/
 │   │   ├── TaxesController.cs        # Taxes Manager API (W2 OCR + stock sales + tax calc)
 │   │   ├── WishesController.cs        # Final Wishes API (CRUD + shareable links)
 │   │   ├── RecipeController.cs        # Cooking Recipes API (CRUD + image upload + sharing)
+│   │   ├── MenopauseController.cs    # Menopause Wellness API (check-ins, symptoms, sharing)
 │   │   ├── AdminController.cs        # Admin user management API (admin-only)
 │   │   ├── HealthController.cs       # Health check endpoint
 │   │   └── AccessDeniedController.cs # Access denied endpoint
@@ -243,6 +255,9 @@ AIPersonalAssistant/
 │   │   ├── IRecipeImageService.cs    # Recipe image storage interface
 │   │   ├── LocalRecipeImageService.cs # Recipe images local storage (dev)
 │   │   ├── BlobRecipeImageService.cs # Recipe images Azure Blob (prod)
+│   │   ├── IMenopauseService.cs     # Menopause wellness service interface
+│   │   ├── LocalMenopauseService.cs # Menopause wellness JSON storage (dev)
+│   │   ├── BlobMenopauseService.cs  # Menopause wellness Azure Blob (prod)
 │   │   ├── IUserManagementService.cs # User management interface
 │   │   ├── LocalUserManagementService.cs # User list JSON storage (dev)
 │   │   └── BlobUserManagementService.cs  # User list Azure Blob (prod)
@@ -253,7 +268,8 @@ AIPersonalAssistant/
 │   │   ├── TaxModels.cs             # Tax calculation DTOs (W2, stock sales, estimates)
 │   │   ├── TravelModels.cs           # Travel pin DTOs (with image URLs)
 │   │   ├── WishesModels.cs           # Final Wishes DTOs (wishes + share links)
-│   │   └── RecipeModels.cs           # Cooking Recipes DTOs (recipes + images + sharing)
+│   │   ├── RecipeModels.cs           # Cooking Recipes DTOs (recipes + images + sharing)
+│   │   └── MenopauseModels.cs       # Menopause Wellness DTOs (check-ins, symptoms, sharing)
 │   ├── wwwroot/                      # Static files
 │   │   ├── css/
 │   │   │   ├── style.css             # Global styles + Microsoft auth button
@@ -265,6 +281,7 @@ AIPersonalAssistant/
 │   │   │   ├── chess-trainer.css     # Chess Trainer styles
 │   │   │   ├── wishes.css            # Final Wishes styles
 │   │   │   ├── recipes.css           # Cooking Recipes styles
+│   │   │   ├── menopause.css         # Menopause Wellness styles
 │   │   │   └── help-palette.css      # Help Command Palette styles
 │   │   ├── js/
 │   │   │   ├── app.js                # Authentication checking, tools loading & admin button
@@ -282,6 +299,7 @@ AIPersonalAssistant/
 │   │   │   ├── admin.js              # Admin panel user management
 │   │   │   ├── wishes.js             # Final Wishes frontend logic
 │   │   │   ├── recipes.js            # Cooking Recipes frontend logic
+│   │   │   ├── menopause.js          # Menopause Wellness frontend logic
 │   │   │   └── help-palette.js       # Help Command Palette (slide-out sidebar)
 │   │   ├── data/
 │   │   │   ├── chess-lessons.json    # Chess lesson content
@@ -295,8 +313,10 @@ AIPersonalAssistant/
 │   │   ├── chess-trainer.html        # Protected Chess Trainer tool
 │   │   ├── wishes.html               # Protected Final Wishes tool
 │   │   ├── recipes.html              # Protected Cooking Recipes tool
+│   │   ├── menopause.html            # Protected Menopause Wellness tool
 │   │   ├── shared-wishes.html        # Public shared wishes page (no auth required)
 │   │   ├── shared-recipe.html        # Public shared recipe page (no auth required)
+│   │   ├── shared-menopause.html     # Public shared menopause wellness page (no auth required)
 │   │   ├── admin.html                # Protected admin panel (admin-only)
 │   │   └── access-denied.html        # Access denied page for unauthorized users
 │   ├── Program.cs                    # ASP.NET Core startup & auth configuration
@@ -317,6 +337,7 @@ AIPersonalAssistant/
 │   │   ├── chess-trainer.spec.js     # Chess Trainer smoke tests (8 tests)
 │   │   ├── wishes.spec.js            # Final Wishes smoke tests
 │   │   ├── recipes.spec.js           # Cooking Recipes smoke tests
+│   │   ├── menopause.spec.js         # Menopause Wellness smoke tests
 │   │   ├── help-palette.spec.js      # Help Command Palette tests
 │   │   ├── mobile-responsive.spec.js # Mobile responsiveness tests (≤480px)
 │   │   └── admin.spec.js             # Admin panel smoke tests
@@ -480,7 +501,7 @@ npx playwright test
 
 **Test Coverage:**
 - 16 unit tests (xUnit + Moq)
-- Playwright UI smoke tests across all tools (taxes-manager, chess-trainer, stock-tools, travel-map, rate-exchange, wishes, recipes, help-palette, mobile-responsive, admin)
+- Playwright UI smoke tests across all tools (taxes-manager, chess-trainer, stock-tools, travel-map, rate-exchange, wishes, recipes, menopause, help-palette, mobile-responsive, admin)
 
 ## 📝 Configuration
 

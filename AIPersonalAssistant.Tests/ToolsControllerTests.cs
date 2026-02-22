@@ -37,7 +37,7 @@ public class ToolsControllerTests
 
         // Assert
         Assert.NotNull(tools);
-        Assert.Equal(7, tools.Length);
+        Assert.Equal(8, tools.Length);
     }
 
     [Fact]

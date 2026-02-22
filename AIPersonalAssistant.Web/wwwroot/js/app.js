@@ -74,6 +74,8 @@ const handleToolClick = (event) => {
         window.location.href = '/recipes.html';
     }else if (toolName === 'Final Wishes') {
         window.location.href = '/wishes.html';
+    } else if (toolName === 'Menopause Wellness') {
+        window.location.href = '/menopause.html';
     }
 };
 
