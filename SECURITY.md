@@ -112,7 +112,7 @@ Via Azure Portal:
 Via Azure CLI:
 ```bash
 az webapp config appsettings set \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=your-key" \
@@ -126,7 +126,7 @@ az webapp config appsettings set \
 ```bash
 az keyvault create \
   --name camilo-assistant-kv \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --location eastus
 ```
 
@@ -151,14 +151,14 @@ az keyvault secret set \
 3. **Enable Managed Identity:**
 ```bash
 az webapp identity assign \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub
 ```
 
 4. **Grant Access:**
 ```bash
 PRINCIPAL_ID=$(az webapp identity show \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub \
   --query principalId -o tsv)
 
@@ -171,7 +171,7 @@ az keyvault set-policy \
 5. **Reference in App Settings:**
 ```bash
 az webapp config appsettings set \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/ExchangeRateApi-Key/)" \
@@ -213,7 +213,7 @@ dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "new-key"
 Production:
 ```bash
 az webapp config appsettings set \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub \
   --settings "ExchangeRateAPIs__ExchangeRateApi__ApiKey=new-key"
 ```
@@ -221,7 +221,7 @@ az webapp config appsettings set \
 **Step 3: Restart App (if needed)**
 ```bash
 az webapp restart \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --name my-personal-assistant-hub
 ```
 
@@ -239,7 +239,7 @@ az monitor diagnostic-settings create \
 ### Check Who Accessed Secrets:
 ```bash
 az monitor activity-log list \
-  --resource-group my-personal-assistant-hub-rg \
+  --resource-group camilo-personal-assistant-rg \
   --start-time 2026-01-01T00:00:00Z
 ```
 

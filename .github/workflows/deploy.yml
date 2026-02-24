@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_RESOURCE_GROUP: my-personal-assistant-hub-rg
+  AZURE_RESOURCE_GROUP: camilo-personal-assistant-rg
   DOTNET_VERSION: '10.0.x'
   
 jobs:
