@@ -48,11 +48,13 @@
 * Do not add retry logic unless explicitly asked
 * Do not add additional security measures beyond the request
 * Use existing credential patterns from codebase
+* The app supports dual authentication providers: Microsoft (Azure AD) and Google OAuth 2.0
 
 ### For Services
 
 * Follow the existing dual-storage pattern: local JSON storage (dev) + Azure Blob Storage (prod)
 * Current service pairs: ExchangeRate, Travel/TravelImage, Taxes, UserManagement, Wishes, Recipe/RecipeImage, Menopause
+* UserManagement service stores per-user tool permissions alongside email addresses
 * Shareable features (Wishes, Recipes, Menopause) use unguessable public links — no email-based sharing
 
 ### For JavaScript/Frontend
@@ -103,6 +105,13 @@
 * If the backup is not successful, say so.
 * Compare the files at the end of the backup to make sure all files are in there.
 * Do not restore backups on your own. Do it only when asked.
+
+## Testing Requirements
+
+* When adding new features, controllers, services, or endpoints, always add corresponding unit tests in the `AIPersonalAssistant.Tests` project.
+* Follow existing test patterns (xUnit + Moq) as seen in `ToolsControllerTests.cs`, `TravelControllerTests.cs`, and `StartupTests.cs`.
+* Tests must pass locally (`dotnet test`) before committing code.
+* Do not remove or modify existing passing tests unless the feature they test has been intentionally changed.
 
 ## Documentation Updates
 

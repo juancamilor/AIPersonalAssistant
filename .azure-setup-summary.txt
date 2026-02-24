@@ -2,8 +2,8 @@
 AZURE DEPLOYMENT SETUP - COMPLETED
 ================================================================================
 
-? Service Principal Created: camilo-personal-assistant-github
-? Role Assignment: Contributor on resource group 'camilo-personal-assistant-rg'
+? Service Principal Created: my-personal-assistant-hub-github
+? Role Assignment: Contributor on resource group 'my-personal-assistant-hub-rg'
 ? Federated Credentials: Configured for GitHub Actions OIDC
 
 ================================================================================
@@ -42,7 +42,7 @@ HOW TO ADD SECRETS
 DEPLOYMENT DETAILS
 ================================================================================
 
-Resource Group: camilo-personal-assistant-rg
+Resource Group: my-personal-assistant-hub-rg
 Location: eastus
 Subscription: Visual Studio Enterprise Subscription (b6baf6a3-39aa-45ce-9363-83e84a634034)
 
@@ -67,7 +67,7 @@ NEXT STEPS
    - It will build, test, deploy infrastructure, and deploy the app
 
 4. ? Access your deployed app at:
-   https://camilo-personal-assistant.azurewebsites.net
+   https://my-personal-assistant-hub.azurewebsites.net
 
 ================================================================================
 TROUBLESHOOTING
@@ -81,10 +81,10 @@ If deployment fails:
 
 To view Azure resources:
 - Portal: https://portal.azure.com
-- Navigate to: camilo-personal-assistant-rg resource group
+- Navigate to: my-personal-assistant-hub-rg resource group
 
 To view application logs:
-az webapp log tail --resource-group camilo-personal-assistant-rg --name camilo-personal-assistant
+az webapp log tail --resource-group my-personal-assistant-hub-rg --name my-personal-assistant-hub
 
 ================================================================================
 SECURITY NOTE

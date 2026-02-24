@@ -85,6 +85,14 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 (async () => {
     await checkAuth();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'noperm') {
+        const toolName = urlParams.get('tool') || 'that tool';
+        alert(`You don't have permission to access "${toolName}". Contact your administrator.`);
+        window.history.replaceState({}, '', '/tools.html');
+    }
+
     await loadTools();
 })();
 

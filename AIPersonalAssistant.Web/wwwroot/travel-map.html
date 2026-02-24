@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/travel-map.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/js/tool-guard.js"></script>
 </head>
 <body>
     <div class="header">
@@ -65,6 +66,16 @@
         </div>
     </div>
 
+    <script>
+    (async () => {
+        try {
+            const resp = await fetch('/api/auth/user', { credentials: 'include' });
+            if (!resp.ok) { window.location.href = '/login.html'; return; }
+            const user = await resp.json();
+            enforceToolPermission(user, 'travel-map');
+        } catch { window.location.href = '/login.html'; }
+    })();
+    </script>
     <script src="/js/travel-map.js"></script>
     <script src="/js/help-palette.js"></script>
 </body>

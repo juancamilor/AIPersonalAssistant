@@ -4,7 +4,7 @@ This guide explains how to deploy the Personal Assistant web application to Azur
 
 ## Prerequisites
 
-- Azure subscription with an existing resource group: `camilo-personal-assistant-rg`
+- Azure subscription with an existing resource group: `my-personal-assistant-hub-rg`
 - GitHub repository with Actions enabled
 - Azure CLI installed (for manual setup)
 - Permissions to create Azure resources and GitHub secrets
@@ -27,8 +27,8 @@ This enables secure OIDC authentication without storing credentials.
 ```bash
 # Set variables
 SUBSCRIPTION_ID="<your-subscription-id>"
-RESOURCE_GROUP="camilo-personal-assistant-rg"
-APP_NAME="camilo-personal-assistant-github"
+RESOURCE_GROUP="my-personal-assistant-hub-rg"
+APP_NAME="my-personal-assistant-hub-github"
 
 # Login to Azure
 az login
@@ -157,13 +157,13 @@ az login
 
 # Deploy Bicep template
 az deployment group create \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --template-file infrastructure/main.bicep \
   --parameters infrastructure/parameters.json
 
 # Get the web app name
 WEB_APP_NAME=$(az deployment group show \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --name main \
   --query properties.outputs.webAppName.value -o tsv)
 
@@ -174,7 +174,7 @@ dotnet publish AIPersonalAssistant.Web/AIPersonalAssistant.Web.csproj \
 
 # Deploy to Azure Web App
 az webapp deploy \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --name $WEB_APP_NAME \
   --src-path publish.zip \
   --type zip
@@ -280,8 +280,8 @@ If you need to manually update settings (e.g., for troubleshooting):
 
 ```bash
 az webapp config appsettings set \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --settings \
     "AzureAd__ClientId=YOUR_CLIENT_ID" \
     "AzureAd__ClientSecret=YOUR_CLIENT_SECRET" \
@@ -301,7 +301,7 @@ For additional security, you can migrate to Azure Key Vault:
 # Create Key Vault
 az keyvault create \
   --name camilo-assistant-kv \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --location eastus
 
 # Store secrets
@@ -310,13 +310,13 @@ az keyvault secret set --vault-name camilo-assistant-kv --name "ExchangeRateApi-
 
 # Enable managed identity for App Service
 az webapp identity assign \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 
 # Grant access to Key Vault
 PRINCIPAL_ID=$(az webapp identity show \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --query principalId -o tsv)
 
 az keyvault set-policy \
@@ -326,8 +326,8 @@ az keyvault set-policy \
 
 # Reference in App Settings
 az webapp config appsettings set \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --settings \
     "AzureAd__ClientSecret=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/AzureAd--ClientSecret/)"
 ```
@@ -339,20 +339,20 @@ az webapp config appsettings set \
 ```bash
 # Stream logs
 az webapp log tail \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 
 # Download logs
 az webapp log download \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --log-file logs.zip
 ```
 
 ### Azure Portal
 
 1. Go to [Azure Portal](https://portal.azure.com)
-2. Navigate to your resource group: `camilo-personal-assistant-rg`
+2. Navigate to your resource group: `my-personal-assistant-hub-rg`
 3. Click on your Web App
 4. View:
    - **Overview**: Application URL, status, metrics
@@ -371,7 +371,7 @@ az webapp log download \
 
 **Common issues:**
 - **Authentication failure**: Verify GitHub secrets are correctly set
-- **Resource group not found**: Ensure `camilo-personal-assistant-rg` exists
+- **Resource group not found**: Ensure `my-personal-assistant-hub-rg` exists
 - **Permission denied**: Service principal needs Contributor role
 
 ### Application Not Starting
@@ -379,8 +379,8 @@ az webapp log download \
 **Check application logs:**
 ```bash
 az webapp log tail \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 ```
 
 **Common issues:**
@@ -458,7 +458,7 @@ Update `appServicePlanSku` in `infrastructure/parameters.json`:
 ## URLs
 
 After deployment, your application will be available at:
-- **Production**: `https://camilo-personal-assistant.azurewebsites.net`
+- **Production**: `https://my-personal-assistant-hub.azurewebsites.net`
 
 To use a custom domain, configure it in Azure Portal ? Web App ? Custom domains.
 

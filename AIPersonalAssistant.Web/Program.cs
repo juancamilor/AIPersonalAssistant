@@ -13,6 +13,15 @@ if (!bypassAuth)
     builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
+    builder.Services.AddAuthentication()
+        .AddGoogle("Google", options =>
+        {
+            options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
+            options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
+            options.CallbackPath = "/signin-google";
+            options.SignInScheme = "Cookies";
+        });
+
     var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
     var adminEmails = builder.Configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
 
@@ -92,6 +101,8 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<AIPersonalAssistant.Web.Authorization.ToolPermissionMiddleware>();
 
 app.UseStatusCodePages(async context =>
 {

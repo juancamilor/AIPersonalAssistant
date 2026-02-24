@@ -6,10 +6,12 @@ A modern web application for personal productivity with Microsoft Account authen
 
 ### Authentication & Security
 - **Microsoft Account Integration**: Secure OAuth 2.0 authentication using Azure AD
+- **Google Authentication**: Sign in with Google accounts via OAuth 2.0 (dual provider support)
 - **Email Allow List**: Restrict access to authorized users only (dynamic — managed via Admin panel)
 - **Role-based Access**: Admin and Regular User roles
-- **Admin Panel**: Add/remove users without redeployment
-- Supports personal Microsoft accounts (Outlook.com, Hotmail, Live)
+- **Per-Tool Permissions**: Admins can assign specific tools to each user via the Admin panel
+- **Admin Panel**: Add/remove users and manage per-tool permissions without redeployment
+- Supports personal Microsoft accounts (Outlook.com, Hotmail, Live) and Google accounts
 - Protected API endpoints with authorization checks
 - Admin-only endpoints with `AdminOnly` policy
 - Friendly access denied page for unauthorized users
@@ -109,7 +111,7 @@ A modern web application for personal productivity with Microsoft Account authen
 
 - **Backend**: ASP.NET Core 10 (.NET 10)
 - **Frontend**: Vanilla JavaScript (ES6+), HTML5, CSS3, Chart.js, Leaflet.js
-- **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0)
+- **Authentication**: Microsoft Identity Web (Azure AD OAuth 2.0) + Google OAuth 2.0
 - **External APIs**: ExchangeRate-API, Open Exchange Rates, CurrencyAPI, Frankfurter, Alpha Vantage, Azure Document Intelligence
 - **Storage**: Azure Blob Storage (production), JSON files (development)
 - **Caching**: In-memory caching (IMemoryCache) for API rate optimization
@@ -149,7 +151,7 @@ A modern web application for personal productivity with Microsoft Account authen
 
    Or manually register at [Azure Portal](https://portal.azure.com):
    - Go to Azure AD → App registrations → New registration
-   - Name: `camilo-personal-assistant`
+   - Name: `my-personal-assistant-hub`
    - Supported accounts: Personal Microsoft accounts
    - Redirect URI: `https://localhost:7028/signin-microsoft`
    - Create client secret
@@ -229,7 +231,8 @@ AIPersonalAssistant/
 │   │   ├── EmailAllowListRequirement.cs  # Email allow list requirement
 │   │   ├── EmailAllowListHandler.cs      # Authorization handler (dynamic user list)
 │   │   ├── AdminRequirement.cs           # Admin role requirement
-│   │   └── AdminHandler.cs              # Admin role authorization handler
+│   │   ├── AdminHandler.cs              # Admin role authorization handler
+│   │   └── ToolPermissionMiddleware.cs  # Per-tool permission enforcement
 │   ├── Services/                     # Business logic services
 │   │   ├── IExchangeRateService.cs   # Exchange rate service interface
 │   │   ├── ExchangeRateService.cs    # Multi-API exchange rate (current + historical)
@@ -300,7 +303,8 @@ AIPersonalAssistant/
 │   │   │   ├── wishes.js             # Final Wishes frontend logic
 │   │   │   ├── recipes.js            # Cooking Recipes frontend logic
 │   │   │   ├── menopause.js          # Menopause Wellness frontend logic
-│   │   │   └── help-palette.js       # Help Command Palette (slide-out sidebar)
+│   │   │   ├── help-palette.js       # Help Command Palette (slide-out sidebar)
+│   │   │   └── tool-guard.js        # Per-tool permission checking on frontend
 │   │   ├── data/
 │   │   │   ├── chess-lessons.json    # Chess lesson content
 │   │   │   └── chess-puzzles.json    # Chess puzzle set
@@ -393,8 +397,8 @@ AIPersonalAssistant/
 ### Frontend (Vanilla JavaScript)
 
 **login.html + login.js**
-- Displays Microsoft sign-in button with brand styling
-- Redirects to `/api/auth/login` on button click
+- Modern login page with Microsoft and Google sign-in buttons
+- Redirects to `/api/auth/login` (Microsoft) or `/api/auth/google-login` (Google)
 - OAuth flow handles the rest automatically
 
 **tools.html + app.js**
@@ -426,22 +430,22 @@ AIPersonalAssistant/
 ### Authentication Flow
 
 1. User visits `/login.html`
-2. Clicks "Sign in with Microsoft"
-3. Redirected to `/api/auth/login` → Microsoft login page
-4. User authenticates with Microsoft account (Outlook.com, Hotmail, etc.)
-5. Microsoft redirects to `/signin-microsoft` with auth code
+2. Clicks "Sign in with Microsoft" or "Sign in with Google"
+3. Redirected to `/api/auth/login` (Microsoft) or `/api/auth/google-login` (Google) → provider login page
+4. User authenticates with their account
+5. Provider redirects back with auth code
 6. ASP.NET Core exchanges code for tokens, creates auth cookie
 7. **Email allow list check:** User's email validated against authorized list
-8. If authorized → User redirected to `/tools.html`
+8. If authorized → User redirected to `/tools.html` (filtered by per-tool permissions)
 9. If not authorized → User sees access denied page
 10. Subsequent API calls include auth cookie and pass authorization checks
-11. `[Authorize]` attribute and email allow list policy protect all endpoints
+11. `[Authorize]` attribute, email allow list policy, and tool permissions protect all endpoints
 
 ### Deployment Architecture
 
 **Azure Resources:**
 - App Service Plan (B1 Linux)
-- App Service (camilo-personal-assistant)
+- App Service (my-personal-assistant-hub)
 - Storage Account (for Travel Map pins in production)
 - Configuration stored in App Service settings (not in code)
 
@@ -454,7 +458,8 @@ AIPersonalAssistant/
 
 ## 🔒 Security
 
-- OAuth 2.0 with OpenID Connect for authentication
+- OAuth 2.0 with OpenID Connect for authentication (Microsoft + Google providers)
+- **Per-Tool Permissions**: Admins control which tools each user can access
 - **Email Allow List**: Restricts application access to authorized users only
 - Case-insensitive email matching for user convenience
 - HTTPS enforced in production

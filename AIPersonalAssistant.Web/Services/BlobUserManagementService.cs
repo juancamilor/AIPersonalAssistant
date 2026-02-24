@@ -26,53 +26,68 @@ public class BlobUserManagementService : IUserManagementService
         _containerClient.CreateIfNotExists();
     }
 
-    private async Task<List<string>> LoadEmailsAsync()
+    private async Task<List<UserData>> LoadUsersAsync()
     {
         var blobClient = _containerClient.GetBlobClient(BlobName);
         try
         {
             if (!await blobClient.ExistsAsync())
             {
-                var seed = _seedEmails.Union(_adminEmails, StringComparer.OrdinalIgnoreCase).ToList();
-                await SaveEmailsAsync(seed);
+                var seed = _seedEmails.Union(_adminEmails, StringComparer.OrdinalIgnoreCase)
+                    .Select(e => new UserData { Email = e, Permissions = new() { "*" } })
+                    .ToList();
+                await SaveUsersAsync(seed);
                 return seed;
             }
 
             var response = await blobClient.DownloadContentAsync();
             var json = response.Value.Content.ToString();
-            return JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+
+            // Try new format first, fall back to old List<string> format
+            try
+            {
+                return JsonSerializer.Deserialize<List<UserData>>(json) ?? new List<UserData>();
+            }
+            catch (JsonException)
+            {
+                var emails = JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
+                var migrated = emails.Select(e => new UserData { Email = e, Permissions = new() { "*" } }).ToList();
+                await SaveUsersAsync(migrated);
+                return migrated;
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error loading users from blob storage");
-            return new List<string>();
+            return new List<UserData>();
         }
     }
 
-    private async Task SaveEmailsAsync(List<string> emails)
+    private async Task SaveUsersAsync(List<UserData> users)
     {
         var blobClient = _containerClient.GetBlobClient(BlobName);
-        var json = JsonSerializer.Serialize(emails, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
         await blobClient.UploadAsync(BinaryData.FromString(json), overwrite: true);
     }
 
     public async Task<List<UserInfo>> GetAllUsersAsync()
     {
-        var emails = await LoadEmailsAsync();
-        return emails.Select(e => new UserInfo
+        var users = await LoadUsersAsync();
+        return users.Select(u => new UserInfo
         {
-            Email = e,
-            Role = _adminEmails.Any(a => a.Equals(e, StringComparison.OrdinalIgnoreCase)) ? "Admin" : "User"
+            Email = u.Email,
+            Role = _adminEmails.Any(a => a.Equals(u.Email, StringComparison.OrdinalIgnoreCase)) ? "Admin" : "User",
+            Permissions = u.Permissions
         }).ToList();
     }
 
     public async Task AddUserAsync(string email)
     {
-        var emails = await LoadEmailsAsync();
-        if (!emails.Any(e => e.Equals(email, StringComparison.OrdinalIgnoreCase)))
+        var users = await LoadUsersAsync();
+        if (!users.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase)))
         {
-            emails.Add(email);
-            await SaveEmailsAsync(emails);
+            users.Add(new UserData { Email = email, Permissions = new() { "*" } });
+            await SaveUsersAsync(users);
         }
     }
 
@@ -81,9 +96,9 @@ public class BlobUserManagementService : IUserManagementService
         if (_adminEmails.Any(a => a.Equals(email, StringComparison.OrdinalIgnoreCase)))
             return;
 
-        var emails = await LoadEmailsAsync();
-        emails.RemoveAll(e => e.Equals(email, StringComparison.OrdinalIgnoreCase));
-        await SaveEmailsAsync(emails);
+        var users = await LoadUsersAsync();
+        users.RemoveAll(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        await SaveUsersAsync(users);
     }
 
     public async Task<bool> IsAllowedUserAsync(string email)
@@ -91,7 +106,28 @@ public class BlobUserManagementService : IUserManagementService
         if (_adminEmails.Any(a => a.Equals(email, StringComparison.OrdinalIgnoreCase)))
             return true;
 
-        var emails = await LoadEmailsAsync();
-        return emails.Any(e => e.Equals(email, StringComparison.OrdinalIgnoreCase));
+        var users = await LoadUsersAsync();
+        return users.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public async Task<List<string>> GetUserPermissionsAsync(string email)
+    {
+        if (_adminEmails.Any(a => a.Equals(email, StringComparison.OrdinalIgnoreCase)))
+            return new List<string> { "*" };
+
+        var users = await LoadUsersAsync();
+        var user = users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        return user?.Permissions ?? new List<string>();
+    }
+
+    public async Task SetUserPermissionsAsync(string email, List<string> permissions)
+    {
+        var users = await LoadUsersAsync();
+        var user = users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        if (user != null)
+        {
+            user.Permissions = permissions;
+            await SaveUsersAsync(users);
+        }
     }
 }

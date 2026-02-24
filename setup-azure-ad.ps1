@@ -18,7 +18,7 @@ Write-Host "Subscription: $($account.name)" -ForegroundColor Green
 Write-Host ""
 
 # App registration details
-$appName = "camilo-personal-assistant"
+$appName = "my-personal-assistant-hub"
 $redirectUris = @(
     "https://localhost:5001/signin-microsoft",
     "http://localhost:5000/signin-microsoft"

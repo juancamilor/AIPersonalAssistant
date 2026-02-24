@@ -1,5 +1,9 @@
-﻿using AIPersonalAssistant.Web.Controllers;
+﻿using System.Security.Claims;
+using AIPersonalAssistant.Web.Controllers;
+using AIPersonalAssistant.Web.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Reflection;
 
 namespace AIPersonalAssistant.Tests;
@@ -10,7 +14,20 @@ public class ToolsControllerTests
 
     public ToolsControllerTests()
     {
-        _controller = new ToolsController();
+        var mockUserService = new Mock<IUserManagementService>();
+        mockUserService
+            .Setup(s => s.GetUserPermissionsAsync(It.IsAny<string>()))
+            .ReturnsAsync(new List<string> { "*" });
+
+        _controller = new ToolsController(mockUserService.Object);
+
+        var claims = new List<Claim> { new Claim("preferred_username", "test@example.com") };
+        var identity = new ClaimsIdentity(claims, "TestAuth");
+        var principal = new ClaimsPrincipal(identity);
+        _controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = principal }
+        };
     }
 
     private static object? GetPropertyValue(object obj, string propertyName)
@@ -19,20 +36,20 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_ReturnsOkResult()
+    public async Task GetTools_ReturnsOkResult()
     {
         // Act
-        var result = _controller.GetTools();
+        var result = await _controller.GetTools();
 
         // Assert
         Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
-    public void GetTools_ReturnsSevenTools()
+    public async Task GetTools_ReturnsSevenTools()
     {
         // Act
-        var result = _controller.GetTools() as OkObjectResult;
+        var result = await _controller.GetTools() as OkObjectResult;
         var tools = result?.Value as Array;
 
         // Assert
@@ -41,10 +58,10 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_AllToolsHaveRequiredProperties()
+    public async Task GetTools_AllToolsHaveRequiredProperties()
     {
         // Act
-        var result = _controller.GetTools() as OkObjectResult;
+        var result = await _controller.GetTools() as OkObjectResult;
         var tools = result?.Value as Array;
 
         // Assert
@@ -60,10 +77,10 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_FirstToolIsRateExchange()
+    public async Task GetTools_FirstToolIsRateExchange()
     {
         // Act
-        var result = _controller.GetTools() as OkObjectResult;
+        var result = await _controller.GetTools() as OkObjectResult;
         var tools = result?.Value as Array;
 
         // Assert
@@ -79,10 +96,10 @@ public class ToolsControllerTests
 
 
     [Fact]
-    public void GetTools_AllToolsHaveUniqueIds()
+    public async Task GetTools_AllToolsHaveUniqueIds()
     {
         // Act
-        var result = _controller.GetTools() as OkObjectResult;
+        var result = await _controller.GetTools() as OkObjectResult;
         var tools = result?.Value as Array;
 
         // Assert
@@ -98,10 +115,10 @@ public class ToolsControllerTests
     }
 
     [Fact]
-    public void GetTools_AllToolNamesAreNotEmpty()
+    public async Task GetTools_AllToolNamesAreNotEmpty()
     {
         // Act
-        var result = _controller.GetTools() as OkObjectResult;
+        var result = await _controller.GetTools() as OkObjectResult;
         var tools = result?.Value as Array;
 
         // Assert

@@ -181,6 +181,163 @@ h2 {
     border-color: #e2e8f0;
 }
 
+/* Permissions badge */
+.permissions-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: default;
+}
+
+.permissions-badge.all {
+    background: rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+}
+
+.permissions-badge.partial {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.edit-perm-btn {
+    padding: 0.4rem 0.9rem;
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: #6366f1;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    width: auto !important;
+    transition: all 0.2s;
+    margin-left: 0.5rem;
+}
+
+.edit-perm-btn:hover {
+    background: rgba(99, 102, 241, 0.4) !important;
+    color: #ffffff;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid #e2e8f0;
+}
+
+.modal-content h3 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.modal-content h3 span {
+    color: #6366f1;
+}
+
+.permission-options {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+}
+
+.permission-options hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 0.5rem 0;
+}
+
+.perm-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.perm-option:hover {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.perm-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.save-btn {
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    width: auto !important;
+    transition: all 0.2s;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px) !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.cancel-btn {
+    padding: 0.6rem 1.5rem;
+    background: #e2e8f0 !important;
+    color: #475569;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    width: auto !important;
+    transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+    background: #cbd5e1 !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
 @media (max-width: 768px) {
     body {
         padding: 1rem;
@@ -236,4 +393,13 @@ h2 {
 
     .remove-btn { min-height: 44px; min-width: 44px; }
     .role-badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; }
+    .permissions-badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; }
+    .edit-perm-btn { min-height: 44px; min-width: 44px; font-size: 0.8rem; margin-left: 0.25rem; }
+
+    .modal-content { padding: 1.25rem; }
+    .modal-content h3 { font-size: 1rem; }
+    .permission-options { max-height: 250px; }
+    .perm-option { padding: 0.5rem; font-size: 0.9rem; }
+    .modal-actions { flex-direction: column; }
+    .save-btn, .cancel-btn { width: 100% !important; min-height: 44px; }
 }

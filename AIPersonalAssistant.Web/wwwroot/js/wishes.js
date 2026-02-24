@@ -239,6 +239,7 @@ document.getElementById('deleteModal').addEventListener('click', (e) => {
 
 // Initialize
 (async () => {
-    await checkAuth();
+    const user = await checkAuth();
+    if (!enforceToolPermission(user, 'wishes')) return;
     await loadWishes();
 })();

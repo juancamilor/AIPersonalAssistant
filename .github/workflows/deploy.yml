@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_RESOURCE_GROUP: camilo-personal-assistant-rg
+  AZURE_RESOURCE_GROUP: my-personal-assistant-hub-rg
   DOTNET_VERSION: '10.0.x'
   
 jobs:
@@ -65,7 +65,7 @@ jobs:
     needs: build
     environment:
       name: production
-      url: https://camilo-personal-assistant.azurewebsites.net
+      url: https://my-personal-assistant-hub.azurewebsites.net
     
     steps:
     - name: Download artifact
@@ -91,6 +91,8 @@ jobs:
         [ -z "${{ secrets.OPENEXCHANGERATES_API_KEY }}" ] && MISSING="$MISSING OPENEXCHANGERATES_API_KEY"
         [ -z "${{ secrets.CURRENCYAPI_KEY }}" ] && MISSING="$MISSING CURRENCYAPI_KEY"
         [ -z "${{ secrets.ALPHAVANTAGE_API_KEY }}" ] && MISSING="$MISSING ALPHAVANTAGE_API_KEY"
+        [ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] && MISSING="$MISSING GOOGLE_CLIENT_ID"
+        [ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ] && MISSING="$MISSING GOOGLE_CLIENT_SECRET"
         if [ -n "$MISSING" ]; then
           echo "::error::Missing required secrets:$MISSING"
           exit 1
@@ -100,14 +102,14 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: camilo-personal-assistant
+        app-name: my-personal-assistant-hub
         package: ./publish
     
     - name: Configure Application Settings
       run: |
         az webapp config appsettings set \
           --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-          --name camilo-personal-assistant \
+          --name my-personal-assistant-hub \
           --settings \
             "AzureAd__ClientId=${{ secrets.AZUREAD_CLIENT_ID }}" \
             "AzureAd__ClientSecret=${{ secrets.AZUREAD_CLIENT_SECRET }}" \
@@ -117,24 +119,26 @@ jobs:
             "ExchangeRateAPIs__CurrencyApi__ApiKey=${{ secrets.CURRENCYAPI_KEY }}" \
             "StockAPI__AlphaVantage__ApiKey=${{ secrets.ALPHAVANTAGE_API_KEY }}" \
             "AzureDocumentIntelligence__Endpoint=${{ secrets.AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT }}" \
-            "AzureDocumentIntelligence__ApiKey=${{ secrets.AZURE_DOCUMENT_INTELLIGENCE_API_KEY }}"
+            "AzureDocumentIntelligence__ApiKey=${{ secrets.AZURE_DOCUMENT_INTELLIGENCE_API_KEY }}" \
+            "Google__ClientId=${{ secrets.GOOGLE_CLIENT_ID }}" \
+            "Google__ClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}"
         
     - name: Post-Deploy Health Check
       run: |
         echo "Waiting 30 seconds for app to start..."
         sleep 30
         echo "Checking health endpoint..."
-        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://camilo-personal-assistant.azurewebsites.net/api/health)
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://my-personal-assistant-hub.azurewebsites.net/api/health)
         echo "Health check response: $RESPONSE"
         if [ "$RESPONSE" != "200" ]; then
           echo "::warning::Health check returned $RESPONSE — some services may be misconfigured"
-          curl -s https://camilo-personal-assistant.azurewebsites.net/api/health | jq . || true
+          curl -s https://my-personal-assistant-hub.azurewebsites.net/api/health | jq . || true
         else
           echo "✅ Health check passed!"
-          curl -s https://camilo-personal-assistant.azurewebsites.net/api/health | jq . || true
+          curl -s https://my-personal-assistant-hub.azurewebsites.net/api/health | jq . || true
         fi
 
     - name: Display deployment URL
       run: |
         echo "✅ Application deployed successfully!"
-        echo "🌐 URL: https://camilo-personal-assistant.azurewebsites.net"
+        echo "🌐 URL: https://my-personal-assistant-hub.azurewebsites.net"

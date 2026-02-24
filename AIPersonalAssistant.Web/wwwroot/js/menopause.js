@@ -868,6 +868,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('quickHotFlashBtn').addEventListener('click', quickHotFlash);
     document.getElementById('symptomFilter').addEventListener('change', renderSymptomTimeline);
 
+    // Permission check
+    try {
+        const authResp = await fetch('/api/auth/user', { credentials: 'include' });
+        if (!authResp.ok) { window.location.href = '/login.html'; return; }
+        const currentUser = await authResp.json();
+        if (!enforceToolPermission(currentUser, 'menopause')) return;
+    } catch { window.location.href = '/login.html'; return; }
+
     // Auth check and load data
     const data = await checkAuth();
     if (data) {

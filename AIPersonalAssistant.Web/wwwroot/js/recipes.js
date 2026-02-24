@@ -500,7 +500,8 @@ document.getElementById('categoryFilter').addEventListener('change', filterAndRe
 
 // --- Init ---
 (async () => {
-    await checkAuth();
+    const user = await checkAuth();
+    if (!enforceToolPermission(user, 'recipes')) return;
     initDropZone();
     await loadRecipes();
     await loadCategories();

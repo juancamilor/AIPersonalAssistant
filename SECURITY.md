@@ -112,8 +112,8 @@ Via Azure Portal:
 Via Azure CLI:
 ```bash
 az webapp config appsettings set \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=your-key" \
     "ExchangeRateAPIs__OpenExchangeRates__ApiKey=your-key" \
@@ -126,7 +126,7 @@ az webapp config appsettings set \
 ```bash
 az keyvault create \
   --name camilo-assistant-kv \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --location eastus
 ```
 
@@ -151,15 +151,15 @@ az keyvault secret set \
 3. **Enable Managed Identity:**
 ```bash
 az webapp identity assign \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 ```
 
 4. **Grant Access:**
 ```bash
 PRINCIPAL_ID=$(az webapp identity show \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --query principalId -o tsv)
 
 az keyvault set-policy \
@@ -171,8 +171,8 @@ az keyvault set-policy \
 5. **Reference in App Settings:**
 ```bash
 az webapp config appsettings set \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --settings \
     "ExchangeRateAPIs__ExchangeRateApi__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/ExchangeRateApi-Key/)" \
     "ExchangeRateAPIs__OpenExchangeRates__ApiKey=@Microsoft.KeyVault(SecretUri=https://camilo-assistant-kv.vault.azure.net/secrets/OpenExchangeRates-Key/)" \
@@ -182,7 +182,7 @@ az webapp config appsettings set \
 ## Key Propagation Verification
 
 After deploying, verify all keys reached production:
-1. Visit `https://camilo-personal-assistant.azurewebsites.net/api/health`
+1. Visit `https://my-personal-assistant-hub.azurewebsites.net/api/health`
 2. Check that all API keys show as "configured" 
 3. If any key shows "missing", check the KEY REGISTRY in [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md)
 
@@ -213,16 +213,16 @@ dotnet user-secrets set "ExchangeRateAPIs:ExchangeRateApi:ApiKey" "new-key"
 Production:
 ```bash
 az webapp config appsettings set \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --settings "ExchangeRateAPIs__ExchangeRateApi__ApiKey=new-key"
 ```
 
 **Step 3: Restart App (if needed)**
 ```bash
 az webapp restart \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 ```
 
 ## Monitoring & Auditing
@@ -239,7 +239,7 @@ az monitor diagnostic-settings create \
 ### Check Who Accessed Secrets:
 ```bash
 az monitor activity-log list \
-  --resource-group camilo-personal-assistant-rg \
+  --resource-group my-personal-assistant-hub-rg \
   --start-time 2026-01-01T00:00:00Z
 ```
 

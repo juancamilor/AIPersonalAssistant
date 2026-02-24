@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/help-palette.css">
     <link rel="stylesheet" href="/css/rate-exchange.css?v=20260123-01">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/tool-guard.js"></script>
     <!-- Force deployment refresh 2026-01-23-01 -->
 </head>
 <body>
@@ -110,6 +111,16 @@
         </div>
     </div>
 
+    <script>
+    (async () => {
+        try {
+            const resp = await fetch('/api/auth/user', { credentials: 'include' });
+            if (!resp.ok) { window.location.href = '/login.html'; return; }
+            const user = await resp.json();
+            enforceToolPermission(user, 'rate-exchange');
+        } catch { window.location.href = '/login.html'; }
+    })();
+    </script>
     <script src="/js/rate-exchange.js?v=20260122-01"></script>
     <script src="/js/help-palette.js"></script>
 </body>

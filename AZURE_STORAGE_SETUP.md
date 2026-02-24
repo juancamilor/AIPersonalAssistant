@@ -50,7 +50,7 @@ If you need to set up storage manually:
 
 ```bash
 # Set variables
-RESOURCE_GROUP="camilo-personal-assistant-rg"
+RESOURCE_GROUP="my-personal-assistant-hub-rg"
 STORAGE_NAME="camilopersonalassistantstorage"
 LOCATION="eastus"
 
@@ -89,7 +89,7 @@ echo $CONNECTION_STRING
 # Set app settings
 az webapp config appsettings set \
   --resource-group $RESOURCE_GROUP \
-  --name camilo-personal-assistant \
+  --name my-personal-assistant-hub \
   --settings \
     "AzureStorage__ConnectionString=$CONNECTION_STRING" \
     "AzureStorage__ContainerName=travel-pins"
@@ -162,8 +162,8 @@ The user ID is Base64-encoded to ensure safe blob names.
 1. **Check app settings:**
 ```bash
 az webapp config appsettings list \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant \
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub \
   --query "[?name=='AzureStorage__ConnectionString']"
 ```
 
@@ -177,8 +177,8 @@ az storage container list \
 3. **Check application logs:**
 ```bash
 az webapp log tail \
-  --resource-group camilo-personal-assistant-rg \
-  --name camilo-personal-assistant
+  --resource-group my-personal-assistant-hub-rg \
+  --name my-personal-assistant-hub
 ```
 
 ### Common Issues
