@@ -91,11 +91,15 @@ jobs:
         [ -z "${{ secrets.OPENEXCHANGERATES_API_KEY }}" ] && MISSING="$MISSING OPENEXCHANGERATES_API_KEY"
         [ -z "${{ secrets.CURRENCYAPI_KEY }}" ] && MISSING="$MISSING CURRENCYAPI_KEY"
         [ -z "${{ secrets.ALPHAVANTAGE_API_KEY }}" ] && MISSING="$MISSING ALPHAVANTAGE_API_KEY"
-        [ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] && MISSING="$MISSING GOOGLE_CLIENT_ID"
-        [ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ] && MISSING="$MISSING GOOGLE_CLIENT_SECRET"
         if [ -n "$MISSING" ]; then
           echo "::error::Missing required secrets:$MISSING"
           exit 1
+        fi
+        OPTIONAL=""
+        [ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] && OPTIONAL="$OPTIONAL GOOGLE_CLIENT_ID"
+        [ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ] && OPTIONAL="$OPTIONAL GOOGLE_CLIENT_SECRET"
+        if [ -n "$OPTIONAL" ]; then
+          echo "::warning::Missing optional secrets (Google login disabled):$OPTIONAL"
         fi
         echo "All required secrets are configured."
 
