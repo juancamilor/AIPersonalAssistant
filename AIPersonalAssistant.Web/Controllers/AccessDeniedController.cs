@@ -19,7 +19,7 @@ public class AccessDeniedController : ControllerBase
         {
             message = "Your email is not authorized to access this application.",
             email = email,
-            contactInfo = "Please contact the administrator to request access."
+            contactInfo = "Please contact the administrator at juan_camilo_r@hotmail.com to request access."
         });
     }
 }
