@@ -130,4 +130,18 @@ public class ToolsControllerTests
             Assert.False(string.IsNullOrWhiteSpace(name.ToString()));
         }
     }
+
+    [Fact]
+    public async Task GetTools_AllToolsHavePermissionId()
+    {
+        var result = await _controller.GetTools() as OkObjectResult;
+        var tools = result?.Value as Array;
+        Assert.NotNull(tools);
+        foreach (var tool in tools)
+        {
+            var permId = GetPropertyValue(tool!, "PermissionId");
+            Assert.NotNull(permId);
+            Assert.False(string.IsNullOrWhiteSpace(permId.ToString()));
+        }
+    }
 }

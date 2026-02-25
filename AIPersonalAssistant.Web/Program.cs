@@ -19,7 +19,6 @@ if (!bypassAuth)
             options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
             options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
             options.CallbackPath = "/signin-google";
-            options.SignInScheme = "Cookies";
         });
 
     var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
@@ -113,7 +112,14 @@ app.UseStatusCodePages(async context =>
     }
     else if (statusCode == 401)
     {
-        context.HttpContext.Response.Redirect("/login.html?error=unauthorized&message=Please%20sign%20in%20to%20continue");
+        if (context.HttpContext.User.Identity?.IsAuthenticated == true)
+        {
+            context.HttpContext.Response.Redirect("/access-denied.html");
+        }
+        else
+        {
+            context.HttpContext.Response.Redirect("/login.html?error=unauthorized&message=Please%20sign%20in%20to%20continue");
+        }
     }
 });
 

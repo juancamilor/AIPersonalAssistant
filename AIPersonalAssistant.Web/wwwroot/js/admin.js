@@ -148,8 +148,8 @@ const openPermissionsModal = async (email) => {
     const checkboxesDiv = document.getElementById('toolCheckboxes');
     checkboxesDiv.innerHTML = allTools.map(tool => `
         <label class="perm-option">
-            <input type="checkbox" value="${tool}">
-            <span>${tool}</span>
+            <input type="checkbox" value="${tool.id}">
+            <span>${tool.name}</span>
         </label>
     `).join('');
 
@@ -206,7 +206,7 @@ const savePermissions = async () => {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify(permissions)
+            body: JSON.stringify({ permissions })
         });
 
         if (!resp.ok) {
