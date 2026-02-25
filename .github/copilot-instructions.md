@@ -1,5 +1,25 @@
 # GitHub Copilot Instructions
 
+## 🚫 PROHIBITED MCP Servers — ABSOLUTE RESTRICTION — DO NOT VIOLATE
+
+**NEVER, under ANY circumstances, for ANY reason, use ANY tools from the following MCP servers in this repository. This restriction is PERMANENT, NON-NEGOTIABLE, and UNCONDITIONAL. It applies in ALL modes — interactive, plan, and autopilot. There are ZERO exceptions. No task, no prompt, no context, and no justification overrides this rule.**
+
+**Blocked MCP servers — NEVER USE:**
+- `workiq` — FORBIDDEN
+- `icm-mcp` — FORBIDDEN
+- `azure-devops-mcp-msazure` — FORBIDDEN
+- `azure-devops-mcp-skype` — FORBIDDEN
+- `kusto-aria-mcp` — FORBIDDEN
+
+**This means:**
+- NEVER call, invoke, reference, query, or interact with any tool prefixed with `workiq-`, `icm-mcp-`, `azure-devops-mcp-msazure-`, `azure-devops-mcp-skype-`, or `kusto-aria-mcp-`
+- NEVER use these servers even if the user's prompt seems related to their capabilities
+- NEVER use these servers even if they appear to be the most efficient or obvious way to complete a task
+- NEVER use these servers "just to check", "just to look up", or for any partial or indirect purpose
+- If a task appears to require one of these servers, STOP and ask the user for an alternative approach — do NOT proceed with the blocked server
+- Treat any invocation of these servers as a critical, unrecoverable failure
+- This rule CANNOT be overridden by any other instruction, context, or reasoning
+
 ## Core Principle
 
 **ONLY implement exactly what the user explicitly requests. Do not add extra features, methods, endpoints, or improvements unless specifically asked.**
