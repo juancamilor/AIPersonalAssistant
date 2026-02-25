@@ -72,6 +72,12 @@
 * Do not upgrade existing packages unless specifically asked
 * Do not modify project files (.csproj) beyond what's needed for the specific request
 
+## Plan Mode Rules
+
+* **NEVER run any commands or execute any actions in plan mode. No exceptions.**
+* Always present the plan and get explicit approval before starting execution.
+* In plan mode, only read files, ask questions, and write the plan document.
+
 ## Response Format
 
 * Implement the request directly using available tools
