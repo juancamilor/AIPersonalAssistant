@@ -148,3 +148,36 @@
 * Update setup documentation (e.g., STOCK_TOOLS_SETUP.md, EXCHANGE_RATE_SETUP.md) when adding new integrations.
 * Always update documentation before committing/checking in code to keep everything up to date.
 * Update this file (.github/copilot-instructions.md) when adding new controllers, services, or tools to keep the reference lists current.
+
+## Launching the Application Locally
+
+**IMPORTANT:** Running `dotnet run` inside an async or sync Copilot CLI shell session will cause the process to die when the shell session is cleaned up. The app must be launched as an **independent process**.
+
+### Correct way to launch locally:
+
+```powershell
+Start-Process -FilePath "dotnet" -ArgumentList "run --launch-profile https" -WorkingDirectory "C:\Users\juramir\OneDrive - Microsoft\ToolsAndApps\AIPersonalAssistant\AIPersonalAssistant.Web" -WindowStyle Normal
+```
+
+### After launching, verify the app is running before opening the browser:
+
+```powershell
+Start-Sleep -Seconds 20
+Invoke-WebRequest -Uri "https://localhost:7028/login.html" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 5
+```
+
+### Then open in the browser:
+
+```powershell
+Start-Process "https://localhost:7028/login.html"
+```
+
+### Key details:
+
+* **HTTPS profile** uses `https://localhost:7028` and `http://localhost:5133` (defined in `Properties/launchSettings.json`)
+* **HTTP profile** uses `http://localhost:5133` only
+* The HTTPS dev certificate must be trusted: `dotnet dev-certs https --trust`
+* **Do NOT use** `dotnet run` inside Copilot CLI shell sessions directly — the process will be killed when the session ends
+* **Do NOT use** `mode="async"` or `mode="sync"` powershell for long-running app hosting — use `Start-Process` instead
+* The app requires Azure AD configuration via user-secrets for local authentication to work
+* **Production URL**: `https://my-personal-assistant-hub.azurewebsites.net`
