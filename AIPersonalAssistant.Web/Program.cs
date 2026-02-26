@@ -10,7 +10,11 @@ var bypassAuth = builder.Environment.IsDevelopment() &&
 
 if (!bypassAuth)
 {
-    builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    })
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
     var googleClientId = builder.Configuration["Google:ClientId"];
@@ -23,7 +27,6 @@ if (!bypassAuth)
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
                 options.CallbackPath = "/signin-google";
-                options.SignInScheme = "Cookies";
             });
     }
 
