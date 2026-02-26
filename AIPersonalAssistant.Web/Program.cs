@@ -23,6 +23,7 @@ if (!bypassAuth)
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
                 options.CallbackPath = "/signin-google";
+                options.SignInScheme = "Cookies";
             });
     }
 
