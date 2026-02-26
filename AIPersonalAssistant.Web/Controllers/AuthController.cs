@@ -33,6 +33,11 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public IActionResult LoginGoogle(string returnUrl = "/tools.html")
     {
+        var googleClientId = _configuration["Google:ClientId"];
+        if (string.IsNullOrEmpty(googleClientId))
+        {
+            return Redirect("/login.html?error=Google+login+is+not+configured");
+        }
         var redirectUrl = Url.Content($"~{returnUrl}");
         var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
         return Challenge(properties, "Google");

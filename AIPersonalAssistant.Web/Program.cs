@@ -13,13 +13,18 @@ if (!bypassAuth)
     builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
-    builder.Services.AddAuthentication()
-        .AddGoogle("Google", options =>
-        {
-            options.ClientId = builder.Configuration["Google:ClientId"] ?? "";
-            options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
-            options.CallbackPath = "/signin-google";
-        });
+    var googleClientId = builder.Configuration["Google:ClientId"];
+    var googleClientSecret = builder.Configuration["Google:ClientSecret"];
+    if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
+    {
+        builder.Services.AddAuthentication()
+            .AddGoogle("Google", options =>
+            {
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
+                options.CallbackPath = "/signin-google";
+            });
+    }
 
     var allowedEmails = builder.Configuration.GetSection("Authorization:AllowedEmails").Get<List<string>>() ?? new List<string>();
     var adminEmails = builder.Configuration.GetSection("Authorization:AdminEmails").Get<List<string>>() ?? new List<string>();
