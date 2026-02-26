@@ -70,6 +70,17 @@
 * Use existing credential patterns from codebase
 * The app supports dual authentication providers: Microsoft (Azure AD) and Google OAuth 2.0
 
+### For Secrets, Keys, and Configuration
+
+* When introducing any new secret, API key, client ID, or configuration value, ensure ALL of the following files are updated accordingly:
+  - `.github/workflows/ci.yml` — app settings in the deploy step
+  - `.github/workflows/deploy.yml` — app settings in the deploy step
+  - `GITHUB_SECRETS_SETUP.md` — KEY REGISTRY table (master reference)
+  - `appsettings.json` — placeholder values
+  - Local dev: `dotnet user-secrets` for local development
+* The `ci.yml` and `deploy.yml` pipelines BOTH set Azure App Service settings via `az webapp config appsettings set`. If a secret is missing from either file, a deployment from that pipeline will wipe the setting from production.
+* Never hardcode secrets in source code. Use user-secrets locally and GitHub Secrets for CI/CD.
+
 ### For Services
 
 * Follow the existing dual-storage pattern: local JSON storage (dev) + Azure Blob Storage (prod)
